@@ -10,6 +10,12 @@ import Register from './pages/register_m'
 import Login from './pages/login'
 import{BrowserRouter,Link,Routes,Route} from 'react-router-dom'
 import User_page from './pages/user_page'
+import Register from './register_m'
+import Login from './login'
+import Home from '../src/pages/Home'
+import ForgotPassword from './pages/ForgotPassword'
+import{BrowserRouter,Routes,Route} from 'react-router-dom'
+
 function App(){
   return(
     <BrowserRouter>
@@ -19,16 +25,15 @@ function App(){
         <li><Link to='/user_page'>User_page</Link></li>
       </ul>
       <Routes>
-          <Route path='register_m' element={<Register/>}></Route>
-          <Route path='login' element={<Login/>}></Route>
           <Route path='user_page' element={<User_page/>}></Route>
-        
+
+        <Route path='home' element={<Home/>}></Route>
+        <Route path='' element={<Home/>}></Route>
+        <Route path='register_m' element={<Register/>}></Route>
+        <Route path='login' element={<Login/>}></Route>
+        <Route path='forgot-password' element={<ForgotPassword/>}></Route>
       </Routes>
     </BrowserRouter>
   )
 }
 export default App;
-
-
-
-

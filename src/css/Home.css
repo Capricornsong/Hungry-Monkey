@@ -1,0 +1,16 @@
+.bottom-margin {
+    margin-bottom: 20px;
+}
+
+.top-margin {
+    margin-top: 20px;
+}
+
+.postcode-input {
+    width: 600px;
+}
+
+#postcode-button {
+    margin-left: 20px;
+    margin-top: 10px;
+}
