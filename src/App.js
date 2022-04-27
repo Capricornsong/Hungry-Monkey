@@ -8,22 +8,26 @@
  */
 import Register from './register_m'
 import Login from './login'
+import Home from '../src/pages/Home'
+import ForgotPassword from './pages/ForgotPassword'
 import{BrowserRouter,Link,Routes,Route} from 'react-router-dom'
 
 function App(){
   return(
     <BrowserRouter>
-      <Link to='/register_m'>register</Link>
-      <Link to='/login'>login</Link>
+    {/**
+     * <Link to='/register_m'>register</Link>
+       <Link to='/login'>login</Link>
+     * 
+     */}
       <Routes>
+        <Route path='home' element={<Home/>}></Route>
+        <Route path='' element={<Home/>}></Route>
         <Route path='register_m' element={<Register/>}></Route>
         <Route path='login' element={<Login/>}></Route>
+        <Route path='forgot-password' element={<ForgotPassword/>}></Route>
       </Routes>
     </BrowserRouter>
   )
 }
 export default App;
-
-
-
-
