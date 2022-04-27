@@ -33,6 +33,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
+import {signup} from "../util/firebaseAuth"
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -103,6 +104,13 @@ export default function SignUp() {
       address2: event.address2,
       country: event.country,
     })
+
+    signup(event.email, event.password1).then(()=>{
+      console.log("Success")
+    }).catch((err)=>{
+      console.log(`Error`)
+    })
+
   }
   //used to store password1 to compare with password2
   // const [password, setPassword] = React.useState(0);
