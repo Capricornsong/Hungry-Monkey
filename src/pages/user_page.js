@@ -2,12 +2,12 @@
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
  * @LastEditTime: 2022-04-26 21:38:29
- * @FilePath: \coursework\coursework\src\account\user_page.js
+ * @FilePath: \coursework\coursework\src\components\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
-import { UpdateProfile } from './user_profile';
+import { UpdateProfile } from '../components/user_profile';
 import { Box, Button,Container, Grid, Typography,Card,CardContent,CardActions,CardMedia } from '@mui/material';
 import { shadows } from '@mui/system';
 

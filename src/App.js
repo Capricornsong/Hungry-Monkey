@@ -9,7 +9,7 @@
 import Register from './pages/register_m'
 import Login from './pages/login'
 import{BrowserRouter,Link,Routes,Route} from 'react-router-dom'
-import User_page from './account/user_page'
+import User_page from './pages/user_page'
 function App(){
   return(
     <BrowserRouter>

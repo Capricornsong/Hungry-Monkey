@@ -2,7 +2,7 @@
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
  * @LastEditTime: 2022-04-27 16:33:08
- * @FilePath: \coursework\coursework\src\account\user_profile.js
+ * @FilePath: \coursework\coursework\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
  */
