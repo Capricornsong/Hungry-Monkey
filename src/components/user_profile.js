@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-04-27 20:21:34
+ * @LastEditTime: 2022-04-27 23:30:27
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -30,15 +30,6 @@ import axios from 'axios'
 
 export const UpdateProfile = () => {
     const uid = { uid: "111111" }
-    const [values, setValues] = useState({
-        firstName: 'Liusong',
-        lastName: 'He',
-        email: 'demo@qq.com',
-        phone: '1231516',
-        address1: 'address line 1',
-        address2: 'address line 2',
-        country: 'UK'
-    })
     const [profileData, setProfileData] = useState({
         first_name: '',
         last_name: '',
@@ -55,7 +46,7 @@ export const UpdateProfile = () => {
             [event.target.name]: event.target.value
         })
     }
-
+    
     useEffect(() => {
         //    getProfile('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID',uid)
         //    .then(responsedata => {
@@ -65,25 +56,22 @@ export const UpdateProfile = () => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
             uid: '111111',
         })
-            .then(response => {
-                console.log(response.data)
-                setProfileData({ ...response.data })
-                console.log(profileData)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        .then(response => {
+            console.log(response.data)
+            setProfileData({ ...response.data })
+            console.log(profileData)
+        })
+        .catch(error => {
+            console.log(error)
+        })
         // console.log('prorpo')
     }, [])
-    // const data = getProfile('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID',uid)
-    // .then(data => {
-    //     // var profile = data.body
-    //     console.log('propropro')
-    // })
-    console.log('prorpo')
-
+    // const index = (countries || []).findIndex((countryitem) => countryitem.label === profileData.country)
+    // console.log(profileData.country)
+    // console.log((countries || []).findIndex((countryitem) => countryitem.label === "United Kingdom"))
     return (
         <form
+
             autoComplete='off'
         >
             <Card
@@ -99,6 +87,7 @@ export const UpdateProfile = () => {
                     <Grid
                         container
                         spacing={2}
+
                     >
                         <Grid
                             item
@@ -108,7 +97,7 @@ export const UpdateProfile = () => {
                         >
                             <TextField
                                 fullWidth
-                                name='firstname'
+                                name='first_name'
                                 required
                                 label='First Name'
                                 value={profileData.first_name}
@@ -123,11 +112,11 @@ export const UpdateProfile = () => {
                         >
                             <TextField
                                 fullWidth
-                                name='lastname'
+                                name='last_name'
                                 required
                                 label='Last Name'
                                 value={profileData.last_name}
-
+                                onChange={handleUpdate}
                             />
                         </Grid>
 
@@ -143,7 +132,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Email'
                                 value={profileData.email}
-
+                                onChange={handleUpdate}
                             />
                         </Grid>
                         <Grid
@@ -154,10 +143,11 @@ export const UpdateProfile = () => {
                         >
                             <TextField
                                 fullWidth
-                                name='address1'
+                                name='address_first_line'
                                 required
                                 label='Address Line 1'
                                 value={profileData.address_first_line}
+                                onChange={handleUpdate}
                             />
                         </Grid>
                         <Grid
@@ -168,10 +158,11 @@ export const UpdateProfile = () => {
                         >
                             <TextField
                                 fullWidth
-                                name='address2'
+                                name='address_second_line'
                                 required
                                 label='Address Line 2'
                                 value={profileData.address_second_line}
+                                onChange={handleUpdate}
                             />
                         </Grid>
                         <Grid
@@ -186,6 +177,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='City'
                                 value={profileData.city}
+                                onChange={handleUpdate}
                             />
                         </Grid>
                         <Grid
@@ -200,6 +192,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Postcode'
                                 value={profileData.postcode}
+                                onChange={handleUpdate}
                             />
                         </Grid>
                         <Grid item
@@ -210,9 +203,12 @@ export const UpdateProfile = () => {
                             <Autocomplete
                                 options={countries}
                                 autoHighlight
-                                // getOptionLabel={(option) => option.label}
-                                // value={profileData.country}
+                                disablePortal
                                 value={profileData.country}
+                                // getOptionLabel={(option) => option.label}
+                                // (countries || []).findIndex((countryitem) => countryitem.label === profileData.country)
+                                // value={countries[index].label}
+                                onChange={handleUpdate}
                                 renderOption={(props, option) => (
                                     <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                                         <img
@@ -223,7 +219,7 @@ export const UpdateProfile = () => {
                                             alt=""
                                         />
                                         {/* {option.label} ({option.code}) +{option.phone} */}
-                                        {option.label} ({option.code})
+                                        {option.label}
                                     </Box>
                                 )}
                                 renderInput={(params) => (
@@ -236,6 +232,33 @@ export const UpdateProfile = () => {
                                     </TextField>
                                 )}
                             />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            md={12}
+                            lg={12}
+                            // justifyContent='flex-end'
+                            direction='row-reverse'
+                            
+                            textAlign='right'
+                        >
+                            <Button
+                                type="submit"
+                                // fullWidth
+                                variant="contained"
+                                sx={{
+                                    mt: 3,
+                                    mb: 1,
+                                    // color: 'grey.700',
+                                    // backgroundColor: theme.palette.grey[50],
+                                    // borderColor: theme.palette.grey[100]
+                                }}
+                                
+                                color='primary'
+                            >
+                                Update
+                            </Button>
                         </Grid>
                     </Grid>
                 </CardContent>
