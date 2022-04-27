@@ -1,33 +1,42 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-04-25 22:01:50
- * @FilePath: \coursework\coursework\src\login.js
+ * @LastEditTime: 2022-04-27 16:29:01
+ * @FilePath: \coursework\coursework\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+// import { useSelector } from 'react-redux';
+import GoogleIcon from '@mui/icons-material/Google';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  CssBaseline,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  
+} from '@mui/material';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+        Hungry Monkey
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -38,6 +47,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
+
+  // const customization = useSelector((state) => state.customization);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,6 +56,7 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+  
   };
 
   return (
@@ -96,10 +108,35 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
+              loading={true}
               sx={{ mt: 3, mb: 3 }}
             >
               Sign In
             </Button>
+
+            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+              <Button>
+                  
+              </Button>
+            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ 
+                mt: 0, 
+                mb: 3,
+                // color: 'grey.700',
+                // backgroundColor: theme.palette.grey[50],
+                // borderColor: theme.palette.grey[100]
+              }}
+              startIcon={<GoogleIcon />}
+              color='warning'
+            >
+              Sign In with Google
+            </Button>
+            
             <Grid container>
               <Grid item xs>
                 <Link href="/forgot-password" variant="body2">
@@ -107,8 +144,8 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="./register_m" variant="body2">
+                  {"Don't have an components? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
