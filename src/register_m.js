@@ -1,30 +1,35 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-26 17:42:19
+ * @LastEditTime: 2022-04-27 13:43:03
  * @FilePath: \coursework\coursework\src\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
  */
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  CssBaseline,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  
+} from '@mui/material';
 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-
 import {countries} from './data'
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { useFormControl } from '@mui/material/FormControl';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -69,7 +74,9 @@ export default function SignUp() {
       .required('Postcode is required！'),
     // acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
     country: Yup.string()
-      .required('Country is required!')
+      .required('Country is required!'),
+    city: Yup.string()
+    .required('City is requirement'),
   });
   
   const {
@@ -213,6 +220,12 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <Divider sx={{  mt:3,mb:1 }} orientation="horizontal">Address</Divider>
+                
+              </Grid>
+              
+              
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -251,7 +264,18 @@ export default function SignUp() {
                   error={errors.postcode ? true : false}
                 />
               </Grid>
-
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="city"
+                  label="City"
+                  type="text"
+                  id="postcode"
+                  {...register('city')}
+                  error={errors.city ? true : false}
+                />
+              </Grid> 
               <Grid item xs={12}>
                 <Autocomplete
                   options={countries}
@@ -292,7 +316,7 @@ export default function SignUp() {
                   name='acceptTerms'
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid> */}
+              </Grid> */}    
             </Grid>
             <Button
               type="submit"
