@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-27 16:32:40
- * @FilePath: \coursework\coursework\src\pages\register_m.js
+ * @LastEditTime: 2022-04-27 19:23:03
+ * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
  */
@@ -97,7 +97,8 @@ export default function SignUp() {
       firstName: event.firstName,
       lastName: event.lastName,
       email: event.email,
-      password: event.password,
+      password1: event.password1,
+      password2:event.password2,
       address1: event.address1,
       address2: event.address2,
       country: event.country,

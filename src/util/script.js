@@ -1,13 +1,15 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 23:38:17
- * @LastEditTime: 2022-04-27 16:16:10
- * @FilePath: \coursework\coursework\src\util\script.js
+ * @LastEditTime: 2022-04-27 18:19:26
+ * @FilePath: \coursework_git\src\util\script.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
-export async function getProfile(url='', data={}){
+import axios from "axios"
+
+export function getProfile(url='', data={}){
     // const response = await fetch(url,{
     //     method:'Post',
     //     headers: {
@@ -21,23 +23,33 @@ export async function getProfile(url='', data={}){
     // console.log(response.status)
     // let responsedata = await response.json();
     
-    fetch(url,{
-        method:'Post',
-        headers: {
-            'Content-Type': 'application/json',
-           }, 
-        body:JSON.stringify(data)
+    // fetch(url,{
+    //     method:'Post',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //        }, 
+    //     body:JSON.stringify(data)
+    // })
+    // .then(response => {
+    //     response.json()
+    //     console.log('response.json():',response.status)
+    // })
+    // .then(responsedata => {
+    //     console.log('responsedata',responsedata)
+    //     return responsedata
+    // }).catch(error => {
+    //     console.log(error)
+    // })
+    
+    axios.post(url,{
+        "uid":'111111',
     })
     .then(response => {
-        response.json()
-        console.log('response.json():',response.status)
+        console.log(response)
+        return response
     })
-    .then(responsedata => {
-        // console.log('responsedata',responsedata)
-        return responsedata
-    }).catch(error => {
+    .catch(error => {
         console.log(error)
     })
-
     
 }
