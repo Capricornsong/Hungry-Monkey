@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-27 13:43:03
- * @FilePath: \coursework\coursework\src\register_m.js
+ * @LastEditTime: 2022-04-27 16:32:40
+ * @FilePath: \coursework\coursework\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
  */
@@ -27,7 +27,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import {countries} from './data'
+import {countries} from '../data/data'
 import * as React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useFormControl } from '@mui/material/FormControl';
