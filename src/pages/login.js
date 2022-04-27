@@ -7,12 +7,12 @@
  * @Description: 
  */
 
-import * as React from 'react';
+import * as React from 'react'
 
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// import { useSelector } from 'react-redux';
-import GoogleIcon from '@mui/icons-material/Google';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+// import { useSelector } from 'react-redux'
+import GoogleIcon from '@mui/icons-material/Google'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import {
   Avatar,

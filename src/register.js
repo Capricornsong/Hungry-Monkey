@@ -1,13 +1,13 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-24 16:24:37
- * @LastEditTime: 2022-04-25 22:29:00
- * @FilePath: \coursework\coursework\src\register.js
+ * @LastEditTime: 2022-04-27 20:22:44
+ * @FilePath: \coursework_git\src\register.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Form,
   Input,
@@ -19,8 +19,8 @@ import {
   Checkbox,
   Button,
   AutoComplete,
-} from 'antd';
-const { Option } = Select;
+} from 'antd'
+const { Option } = Select
 const residences = [
   {
     value: 'zhejiang',
@@ -54,7 +54,7 @@ const residences = [
       },
     ],
   },
-];
+]
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -72,7 +72,7 @@ const formItemLayout = {
       span: 16,
     },
   },
-};
+}
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
@@ -84,14 +84,14 @@ const tailFormItemLayout = {
       offset: 8,
     },
   },
-};
+}
 
 const RegistrationForm = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
+    console.log('Received values of form: ', values)
+  }
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -104,7 +104,7 @@ const RegistrationForm = () => {
         <Option value="87">+87</Option>
       </Select>
     </Form.Item>
-  );
+  )
   const suffixSelector = (
     <Form.Item name="suffix" noStyle>
       <Select
@@ -116,21 +116,21 @@ const RegistrationForm = () => {
         <Option value="CNY">¥</Option>
       </Select>
     </Form.Item>
-  );
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
+  )
+  const [autoCompleteResult, setAutoCompleteResult] = useState([])
 
   const onWebsiteChange = (value) => {
     if (!value) {
-      setAutoCompleteResult([]);
+      setAutoCompleteResult([])
     } else {
-      setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
+      setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`))
     }
-  };
+  }
 
   const websiteOptions = autoCompleteResult.map((website) => ({
     label: website,
     value: website,
-  }));
+  }))
   return (
     <Form
       {...formItemLayout}
@@ -187,10 +187,10 @@ const RegistrationForm = () => {
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
-                return Promise.resolve();
+                return Promise.resolve()
               }
 
-              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              return Promise.reject(new Error('The two passwords that you entered do not match!'))
             },
           }),
         ]}
@@ -351,7 +351,7 @@ const RegistrationForm = () => {
         </Button>
       </Form.Item>
     </Form>
-  );
-};
+  )
+}
 
-export default () => <RegistrationForm />;
+export default () => <RegistrationForm />
