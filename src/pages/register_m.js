@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-27 19:23:03
+ * @LastEditTime: 2022-04-27 20:21:07
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -21,18 +21,18 @@ import {
   Link,
   TextField,
   Typography,
-  
-} from '@mui/material';
 
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import {countries} from '../data/data'
-import * as React from 'react';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useFormControl } from '@mui/material/FormControl';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Autocomplete from '@mui/material/Autocomplete';
+} from '@mui/material'
+
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { countries } from '../data/data'
+import * as React from 'react'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useFormControl } from '@mui/material/FormControl'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Autocomplete from '@mui/material/Autocomplete'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -43,19 +43,19 @@ function Copyright(props) {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
-const theme = createTheme();
-console.log({countries})
+const theme = createTheme()
+console.log({ countries })
 export default function SignUp() {
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string()
       .required('Last Name is required'),
-      // .min(6, 'Username must be at least 6 characters')
-      // .max(20, 'Username must not exceed 20 characters'),
+    // .min(6, 'Username must be at least 6 characters')
+    // .max(20, 'Username must not exceed 20 characters'),
     email: Yup.string()
       .required('Email is required')
       .email('Email is invalid'),
@@ -76,9 +76,9 @@ export default function SignUp() {
     country: Yup.string()
       .required('Country is required!'),
     city: Yup.string()
-    .required('City is requirement'),
-  });
-  
+      .required('City is requirement'),
+  })
+
   const {
     register,
     control,
@@ -86,10 +86,10 @@ export default function SignUp() {
     formState: { errors }
   } = useForm({
     resolver: yupResolver(validationSchema)
-  });
+  })
 
   const onSubmit = (event) => {
-    
+
     console.log(event)
     // event.preventDefault();
     // const data = new FormData(event);
@@ -98,12 +98,12 @@ export default function SignUp() {
       lastName: event.lastName,
       email: event.email,
       password1: event.password1,
-      password2:event.password2,
+      password2: event.password2,
       address1: event.address1,
       address2: event.address2,
       country: event.country,
-    });
-  };
+    })
+  }
   //used to store password1 to compare with password2
   // const [password, setPassword] = React.useState(0);
   //used to change the textfield depend on the comparison of the password1 & password2
@@ -120,7 +120,7 @@ export default function SignUp() {
   //     setConfirmpasswordstate(true)
   //   }
   // }
-  const [firstname,setFirstname] = React.useState('');
+  const [firstname, setFirstname] = React.useState('')
 
 
   return (
@@ -143,10 +143,10 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate 
-            onSubmit={handleSubmit} 
+          <Box component="form" noValidate
+            onSubmit={handleSubmit}
             sx={{ mt: 3 }
-          }>
+            }>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -162,11 +162,11 @@ export default function SignUp() {
                 />
                 <Typography variant="inherit" color="textSecondary">
                   {errors.firstName?.message}
-              </Typography>
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  
+
                   required
                   fullWidth
                   id="lastName"
@@ -221,11 +221,11 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Divider sx={{  mt:3,mb:1 }} orientation="horizontal">Address</Divider>
-                
+                <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
+
               </Grid>
-              
-              
+
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -276,7 +276,7 @@ export default function SignUp() {
                   {...register('city')}
                   error={errors.city ? true : false}
                 />
-              </Grid> 
+              </Grid>
               <Grid item xs={12}>
                 <Autocomplete
                   options={countries}
@@ -292,7 +292,7 @@ export default function SignUp() {
                         alt=""
                       />
                       {/* {option.label} ({option.code}) +{option.phone} */}
-                      {option.label} ({option.code}) 
+                      {option.label} ({option.code})
                     </Box>
                   )}
                   renderInput={(params) => (
@@ -317,7 +317,7 @@ export default function SignUp() {
                   name='acceptTerms'
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid> */}    
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -335,11 +335,11 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
-            
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
-  );
+  )
 }
