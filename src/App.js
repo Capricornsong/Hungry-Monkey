@@ -10,11 +10,8 @@ import Register from './pages/register_m'
 import Login from './pages/login'
 import{BrowserRouter,Link,Routes,Route} from 'react-router-dom'
 import User_page from './pages/user_page'
-import Register from './register_m'
-import Login from './login'
 import Home from '../src/pages/Home'
 import ForgotPassword from './pages/ForgotPassword'
-import{BrowserRouter,Routes,Route} from 'react-router-dom'
 
 function App(){
   return(
