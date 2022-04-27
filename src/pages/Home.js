@@ -3,15 +3,22 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import PostcodeSearch from '../components/PostcodeSearch'
 import RestaurantRow from '../components/RestaurantRow'
+import { Container, CssBaseline } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import '../css/Home.css'
+
+const theme = createTheme()
 
 function Home() {
   return (
-    <div id="home-div">
+    <ThemeProvider theme={theme}>
       <Navbar />
-      <PostcodeSearch />
-      <RestaurantRow />
-    </div>
+      <Container component="main" maxWidth="xl">
+      <CssBaseline />
+        <PostcodeSearch />
+        <RestaurantRow />
+      </Container>
+    </ThemeProvider>
   )
 }
 
