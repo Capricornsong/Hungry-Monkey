@@ -20,6 +20,12 @@ import Navbar from '../components/Navbar';
                   alignItems: 'center',
                 }}
               >
+                <Typography component="h1" variant="h5">
+                  Forgotten password request
+                </Typography>
+                <h5 component="h5" variant="h5">
+                  Please enter your email address
+                </h5>
                 <TextField
                   margin="normal"
                   required
@@ -30,10 +36,14 @@ import Navbar from '../components/Navbar';
                   autoComplete="email"
                   autoFocus
                 />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  >Submit</Button>
                 </Box>
               </Container>
             </ThemeProvider>
-            
         </div>
     )
   }
