@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Grid, TextField, Typography } from '@mui/material'
 
 function PostcodeSearch() {
-    const [postCodeEntered, setPostCodeEntered] = useState(true)
+    const [postCodeEntered, setPostCodeEntered] = useState(false)
 
     return (
         <Grid container>
