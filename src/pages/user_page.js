@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-04-27 20:20:26
+ * @LastEditTime: 2022-04-28 13:24:45
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -10,7 +10,7 @@
 import { UpdateProfile } from '../components/user_profile'
 import { Box, Button, Container, Grid, Typography, Card, CardContent, CardActions, CardMedia } from '@mui/material'
 import { shadows } from '@mui/system'
-
+import { OrderHistory } from '../components/orderHistory'
 
 export default function user_page() {
     return (
@@ -77,6 +77,14 @@ export default function user_page() {
                         </Typography>
                     </CardContent>
                 </Card> */}
+                        </Grid>
+                        <Grid
+                            item
+                            lg = {12}
+                            md = {12}
+                            xs = {12}
+                        >
+                            <OrderHistory/>
                         </Grid>
                     </Grid>
                 </Container>

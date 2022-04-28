@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-27 20:21:07
+ * @LastEditTime: 2022-04-28 12:52:56
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -33,7 +33,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
-import {signup} from "../util/firebaseAuth"
+import { signup } from "../util/firebaseAuth"
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -50,7 +50,6 @@ function Copyright(props) {
 const theme = createTheme()
 console.log({ countries })
 export default function SignUp() {
-
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string()
@@ -92,7 +91,7 @@ export default function SignUp() {
   const onSubmit = (event) => {
 
     console.log(event)
-    // event.preventDefault();
+    event.preventDefault();
     // const data = new FormData(event);
     console.log({
       firstName: event.firstName,
@@ -105,9 +104,9 @@ export default function SignUp() {
       country: event.country,
     })
 
-    signup(event.email, event.password1).then(()=>{
+    signup(event.email, event.password1).then(() => {
       console.log("Success")
-    }).catch((err)=>{
+    }).catch((err) => {
       console.log(`Error`)
     })
 

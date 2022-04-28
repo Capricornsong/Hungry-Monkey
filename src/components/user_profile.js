@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-04-27 23:30:27
+ * @LastEditTime: 2022-04-28 20:39:05
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -19,8 +19,11 @@ import {
     CardHeader,
     Divider,
     Grid,
-    Input,
-    TextField
+    InputLabel,
+    TextField,
+    MenuItem,
+    Select,
+    Snackbar,
 } from '@mui/material'
 import { ThemeContext } from '@emotion/react'
 import axios from 'axios'
@@ -28,7 +31,7 @@ import axios from 'axios'
 
 
 
-export const UpdateProfile = () => {
+export const UpdateProfile = (props) => {
     const uid = { uid: "111111" }
     const [profileData, setProfileData] = useState({
         first_name: '',
@@ -40,11 +43,31 @@ export const UpdateProfile = () => {
         city: '',
         postcode: '',
     })
-    const handleUpdate = (event) => {
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+  
+
+    // To make Input box inputable
+    const handleUpdateInputBox = (event) => {
         setProfileData({
             ...profileData,
             [event.target.name]: event.target.value
         })
+    }
+
+    const handleUpdate = (event) =>{
+        event.preventDefault();
+        console.log(profileData);
+        // axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateUserByUID',profileData)
+        // .then(response => {
+        //     console.log(response.data);
+        //     if(response.data.result){
+        //         setOpen(true);
+        //     }
+        // })
     }
     
     useEffect(() => {
@@ -70,9 +93,12 @@ export const UpdateProfile = () => {
     // console.log(profileData.country)
     // console.log((countries || []).findIndex((countryitem) => countryitem.label === "United Kingdom"))
     return (
+        <>
         <form
-
             autoComplete='off'
+            noValidate
+            onSubmit={handleUpdate}
+            {...props}
         >
             <Card
                 sx={{
@@ -101,7 +127,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='First Name'
                                 value={profileData.first_name}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid
@@ -116,7 +142,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Last Name'
                                 value={profileData.last_name}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
 
@@ -127,12 +153,17 @@ export const UpdateProfile = () => {
                             lg={12}
                         >
                             <TextField
+                                disabled
                                 fullWidth
                                 name='email'
                                 required
                                 label='Email'
+                                helperText="Email can not be change"
+                                // InputProps={{
+                                //     readOnly: true,
+                                //   }}
                                 value={profileData.email}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid
@@ -147,7 +178,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Address Line 1'
                                 value={profileData.address_first_line}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid
@@ -162,7 +193,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Address Line 2'
                                 value={profileData.address_second_line}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid
@@ -177,7 +208,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='City'
                                 value={profileData.city}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid
@@ -192,7 +223,7 @@ export const UpdateProfile = () => {
                                 required
                                 label='Postcode'
                                 value={profileData.postcode}
-                                onChange={handleUpdate}
+                                onChange={handleUpdateInputBox}
                             />
                         </Grid>
                         <Grid item
@@ -200,38 +231,18 @@ export const UpdateProfile = () => {
                             md={4}
                             lg={4}
                         >
-                            <Autocomplete
-                                options={countries}
-                                autoHighlight
-                                disablePortal
+                            <TextField
+                                disabled
+                                fullWidth
+                                name='Country'
+                                required
+                                label='Country'
+                                helperText="Country can not be change"
                                 value={profileData.country}
-                                // getOptionLabel={(option) => option.label}
-                                // (countries || []).findIndex((countryitem) => countryitem.label === profileData.country)
-                                // value={countries[index].label}
-                                onChange={handleUpdate}
-                                renderOption={(props, option) => (
-                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                        <img
-                                            loading="lazy"
-                                            width="20"
-                                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                            alt=""
-                                        />
-                                        {/* {option.label} ({option.code}) +{option.phone} */}
-                                        {option.label}
-                                    </Box>
-                                )}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Choose a country"
-                                        id="country"
-                                        name='country'
-                                    >
-                                    </TextField>
-                                )}
                             />
+                            
+                            
+                            
                         </Grid>
                         <Grid
                             item
@@ -264,5 +275,13 @@ export const UpdateProfile = () => {
                 </CardContent>
             </Card>
         </form>
+        <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            message="Successfully updated"
+            // anchorOrigin={{'bottom','center'}}
+        />
+        </>
     )
 }
