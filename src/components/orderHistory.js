@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-28 13:00:08
- * @LastEditTime: 2022-04-28 18:44:19
+ * @LastEditTime: 2022-04-29 15:38:54
  * @FilePath: \coursework_git\src\components\orderHistory.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -28,7 +28,6 @@ function Details(props) {
                 <TableCell>
                     {/* expand button */}
                     <IconButton
-                        aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
                     >
@@ -49,12 +48,12 @@ function Details(props) {
                             }}
                         >
                             <Typography variant="h6" gutterBottom component='div'>Details</Typography>
-                            <Table size='small' aria-aria-label="details">
+                            <Table size='small' >
                                 <TableHead>
                                     <TableRow>
                                         <TableCell></TableCell>
                                         <TableCell>Food name</TableCell>
-                                        <TableCell>Price ($)</TableCell>
+                                        <TableCell>Price ( £)</TableCell>
                                         <TableCell>Amount</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -94,13 +93,13 @@ export const OrderHistory = () => {
 
     return (
         <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
+            <Table >
                 <TableHead>
                     <TableRow>
                         <TableCell />
                         <TableCell>Restaurant Name</TableCell>
                         <TableCell>Order Placed Date</TableCell>
-                        <TableCell>Total Price</TableCell>
+                        <TableCell>Total Price ( £)</TableCell>
                         <TableCell>Order Status</TableCell>
                     </TableRow>
                 </TableHead>

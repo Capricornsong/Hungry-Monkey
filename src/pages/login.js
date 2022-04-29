@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-04-28 18:56:06
+ * @LastEditTime: 2022-04-29 15:52:20
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -29,7 +29,7 @@ import {
   Link,
   TextField,
   Typography,
-
+  useMediaQuery,
 } from '@mui/material'
 function Copyright(props) {
   return (
@@ -43,11 +43,23 @@ function Copyright(props) {
     </Typography>
   )
 }
+// const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-const theme = createTheme()
+// const theme = createTheme()
 
 export default function SignIn() {
 
+  //switch mode depend on system setting 
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  );
   // const customization = useSelector((state) => state.customization);
   const handleSubmit = (event) => {
     event.preventDefault()

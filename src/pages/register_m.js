@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-28 12:52:56
+ * @LastEditTime: 2022-04-29 16:07:32
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -21,7 +21,7 @@ import {
   Link,
   TextField,
   Typography,
-
+  useMediaQuery
 } from '@mui/material'
 
 import { useForm, Controller } from 'react-hook-form'
@@ -47,7 +47,7 @@ function Copyright(props) {
   )
 }
 
-const theme = createTheme()
+// const theme = createTheme()
 console.log({ countries })
 export default function SignUp() {
   const validationSchema = Yup.object().shape({
@@ -109,8 +109,18 @@ export default function SignUp() {
     }).catch((err) => {
       console.log(`Error`)
     })
-
   }
+
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = React.useMemo(
+        () =>
+        createTheme({
+            palette: {
+            mode: prefersDarkMode ? 'dark' : 'light',
+            },
+        }),
+        [prefersDarkMode],
+    );
   //used to store password1 to compare with password2
   // const [password, setPassword] = React.useState(0);
   //used to change the textfield depend on the comparison of the password1 & password2
