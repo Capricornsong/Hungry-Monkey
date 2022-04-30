@@ -1,4 +1,4 @@
-import { Box, Container, Typography, CssBaseline, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material'
+import { Box, Container, Button, Typography, CssBaseline, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TableFooter } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React, { useContext } from 'react'
 import Navbar from '../components/Navbar'
@@ -9,6 +9,8 @@ const theme = createTheme()
 
 function Checkout() {
   const { cartItems } = useContext(CartContext)
+  const { clearCart } = useContext(CartContext)
+  
   return (
       <ThemeProvider theme={theme}>
         <Navbar />
@@ -50,6 +52,16 @@ function Checkout() {
                           </TableRow>
                       ))}
                       </TableBody>
+                      <TableFooter>
+                        <TableRow>
+                            <TableCell align="right">
+                              <Button style={{color: 'red'}} onClick={() => clearCart()}>Clear basket</Button>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Button align="right"variant="contained">Place order</Button>
+                            </TableCell>
+                          </TableRow>
+                      </TableFooter>
                   </Table>
               </TableContainer>
           </Typography>
