@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import PostcodeSearch from '../components/PostcodeSearch'
@@ -11,8 +10,6 @@ import axios from 'axios'
 const theme = createTheme()
 
 function Home() {
-  const [cartItems, setCartItems] = useState([])
-
   const [allRestaurants, setAllRestaurants] = useState([]);
 
   useEffect(() => {
@@ -20,13 +17,12 @@ function Home() {
     .then(response => response.data)
     .then((data) => {
       setAllRestaurants(data)
-      console.log(allRestaurants)
     });
-  },[])
+  },[])  
 
   return (
     <ThemeProvider theme={theme}>
-      <Navbar cartItems={cartItems}/>
+      <Navbar/>
       <Container component="main" maxWidth="xl">
       <CssBaseline />
         <PostcodeSearch />

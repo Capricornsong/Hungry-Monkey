@@ -12,10 +12,13 @@ import {BrowserRouter, Link, Routes, Route} from 'react-router-dom'
 import User_page from './pages/user_page'
 import Home from '../src/pages/Home'
 import ForgotPassword from './pages/ForgotPassword'
+import Checkout from './pages/Checkout'
+import { CartProvider } from './components/CartContext'
 
 function App() {
     return (
         <BrowserRouter>
+        <CartProvider>
             <ul>
                 <li><Link to="/register_m">register</Link></li>
                 <li><Link to="/login">login</Link></li>
@@ -28,7 +31,9 @@ function App() {
                 <Route path="register_m" element={<Register/>}/>
                 <Route path="login" element={<Login/>}/>
                 <Route path="forgot-password" element={<ForgotPassword/>}/>
+                <Route path="checkout" element={<Checkout/>}/>
             </Routes>
+            </CartProvider>
         </BrowserRouter>
     )
 }

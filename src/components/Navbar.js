@@ -6,13 +6,16 @@
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
-import React from 'react'
+import React, { useContext } from 'react'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { AppBar, Button, Grid, IconButton, Link, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { AppBar, Badge, Button, Divider, Grid, IconButton, Link, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
 import '../css/Navbar.css'
 import { Box } from '@mui/system';
+import CartContext from './CartContext'
 
-function Navbar(props) {
+function Navbar() {
+    const { cartItems } = useContext(CartContext);
+
     const [anchorEl, setAnchorEl] = React.useState(null);
   
     const handleMenu = (event) => {
@@ -41,9 +44,10 @@ function Navbar(props) {
                                 aria-haspopup="true"
                                 onClick={handleMenu}
                                 color="inherit"
-                                
                             >
-                                <ShoppingCartIcon />
+                                <Badge badgeContent={cartItems.length} color="error">
+                                    <ShoppingCartIcon />
+                                </Badge>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -59,9 +63,36 @@ function Navbar(props) {
                             }}
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
+                            style={{padding: 10}}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <Typography style={{textAlign: 'center', marginBottom: 5, marginTop: 5}}>Cart</Typography>
+                            <Typography component={'span'} variant={'body2'}>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 400 }} aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Menu Item</TableCell>
+                                                <TableCell align="center">Price</TableCell>
+                                                <TableCell align="right">Quantity</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                        {cartItems.map((item) => (
+                                            <TableRow
+                                                key={item.food_name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">{item.name}</TableCell>
+                                                <TableCell align="center">£ {item.price}</TableCell>
+                                                <TableCell align="right">Quantity</TableCell>
+                                            </TableRow>
+                                        ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Typography>
+                            <Typography style={{textAlign: 'center', marginBottom: 5, marginTop: 5}}>Subtotal:</Typography>
+                            <Button variant={'contained'} onClick={() => { window.location = "/checkout" }} style={{marginBottom: 5, marginTop: 5, marginLeft: '37%'}}>Go to Checkout</Button>
                         </Menu>
                     </Grid>
                     <Grid item xs={2} >

@@ -1,16 +1,11 @@
-
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Button, Grid, Typography, CssBaseline, Container } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import RestaurantCard from './RestaurantCard'
-import axios from 'axios'
 
 const theme = createTheme()
 
 function RestaurantRow(props) {
-    const [recommendedRestaurants, setRecommendedRestaurants] = useState(props.allRestaurants)
-
-
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xl">
@@ -31,16 +26,16 @@ function RestaurantRow(props) {
                             <Button variant='outlined'>Sort</Button>
                         </Grid>
                     </Grid>
-                    
                     <Grid 
                         container 
                         direction="row"
                         justifyContent="space-evenly"
                         alignItems="center"
-                    >
+                    >  
                         {props.allRestaurants.slice(0,3).map((item) => (
                             <RestaurantCard 
                             name={item.name}
+                            key={item.name}
                             description={item.description}
                             id={item.id}
                             foodType="Noodles"

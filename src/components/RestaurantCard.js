@@ -1,11 +1,9 @@
-
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, Box, Fade, Modal, Backdrop, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, FormControl, InputLabel, Select, MenuItem  } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import axios from 'axios';
+import CartContext from './CartContext' 
 
-function createMenuItem(name, price, quantity) {
-    return { name, price, quantity };
-  }
 
 const style = {
     position: 'absolute',
@@ -17,12 +15,8 @@ const style = {
     p: 4,
   }
 
-  const menuItems = [
-    createMenuItem('Cheeseburger', 4, 0),
-    createMenuItem('Hamburger', 3, 0),
-  ];
-
 function RestaurantCard(props) {
+    const { addToCart } = useContext(CartContext)
     const [menuModalOpen, setMenuModalOpen] = React.useState(false)
     const handleMenuModalOpen = () => setMenuModalOpen(true)
     const handleMenuModalClose = () => setMenuModalOpen(false)
@@ -35,6 +29,20 @@ function RestaurantCard(props) {
     const handleQuantityChange = (event) => {
         setQuantity(event.target.value);
       };
+
+    const [menuItems, setMenuItems] = useState([]);
+      
+    useEffect(() => {
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
+            'restaurant_id': '11121',
+        })
+        .then(response => {
+            setMenuItems(response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },[])
 
     return (
         <div>
@@ -91,8 +99,8 @@ function RestaurantCard(props) {
                 <Fade in={menuModalOpen}>
                     <Box sx={style}>
                         <Typography id="menu-modal" variant="h6" component="h2">{props.name}</Typography>
-                        <Typography id="menu-modal-description" sx={{ mt: 2 }}>asdasdasd</Typography>
-                        <Typography id="menu-modal-table" sx={{ mt: 2 }}>
+                        <Typography id="menu-modal-description" sx={{ mt: 2 }}></Typography>
+                        <Typography id="menu-modal-table" sx={{ mt: 2 }} component={'span'} variant={'body2'}>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
@@ -106,11 +114,11 @@ function RestaurantCard(props) {
                                 <TableBody>
                                 {menuItems.map((item) => (
                                     <TableRow
-                                    key={item.name}
+                                    key={item.food_name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                     <TableCell component="th" scope="row">
-                                        {item.name}
+                                        {item.food_name}
                                     </TableCell>
                                     <TableCell align="right">£ {item.price}</TableCell>
                                     <TableCell align="right">
@@ -142,6 +150,7 @@ function RestaurantCard(props) {
                                             startIcon={<AddCircleOutlineIcon/>}
                                             onClick={() => {
                                                 console.log(quantity)
+                                                addToCart(item.food_name, item.food_price)
                                             }}
                                         >Add to cart</Button>
                                     </TableCell>
