@@ -8,7 +8,7 @@
  */
 import React, { useContext } from 'react'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { AppBar, Badge, Button, Divider, Grid, IconButton, Link, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
+import { AppBar, Badge, Button, Grid, IconButton, Link, Menu,  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
 import '../css/Navbar.css'
 import { Box } from '@mui/system';
 import CartContext from './CartContext'
