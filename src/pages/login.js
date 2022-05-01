@@ -1,13 +1,17 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-04-27 16:29:01
- * @FilePath: \coursework\coursework\src\pages\login.js
+ * @LastEditTime: 2022-04-29 15:52:20
+ * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
 import * as React from 'react'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+// import { useSelector } from 'react-redux';
+import GoogleIcon from '@mui/icons-material/Google'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 // import { useSelector } from 'react-redux'
@@ -29,8 +33,8 @@ import {
   Link,
   TextField,
   Typography,
-  
-} from '@mui/material';
+  useMediaQuery,
+} from '@mui/material'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -41,23 +45,35 @@ function Copyright(props) {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
+// const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-const theme = createTheme();
+// const theme = createTheme()
 
 export default function SignIn() {
 
+  //switch mode depend on system setting 
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  );
   // const customization = useSelector((state) => state.customization);
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     console.log({
       email: data.get('email'),
       password: data.get('password'),
-    });
-  
-  };
+    })
+
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -116,17 +132,17 @@ export default function SignIn() {
             </Button>
 
             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-              <Button>
-                  
-              </Button>
+            <Button>
+
+            </Button>
             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
 
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ 
-                mt: 0, 
+              sx={{
+                mt: 0,
                 mb: 3,
                 // color: 'grey.700',
                 // backgroundColor: theme.palette.grey[50],
@@ -137,7 +153,7 @@ export default function SignIn() {
             >
               Sign In with Google
             </Button>
-            
+
             <Grid container>
               <Grid item xs>
                 <Link href="/forgot-password" variant="body2">
@@ -155,5 +171,5 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
-  );
+  )
 }

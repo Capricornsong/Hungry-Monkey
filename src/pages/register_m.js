@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-04-27 20:21:07
+ * @LastEditTime: 2022-04-30 19:30:01
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -17,11 +17,14 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  InputLabel,
   Grid,
   Link,
   TextField,
   Typography,
-
+  useMediaQuery,
+  Select,
+  MenuItem
 } from '@mui/material'
 
 import { useForm, Controller } from 'react-hook-form'
@@ -33,8 +36,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
-import {signup} from "../util/firebaseAuth"
+import { signup } from "../util/firebaseAuth"
 import Navbar from '../components/Navbar'
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -48,19 +52,15 @@ function Copyright(props) {
   )
 }
 
-const theme = createTheme()
-console.log({ countries })
+// const theme = createTheme()
+// console.log({ countries })
 export default function SignUp() {
-
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
-    lastName: Yup.string()
-      .required('Last Name is required'),
+    lastName: Yup.string().required('Last Name is required'),
     // .min(6, 'Username must be at least 6 characters')
     // .max(20, 'Username must not exceed 20 characters'),
-    email: Yup.string()
-      .required('Email is required')
-      .email('Email is invalid'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
     password1: Yup.string()
       .required('Password is required')
       .min(6, 'Password must be at least 6 characters')
@@ -68,17 +68,13 @@ export default function SignUp() {
     password2: Yup.string()
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password1'), null], 'Confirm Password does not match'),
-    address1: Yup.string()
-      .required('Address is required!'),
-    address2: Yup.string()
-      .required('address is required'),
-    postcode: Yup.string()
-      .required('Postcode is required！'),
+    address1: Yup.string().required('Address is required!'),
+    address2: Yup.string().required('Address is required!'),
+    postcode: Yup.string().required('Postcode is required!'),
     // acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
-    country: Yup.string()
-      .required('Country is required!'),
-    city: Yup.string()
-      .required('City is requirement'),
+    country: Yup.string().required('Country is required!'),
+    city: Yup.string().required('City is requirement'),
+    role: Yup.string('Role is required!'),
   })
 
   const {
@@ -92,8 +88,8 @@ export default function SignUp() {
 
   const onSubmit = (event) => {
 
-    console.log(event)
-    // event.preventDefault();
+    // console.log(event)
+    event.preventDefault()
     // const data = new FormData(event);
     console.log({
       firstName: event.firstName,
@@ -104,34 +100,33 @@ export default function SignUp() {
       address1: event.address1,
       address2: event.address2,
       country: event.country,
+      role: event.role
     })
 
-    signup(event.email, event.password1).then(()=>{
+    signup(event.email, event.password1).then(() => {
       console.log("Success")
-    }).catch((err)=>{
-      console.log(`Error`)
+    }).catch((err) => {
+      console.log(err)
     })
-
   }
-  //used to store password1 to compare with password2
-  // const [password, setPassword] = React.useState(0);
-  //used to change the textfield depend on the comparison of the password1 & password2
-  // const [confirmpasswordstate, setConfirmpasswordstate] = React.useState(false)
-  //validate function
-  // const validatePassword = (event) => {
-  //   console.log(event.currentTarget.value,{password}.password)
-  //   if(event.currentTarget.value === {password}.password){
-  //     // console.log('11111')
-  //     setConfirmpasswordstate(false)
-  //   }
-  //   else{
-  //     // console.log('222')
-  //     setConfirmpasswordstate(true)
-  //   }
-  // }
+  const [role, setRole] = React.useState('normal')
+  
+  const handleSelector = (event) => {
+    setRole(event.target.value)
+    // console.log(event.target.value)
+  }
+
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  )
   const [firstname, setFirstname] = React.useState('')
-
-
   return (
     <ThemeProvider theme={theme}>
       <Navbar/>
@@ -153,11 +148,32 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate
+          <FormControl component="form" noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }
             }>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+              
+                <InputLabel>Role</InputLabel>
+                <Select
+                  id="role"
+                  value={role}
+                  label="Role"
+                  onChange={handleSelector}
+                  fullWidth
+                  // {...register('role')}
+                  // error={errors.role ? true : false}
+                >
+                  <MenuItem value='normal'>Customer</MenuItem>
+                  <MenuItem value='deliver'>Courier</MenuItem>
+                  <MenuItem value='restaurant'>RestaurantOwner</MenuItem>
+                </Select>
+               
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.role?.message}
+                </Typography>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -166,7 +182,7 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   label="First Name"
-                  autoFocus
+
                   {...register('firstName')}
                   error={errors.firstName ? true : false}
                 />
@@ -187,6 +203,9 @@ export default function SignUp() {
                   {...register('lastName')}
                   error={errors.lastName ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.lastName?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -199,6 +218,9 @@ export default function SignUp() {
                   {...register('email')}
                   error={errors.email ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.email?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -214,6 +236,9 @@ export default function SignUp() {
                   {...register('password1')}
                   error={errors.password1 ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.password1?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -229,6 +254,9 @@ export default function SignUp() {
                   {...register('password2')}
                   error={errors.password2 ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.password2?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
@@ -248,6 +276,9 @@ export default function SignUp() {
                   {...register('address1')}
                   error={errors.address1 ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.address1?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -261,6 +292,9 @@ export default function SignUp() {
                   {...register('address2')}
                   error={errors.address2 ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.address2?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -274,6 +308,9 @@ export default function SignUp() {
                   {...register('postcode')}
                   error={errors.postcode ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.postcode?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -286,6 +323,9 @@ export default function SignUp() {
                   {...register('city')}
                   error={errors.city ? true : false}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.city?.message}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
@@ -313,13 +353,15 @@ export default function SignUp() {
                       name='country'
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
                       }}
                       {...register('country')}
                       error={errors.country ? true : false}
                     />
                   )}
                 />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.country?.message}
+                </Typography>
               </Grid>
               {/* <Grid item xs={12}>
                 <FormControlLabel
@@ -346,7 +388,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
 
-          </Box>
+          </FormControl>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
