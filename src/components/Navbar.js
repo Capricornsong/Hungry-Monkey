@@ -7,14 +7,15 @@
  * @Description: 
  */
 import React, { useContext } from 'react'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { AppBar, Badge, Button, Grid, IconButton, Link, Menu,  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
 import '../css/Navbar.css'
-import { Box } from '@mui/system';
+import { Box } from '@mui/system'
 import CartContext from './CartContext'
 
 function Navbar() {
     const { cartItems } = useContext(CartContext);
+    const { cartTotal } = useContext(CartContext)
 
     const [anchorEl, setAnchorEl] = React.useState(null);
   
@@ -91,7 +92,7 @@ function Navbar() {
                                     </Table>
                                 </TableContainer>
                             </Typography>
-                            <Typography style={{textAlign: 'center', marginBottom: 5, marginTop: 5}}>Subtotal:</Typography>
+                            <Typography style={{textAlign: 'center', marginBottom: 5, marginTop: 5}}>Subtotal: £{ cartTotal }</Typography>
                             <Button variant={'contained'} onClick={() => { window.location = "/checkout" }} style={{marginBottom: 5, marginTop: 5, marginLeft: '37%'}}>Go to Checkout</Button>
                         </Menu>
                     </Grid>

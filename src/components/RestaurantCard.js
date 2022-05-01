@@ -120,7 +120,7 @@ function RestaurantCard(props) {
                                     <TableCell component="th" scope="row">
                                         {item.food_name}
                                     </TableCell>
-                                    <TableCell align="right">£ {item.price}</TableCell>
+                                    <TableCell align="right">£ {item.food_price}</TableCell>
                                     <TableCell align="right">
                                         <Box sx={{ minWidth: 80 }}>
                                             <FormControl>

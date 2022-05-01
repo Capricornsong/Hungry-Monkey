@@ -10,6 +10,7 @@ const theme = createTheme()
 function Checkout() {
   const { cartItems } = useContext(CartContext)
   const { clearCart } = useContext(CartContext)
+  const { cartTotal } = useContext(CartContext)
   
   return (
       <ThemeProvider theme={theme}>
@@ -53,6 +54,13 @@ function Checkout() {
                       ))}
                       </TableBody>
                       <TableFooter>
+                        <TableRow align='center'>
+                          <TableCell/>
+                          <TableCell align='center'>
+                            <Typography>Subtotal: £{ cartTotal }</Typography>
+                          </TableCell>
+                          <TableCell/>
+                        </TableRow>
                         <TableRow>
                             <TableCell align="right">
                               <Button style={{color: 'red'}} onClick={() => clearCart()}>Clear basket</Button>
