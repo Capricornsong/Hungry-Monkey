@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-28 13:00:08
- * @LastEditTime: 2022-04-29 15:38:54
+ * @LastEditTime: 2022-05-01 18:02:55
  * @FilePath: \coursework_git\src\components\orderHistory.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -19,7 +19,7 @@ import axios from 'axios'
 function Details(props) {
     const { row } = props
     const [open, setOpen] = useState(false)
-    
+
     return (
         <Fragment>
             <TableRow
@@ -84,7 +84,7 @@ export const OrderHistory = () => {
         })
             .then(response => {
                 // console.log('response:',response.data)
-                setOrderlist( [...response.data] )
+                setOrderlist([...response.data])
             })
             .catch(error => {
                 console.log(error)
@@ -92,23 +92,30 @@ export const OrderHistory = () => {
     }, [])
 
     return (
-        <TableContainer component={Paper}>
-            <Table >
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>Restaurant Name</TableCell>
-                        <TableCell>Order Placed Date</TableCell>
-                        <TableCell>Total Price ( £)</TableCell>
-                        <TableCell>Order Status</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {orderlist.map((row) => (
-                        <Details key={row.order_id} row={row} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+            <Typography variant="h5" sx={{
+                mb: 2,
+                ml: 2
+            }}>Order History</Typography>
+            <TableContainer component={Paper}>
+
+                <Table >
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell>Restaurant Name</TableCell>
+                            <TableCell>Order Placed Date</TableCell>
+                            <TableCell>Total Price ( £)</TableCell>
+                            <TableCell>Order Status</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {orderlist.map((row) => (
+                            row.order_status === 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     )
 }
