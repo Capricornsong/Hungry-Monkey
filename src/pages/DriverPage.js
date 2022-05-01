@@ -51,6 +51,9 @@ function DriverPage(){
                                     <Typography variant="body2" color="text.secondary" textAlign='center'>
                                         UserId: 2151646
                                     </Typography>
+                                    <Typography  variant="body2" color="text.secondary" textAlign='center'>
+                                        Driver Status: Out for Delivery
+                                    </Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>

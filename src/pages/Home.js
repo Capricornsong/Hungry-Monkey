@@ -10,15 +10,15 @@ import axios from 'axios'
 const theme = createTheme()
 
 function Home() {
-  const [allRestaurants, setAllRestaurants] = useState([]);
-
+  const [allRestaurants, setAllRestaurants] = useState([])
+  
   useEffect(() => {
     axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
     .then(response => response.data)
     .then((data) => {
       setAllRestaurants(data)
     });
-  },[])  
+  },[])
 
   return (
     <ThemeProvider theme={theme}>
