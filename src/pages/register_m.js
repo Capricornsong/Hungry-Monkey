@@ -37,6 +37,8 @@ import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import { signup } from "../util/firebaseAuth"
+import Navbar from '../components/Navbar'
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -127,6 +129,7 @@ export default function SignUp() {
   const [firstname, setFirstname] = React.useState('')
   return (
     <ThemeProvider theme={theme}>
+      <Navbar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
