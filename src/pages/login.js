@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-04-29 15:52:20
+ * @LastEditTime: 2022-05-01 20:45:54
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -10,11 +10,6 @@
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 // import { useSelector } from 'react-redux';
-import GoogleIcon from '@mui/icons-material/Google'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-// import { useSelector } from 'react-redux'
 import GoogleIcon from '@mui/icons-material/Google'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Navbar from '../components/Navbar'
@@ -59,7 +54,8 @@ export default function SignIn() {
     () =>
       createTheme({
         palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
+          // mode: prefersDarkMode ? 'dark' : 'light',
+          mode:'light'
         },
       }),
     [prefersDarkMode],

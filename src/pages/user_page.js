@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-01 19:31:20
+ * @LastEditTime: 2022-05-01 20:46:54
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -130,7 +130,8 @@ export default function User_page() {
         () =>
             createTheme({
                 palette: {
-                    mode: prefersDarkMode ? 'dark' : 'light',
+                    // mode: prefersDarkMode ? 'dark' : 'light',
+                    mode:'light'
                 },
             }),
         [prefersDarkMode],
