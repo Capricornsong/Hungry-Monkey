@@ -14,6 +14,7 @@ import Home from '../src/pages/Home'
 import ForgotPassword from './pages/ForgotPassword'
 import Admin_page from './pages/admin_page'
 import Checkout from './pages/Checkout'
+import DriverPage from './pages/DriverPage'
 import { CartProvider } from './components/CartContext'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                 <li><Link to="/login">login</Link></li>
                 <li><Link to="/user_page">User_page</Link></li>
                 <li><Link to="/admin_page">Admin_page</Link></li>
+                <li><Link to="/driver_page">Driver page</Link></li>
             </ul>
             <Routes>
                 <Route path="user_page" element={<User_page/>}/>
@@ -35,6 +37,7 @@ function App() {
                 <Route path="forgot-password" element={<ForgotPassword/>}/>
                 <Route path="admin_page" element={<Admin_page/>}/>
                 <Route path="checkout" element={<Checkout/>}/>
+                <Route path="driver_page" element={<DriverPage/>}/>
             </Routes>
             </CartProvider>
         </BrowserRouter>
