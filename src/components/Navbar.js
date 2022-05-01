@@ -84,7 +84,7 @@ function Navbar() {
                                             >
                                                 <TableCell component="th" scope="row">{item.name}</TableCell>
                                                 <TableCell align="center">£ {item.price}</TableCell>
-                                                <TableCell align="right">Quantity</TableCell>
+                                                <TableCell align="right">{item.quantity}</TableCell>
                                             </TableRow>
                                         ))}
                                         </TableBody>

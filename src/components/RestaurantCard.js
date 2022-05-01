@@ -150,7 +150,7 @@ function RestaurantCard(props) {
                                             startIcon={<AddCircleOutlineIcon/>}
                                             onClick={() => {
                                                 console.log(quantity)
-                                                addToCart(item.food_name, item.food_price)
+                                                addToCart(item.food_name, item.food_price, quantity)
                                             }}
                                         >Add to cart</Button>
                                     </TableCell>

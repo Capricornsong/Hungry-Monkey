@@ -4,6 +4,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([])
+    const [cartTotal, setCartTotal] = useState(0)
 
     useEffect(() => {
         const cartItems = window.localStorage.getItem('cartItems');
@@ -16,12 +17,26 @@ export function CartProvider({ children }) {
         window.localStorage.setItem('cartItems', JSON.stringify(cartItems));
       }, [cartItems]);
 
-    const addToCart = (name, price) => {
-        setCartItems((prevState) => [...prevState, {name, price}])
+    const addToCart = (name, price, quantity) => {
+        const exists = cartItems.find(element => element.name === name)
+        if (exists) {
+            setCartItems(
+                cartItems.map((element) => 
+                    element.name === name ? {...exists, quantity: exists.quantity + quantity} : element
+                )
+            )
+        } else {
+            setCartItems((prevState) => [...prevState, {name, price, quantity}])
+        }
+        
     }
 
     const clearCart = () => {
         setCartItems([])
+    }
+
+    const calculateTotal = () => {
+
     }
 
     return(
