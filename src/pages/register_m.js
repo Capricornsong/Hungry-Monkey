@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-01 20:54:14
+ * @LastEditTime: 2022-05-02 02:17:05
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -37,6 +37,7 @@ import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import { signup } from "../util/firebaseAuth"
+import { useAuth } from '../util/firebaseAuth'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 
@@ -75,9 +76,10 @@ export default function SignUp() {
     // acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
     country: Yup.string().required('Country is required!'),
     city: Yup.string().required('City is requirement'),
-    role: Yup.string('Role is required!'),
+    // role: Yup.string('Role is required!'),
   })
-
+  //use for get current user's info
+  const currentUser = useAuth()
   const {
     register,
     control,
@@ -86,7 +88,6 @@ export default function SignUp() {
   } = useForm({
     resolver: yupResolver(validationSchema)
   })
-
   const onSubmit = (event) => {
 
     // console.log(event)
@@ -101,21 +102,44 @@ export default function SignUp() {
       address1: event.address1,
       address2: event.address2,
       country: event.country,
-      role: event.role
+      role: role
     })
 
     signup(event.email, event.password1).then((response) => {
-      // axios.post()
+      console.log('currentUser.uid in register line 109', currentUser.uid)
+      console.log('currentUser.email in register line 110', currentUser.email)
+
+      axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', {
+        'uid': currentUser.uid,
+        'email': event.email,
+        'first_name': event.firstName,
+        'last_name': event.lastName,
+        'role': role,
+        'address_first_line': event.address1,
+        'address_second_line': event.address2,
+        'city': event.city,
+        'country': event.country,
+        'postcode': event.postcode
+      })
+        .then(response => {
+          console.log('response:', response.data)
+          sessionStorage.setItem('uid', currentUser.uid)
+          // setOrderlist([...response.data])
+          // window.open('user_page','_self')
+        })
+        .catch(error => {
+          console.log(error)
+        })
       console.log("Success")
     }).catch((err) => {
       console.log(err)
     })
   }
   const [role, setRole] = React.useState('normal')
-  
+
   const handleSelector = (event) => {
     setRole(event.target.value)
-    // console.log(event.target.value)
+    console.log(role)
   }
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -124,7 +148,7 @@ export default function SignUp() {
       createTheme({
         palette: {
           // mode: prefersDarkMode ? 'dark' : 'light',
-          mode:'light'
+          mode: 'light'
         },
       }),
     [prefersDarkMode],
@@ -132,7 +156,7 @@ export default function SignUp() {
   const [firstname, setFirstname] = React.useState('')
   return (
     <ThemeProvider theme={theme}>
-      <Navbar/>
+      <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -157,7 +181,7 @@ export default function SignUp() {
             }>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-              
+
                 <InputLabel>Role</InputLabel>
                 <Select
                   id="role"
@@ -165,14 +189,14 @@ export default function SignUp() {
                   label="Role"
                   onChange={handleSelector}
                   fullWidth
-                  // {...register('role')}
-                  // error={errors.role ? true : false}
+                // {...register('role')}
+                // error={errors.role ? true : false}
                 >
                   <MenuItem value='normal'>Customer</MenuItem>
                   <MenuItem value='deliver'>Courier</MenuItem>
                   <MenuItem value='restaurant'>RestaurantOwner</MenuItem>
                 </Select>
-               
+
                 <Typography variant="inherit" color="textSecondary">
                   {errors.role?.message}
                 </Typography>

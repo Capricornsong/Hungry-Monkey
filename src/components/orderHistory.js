@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-28 13:00:08
- * @LastEditTime: 2022-05-01 18:02:55
+ * @LastEditTime: 2022-05-02 02:17:21
  * @FilePath: \coursework_git\src\components\orderHistory.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -13,7 +13,7 @@ import { Fragment, useState, useEffect } from "react"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 import axios from 'axios'
-
+import { useAuth } from '../util/firebaseAuth'
 
 
 function Details(props) {
@@ -77,10 +77,12 @@ function Details(props) {
 }
 export const OrderHistory = () => {
     const [orderlist, setOrderlist] = useState([])
-
+    //use for get current user's info
+    const currentUser = useAuth()
     useEffect(() => {
+
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByUserUID', {
-            uid: '1',
+            uid: sessionStorage.getItem('uid'),
         })
             .then(response => {
                 // console.log('response:',response.data)
@@ -89,6 +91,8 @@ export const OrderHistory = () => {
             .catch(error => {
                 console.log(error)
             })
+
+
     }, [])
 
     return (

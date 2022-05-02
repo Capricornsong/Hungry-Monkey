@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-30 19:52:53
- * @LastEditTime: 2022-04-30 20:25:24
+ * @LastEditTime: 2022-05-01 23:05:55
  * @FilePath: \coursework_git\src\components\RestaurantList.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -22,8 +22,8 @@ import {
 export const RestaurantList = (props) => {
     const [selectionModel, setSelectionModel] = React.useState([])
     const columns = [
-        { field: 'restaurant_id', headerName: 'Restaurant ID', flex: 1.2 },
-        { field: 'name', headerName: 'Name', width: 250, },
+        { field: 'restaurant_id', headerName: 'Restaurant ID', flex: 0.6 },
+        { field: 'name', headerName: 'Name',flex: 1 },
         { field: 'location', headerName: 'Location', flex: 0.3, minWidth: 70 },
         { field: 'owner', headerName: 'Owner', flex: 0.3 },
         { field: 'status', headerName: 'Status', flex: 0.5 },

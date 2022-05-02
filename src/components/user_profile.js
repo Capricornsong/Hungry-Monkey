@@ -1,12 +1,12 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-04-30 16:24:27
+ * @LastEditTime: 2022-05-02 02:17:26
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
  */
-
+import { useAuth } from '../util/firebaseAuth'
 import Autocomplete from '@mui/material/Autocomplete'
 import { countries } from '../data/data'
 import { getProfile } from '../util/script'
@@ -26,10 +26,13 @@ import {
     Select,
     Snackbar,
 } from '@mui/material'
-import { ThemeContext } from '@emotion/react'
 import axios from 'axios'
 
 export const UpdateProfile = (props) => {
+
+    //use for get current user's info
+    const currentUser = useAuth()
+
     const uid = { uid: "111111" }
     const [profileData, setProfileData] = useState({
         first_name: '',
@@ -73,8 +76,9 @@ export const UpdateProfile = (props) => {
         //        setProfileData(responsedata)
         //        console.log(responsedata)
         //    })
+        console.log('what happend', sessionStorage.getItem('uid'))
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
-            uid: '111111',
+            uid: sessionStorage.getItem('uid'),
         })
             .then(response => {
                 console.log(response.data)

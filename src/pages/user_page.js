@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-01 20:46:54
+ * @LastEditTime: 2022-05-02 01:40:47
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -15,14 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import * as React from 'react'
 import axios from 'axios'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-
+import { CurrencyYenTwoTone } from '@mui/icons-material'
+import { useAuth } from '../util/firebaseAuth'
 function Details(props) {
     const { row } = props
     const [open, setOpen] = React.useState(false)
-    const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
     const handleMap = (event) => {
-        console.log(row.order_id)
+        // console.log(row.order_id)
         setOpen(true)
     }
     const style = {
@@ -125,13 +125,15 @@ function Details(props) {
 
 
 export default function User_page() {
+    // this.props.history.push('/login')
+    // console.log('uid', sessionStorage.getItem('uid'))
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = React.useMemo(
         () =>
             createTheme({
                 palette: {
                     // mode: prefersDarkMode ? 'dark' : 'light',
-                    mode:'light'
+                    mode: 'light'
                 },
             }),
         [prefersDarkMode],
@@ -140,94 +142,102 @@ export default function User_page() {
     const [orderlist, setOrderlist] = React.useState([])
 
     React.useEffect(() => {
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByUserUID', {
-            uid: '1',
-        })
-            .then(response => {
-                // console.log('response:',response.data)
-                console.log('dadadada', response.data)
-                setOrderlist([...response.data])
+        if (sessionStorage.getItem('uid')) {
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByUserUID', {
+                uid: sessionStorage.getItem('uid'),
             })
-            .catch(error => {
-                console.log(error)
-            })
+                .then(response => {
+                    // console.log('response:',response.data)
+                    // console.log('dadadada', response.data)
+                    setOrderlist([...response.data])
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }, [])
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Box
-                // component="main"
-                sx={{
-                    flexGrow: 1,
-                    //pending top
-                    py: 8
-                }}
-                theme={theme}
-            >
-                <Container maxWidth="lg">
-                    <Typography
-                        sx={{ mb: 3 }}
-                        variant="h4"
-                    >
-                        Account
-                    </Typography>
-                    <Grid
-                        container
-                        spacing={3}
-                    >
-                        <Grid
-                            item
-                            // the number of columns it uses
-                            lg={4}
-                            md={4}
-                            xs={12}
+    if (sessionStorage.getItem('uid')) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Box
+                    // component="main"
+                    sx={{
+                        flexGrow: 1,
+                        //pending top
+                        py: 8
+                    }}
+                    theme={theme}
+                >
+                    <Container maxWidth="lg">
+                        <Typography
+                            sx={{ mb: 3 }}
+                            variant="h4"
                         >
-                            <Card sx={{
-                                // maxWidth:345,
-                                boxShadow: 3,
-                            }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" textAlign='center
+                            Account
+                        </Typography>
+                        <Grid
+                            container
+                            spacing={3}
+                        >
+                            <Grid
+                                item
+                                // the number of columns it uses
+                                lg={4}
+                                md={4}
+                                xs={12}
+                            >
+                                <Card sx={{
+                                    // maxWidth:345,
+                                    boxShadow: 3,
+                                }}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div" textAlign='center
                         '>
-                                            Hi🖐 Liuosng HE~
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                            UserId: 2151646
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                            <Typography gutterBottom variant="h6" component="div" sx={{
-                                mt: 3
-                            }}>
-                                Order in progress
-                            </Typography>
-                            {orderlist.map((row) => (
-                                row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
-                            ))}
+                                                Hi🖐 {sessionStorage.getItem('firstname')}~
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                UserId: {sessionStorage.getItem('uid')}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                                <Typography gutterBottom variant="h6" component="div" sx={{
+                                    mt: 3
+                                }}>
+                                    Order in progress
+                                </Typography>
+                                {orderlist.map((row) => (
+                                    row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
+                                ))}
+                            </Grid>
+                            <Grid
+                                item
+                                //the number of columns it uses
+                                lg={8}
+                                md={8}
+                                xs={12}
+                            >
+                                <UpdateProfile />
+                            </Grid>
+                            <Grid
+                                item
+                                lg={12}
+                                md={12}
+                                xs={12}
+                            >
+                                <OrderHistory />
+                            </Grid>
                         </Grid>
-                        <Grid
-                            item
-                            //the number of columns it uses
-                            lg={8}
-                            md={8}
-                            xs={12}
-                        >
-                            <UpdateProfile />
-                        </Grid>
-                        <Grid
-                            item
-                            lg={12}
-                            md={12}
-                            xs={12}
-                        >
-                            <OrderHistory />
-                        </Grid>
-                    </Grid>
-                </Container>
+                    </Container>
 
-            </Box>
-        </ThemeProvider>
-    )
+                </Box>
+            </ThemeProvider>
+        )
+    }
+    else {
+        window.open('\login', '_self')
+        return null
+    }
 }

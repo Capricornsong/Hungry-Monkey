@@ -1,12 +1,13 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-01 20:45:54
+ * @LastEditTime: 2022-05-02 02:17:08
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
+import { login, useAuth } from '../util/firebaseAuth'
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 // import { useSelector } from 'react-redux';
@@ -42,24 +43,22 @@ function Copyright(props) {
     </Typography>
   )
 }
-// const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-// const theme = createTheme()
 
 export default function SignIn() {
-
+  localStorage.removeItem('uid')
+  const currentUser = useAuth()
   //switch mode depend on system setting 
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
           // mode: prefersDarkMode ? 'dark' : 'light',
-          mode:'light'
+          mode: 'light'
         },
       }),
     [prefersDarkMode],
-  );
+  )
   // const customization = useSelector((state) => state.customization);
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -69,11 +68,25 @@ export default function SignIn() {
       password: data.get('password'),
     })
 
+    login(data.get('email'), data.get('password')).then((response) => {
+      if (currentUser) {
+        console.log('currentUser.uid', currentUser.uid)
+        sessionStorage.setItem('uid', currentUser.uid)
+        sessionStorage.setItem('firstname', currentUser.first_name)
+        // window.open('user_page', '_self')
+      }
+      //fali...
+      else {
+
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Navbar/>
+      <Navbar />
       <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Box

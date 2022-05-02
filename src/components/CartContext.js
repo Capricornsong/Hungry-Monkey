@@ -6,6 +6,9 @@ export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([])
     const [cartTotal, setCartTotal] = useState(0)
 
+    //
+    const [userInfo, setUserInfo] = useState([])
+
     const calculateTotal = (price) => {
         setCartTotal(cartTotal + price)
     }
@@ -53,7 +56,7 @@ export function CartProvider({ children }) {
     
 
     return(
-        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal}}>{children}</CartContext.Provider>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo}}>{children}</CartContext.Provider>
     );
 }
 
