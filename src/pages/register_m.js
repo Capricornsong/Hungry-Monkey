@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-02 02:17:05
+ * @LastEditTime: 2022-05-02 18:54:25
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -26,7 +26,6 @@ import {
   Select,
   MenuItem
 } from '@mui/material'
-
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -36,12 +35,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
-import { signup } from "../util/firebaseAuth"
-import { useAuth } from '../util/firebaseAuth'
+import { signup, auth, login } from "../util/firebaseAuth"
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 
 function Copyright(props) {
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -78,8 +77,19 @@ export default function SignUp() {
     city: Yup.string().required('City is requirement'),
     // role: Yup.string('Role is required!'),
   })
+  // const logoutUser = async () => {
+  //   try {
+  //     await logout()
+  //   } catch (error) {
+  //     console.log('register line86:', error)
+  //   }
+  // }
+
+  // React.useEffect(() => {
+  //   logoutUser()
+  // }, [])
+
   //use for get current user's info
-  const currentUser = useAuth()
   const {
     register,
     control,
@@ -88,6 +98,7 @@ export default function SignUp() {
   } = useForm({
     resolver: yupResolver(validationSchema)
   })
+  const currentUser = auth.currentUser
   const onSubmit = (event) => {
 
     // console.log(event)
@@ -105,35 +116,55 @@ export default function SignUp() {
       role: role
     })
 
-    signup(event.email, event.password1).then((response) => {
-      console.log('currentUser.uid in register line 109', currentUser.uid)
-      console.log('currentUser.email in register line 110', currentUser.email)
 
-      axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', {
-        'uid': currentUser.uid,
-        'email': event.email,
-        'first_name': event.firstName,
-        'last_name': event.lastName,
-        'role': role,
-        'address_first_line': event.address1,
-        'address_second_line': event.address2,
-        'city': event.city,
-        'country': event.country,
-        'postcode': event.postcode
-      })
-        .then(response => {
-          console.log('response:', response.data)
+    signup(event.email, event.password1).then((response) => {
+
+      console.log('currentUser.uid in register line 133', currentUser.uid)
+      // console.log('currentUser.email in register line 110', currentUser.email)
+
+      login(event.email, event.password1).then((response) => {
+        console.log(currentUser)
+        if (currentUser) {
+          console.log('-------------------')
+          console.log('currentUser.uid', currentUser.uid)
           sessionStorage.setItem('uid', currentUser.uid)
-          // setOrderlist([...response.data])
-          // window.open('user_page','_self')
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          sessionStorage.setItem('firstname', currentUser.first_name)
+          // window.open('user_page', '_self')
+          axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', {
+            'uid': currentUser.uid,
+            'email': event.email,
+            'first_name': event.firstName,
+            'last_name': event.lastName,
+            'role': role,
+            'address_first_line': event.address1,
+            'address_second_line': event.address2,
+            'city': event.city,
+            'country': event.country,
+            'postcode': event.postcode
+          })
+            .then(response => {
+              console.log('response:', response.data)
+              // sessionStorage.setItem('uid', currentUser.uid)
+              // setOrderlist([...response.data])
+              // window.open('user_page','_self')
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
+        //fali...
+        else {
+
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
       console.log("Success")
     }).catch((err) => {
       console.log(err)
     })
+
+
   }
   const [role, setRole] = React.useState('normal')
 
@@ -154,271 +185,279 @@ export default function SignUp() {
     [prefersDarkMode],
   )
   const [firstname, setFirstname] = React.useState('')
-  return (
-    <ThemeProvider theme={theme}>
-      <Navbar />
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          {/* icon */}
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
 
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <FormControl component="form" noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }
-            }>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+  // console.log('currentUser.uid',currentUser);
+  if (!auth.currentUser) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Navbar />
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {/* icon */}
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
 
-                <InputLabel>Role</InputLabel>
-                <Select
-                  id="role"
-                  value={role}
-                  label="Role"
-                  onChange={handleSelector}
-                  fullWidth
-                // {...register('role')}
-                // error={errors.role ? true : false}
-                >
-                  <MenuItem value='normal'>Customer</MenuItem>
-                  <MenuItem value='deliver'>Courier</MenuItem>
-                  <MenuItem value='restaurant'>RestaurantOwner</MenuItem>
-                </Select>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <FormControl component="form" noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }
+              }>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
 
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.role?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
+                  <InputLabel>Role</InputLabel>
+                  <Select
+                    id="role"
+                    value={role}
+                    label="Role"
+                    onChange={handleSelector}
+                    fullWidth
+                  // {...register('role')}
+                  // error={errors.role ? true : false}
+                  >
+                    <MenuItem value='normal'>Customer</MenuItem>
+                    <MenuItem value='deliver'>Courier</MenuItem>
+                    <MenuItem value='restaurant'>RestaurantOwner</MenuItem>
+                  </Select>
 
-                  {...register('firstName')}
-                  error={errors.firstName ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.firstName?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.role?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
 
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  onChange={(e) => setFirstname(e.currentTarget.value)}
-                  {...register('lastName')}
-                  error={errors.lastName ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.lastName?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  {...register('email')}
-                  error={errors.email ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.email?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password1"
-                  label="Password"
-                  type="password"
-                  id="password1"
-                  autoComplete="new-password"
-                  // store the password1 for comparing with password2
-                  // onChange={(e) => setPassword(e.currentTarget.value)}
-                  {...register('password1')}
-                  error={errors.password1 ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.password1?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  // error={confirmpasswordstate}
-                  required
-                  fullWidth
-                  name="password2"
-                  label="Confirm Password"
-                  type="password"
-                  id="password2"
-                  autoComplete="new-password"
-                  // onChange={validatePassword}
-                  {...register('password2')}
-                  error={errors.password2 ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.password2?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
+                    {...register('firstName')}
+                    error={errors.firstName ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.firstName?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
 
-              </Grid>
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                    onChange={(e) => setFirstname(e.currentTarget.value)}
+                    {...register('lastName')}
+                    error={errors.lastName ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.lastName?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    {...register('email')}
+                    error={errors.email ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.email?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password1"
+                    label="Password"
+                    type="password"
+                    id="password1"
+                    autoComplete="new-password"
+                    // store the password1 for comparing with password2
+                    // onChange={(e) => setPassword(e.currentTarget.value)}
+                    {...register('password1')}
+                    error={errors.password1 ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.password1?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    // error={confirmpasswordstate}
+                    required
+                    fullWidth
+                    name="password2"
+                    label="Confirm Password"
+                    type="password"
+                    id="password2"
+                    autoComplete="new-password"
+                    // onChange={validatePassword}
+                    {...register('password2')}
+                    error={errors.password2 ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.password2?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
+
+                </Grid>
 
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="address1"
-                  label="Address line 1"
-                  type="text"
-                  id="address1"
-                  autoComplete="text"
-                  {...register('address1')}
-                  error={errors.address1 ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.address1?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="address2"
-                  label="Address line 2"
-                  type="text"
-                  id="address2"
-                  autoComplete="address"
-                  {...register('address2')}
-                  error={errors.address2 ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.address2?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="postcode"
-                  label="Postcode"
-                  type="text"
-                  id="postcode"
-                  autoComplete="postcode"
-                  {...register('postcode')}
-                  error={errors.postcode ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.postcode?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="city"
-                  label="City"
-                  type="text"
-                  id="postcode"
-                  {...register('city')}
-                  error={errors.city ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.city?.message}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete
-                  options={countries}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                      <img
-                        loading="lazy"
-                        width="20"
-                        src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                        srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                        alt=""
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="address1"
+                    label="Address line 1"
+                    type="text"
+                    id="address1"
+                    autoComplete="text"
+                    {...register('address1')}
+                    error={errors.address1 ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.address1?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="address2"
+                    label="Address line 2"
+                    type="text"
+                    id="address2"
+                    autoComplete="address"
+                    {...register('address2')}
+                    error={errors.address2 ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.address2?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="postcode"
+                    label="Postcode"
+                    type="text"
+                    id="postcode"
+                    autoComplete="postcode"
+                    {...register('postcode')}
+                    error={errors.postcode ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.postcode?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="city"
+                    label="City"
+                    type="text"
+                    id="postcode"
+                    {...register('city')}
+                    error={errors.city ? true : false}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.city?.message}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Autocomplete
+                    options={countries}
+                    autoHighlight
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => (
+                      <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                        <img
+                          loading="lazy"
+                          width="20"
+                          src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                          srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                          alt=""
+                        />
+                        {/* {option.label} ({option.code}) +{option.phone} */}
+                        {option.label} ({option.code})
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Choose a country"
+                        id="country"
+                        name='country'
+                        inputProps={{
+                          ...params.inputProps,
+                        }}
+                        {...register('country')}
+                        error={errors.country ? true : false}
                       />
-                      {/* {option.label} ({option.code}) +{option.phone} */}
-                      {option.label} ({option.code})
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Choose a country"
-                      id="country"
-                      name='country'
-                      inputProps={{
-                        ...params.inputProps,
-                      }}
-                      {...register('country')}
-                      error={errors.country ? true : false}
-                    />
-                  )}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.country?.message}
-                </Typography>
-              </Grid>
-              {/* <Grid item xs={12}>
+                    )}
+                  />
+                  <Typography variant="inherit" color="textSecondary">
+                    {errors.country?.message}
+                  </Typography>
+                </Grid>
+                {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   name='acceptTerms'
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="./login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
               </Grid>
-            </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleSubmit(onSubmit)}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="./login" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
 
-          </FormControl>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
-  )
+            </FormControl>
+          </Box>
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider>
+    )
+  }
+  else {
+    window.open('\Home', '_self')
+    return null
+  }
 }

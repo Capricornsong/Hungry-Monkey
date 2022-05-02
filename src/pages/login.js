@@ -1,13 +1,14 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-02 02:17:08
+ * @LastEditTime: 2022-05-02 19:10:31
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 
-import { login, useAuth } from '../util/firebaseAuth'
+import { logout } from '../util/firebaseAuth'
+import { login, auth } from '../util/firebaseAuth'
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 // import { useSelector } from 'react-redux';
@@ -43,10 +44,22 @@ function Copyright(props) {
     </Typography>
   )
 }
-
+// const currentUser = auth.currentUser
 export default function SignIn() {
-  localStorage.removeItem('uid')
-  const currentUser = useAuth()
+  //   const logoutUser = async () => {
+  //     try {
+  //       // await logout()
+  //     } catch (error) {
+  //       console.log('register line86:', error)
+  //     }
+  //   }
+
+  //   React.useEffect(() => {
+  //     logoutUser()
+  // }, [])
+
+  localStorage.clear()
+
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = React.useMemo(
@@ -63,122 +76,130 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    })
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // })
+
 
     login(data.get('email'), data.get('password')).then((response) => {
-      if (currentUser) {
-        console.log('currentUser.uid', currentUser.uid)
-        sessionStorage.setItem('uid', currentUser.uid)
-        sessionStorage.setItem('firstname', currentUser.first_name)
-        // window.open('user_page', '_self')
+      console.log('response:',response)
+      if (response) {
+        console.log('currentUser.uid', response.user.uid)
+        sessionStorage.setItem('uid', response.user.uid)
+        // sessionStorage.setItem('firstname', currentUser.first_name)
+        window.open('user_page', '_self')
       }
       //fali...
       else {
-
+        
       }
     }).catch((err) => {
-      console.log(err)
+      console.log('err:',err)
+      alert('username or password is wrong')
     })
   }
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Navbar />
-      <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          {/* The component used for the root node. Either a string to use a HTML element or a component
+  if (!auth.currentUser) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Navbar />
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            {/* The component used for the root node. Either a string to use a HTML element or a component
         Applies the theme typography styles. */}
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              loading={true}
-              sx={{ mt: 3, mb: 3 }}
-            >
-              Sign In
-            </Button>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                loading={true}
+                sx={{ mt: 3, mb: 3 }}
+              >
+                Sign In
+              </Button>
 
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-            <Button>
+              <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+              <Button>
 
-            </Button>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+              </Button>
+              <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 0,
-                mb: 3,
-                // color: 'grey.700',
-                // backgroundColor: theme.palette.grey[50],
-                // borderColor: theme.palette.grey[100]
-              }}
-              startIcon={<GoogleIcon />}
-              color='warning'
-            >
-              Sign In with Google
-            </Button>
-
-            <Grid container>
-              <Grid item xs>
-                <Link href="/forgot-password" variant="body2">
-                  Forgot password?
-                </Link>
+              <Button
+                
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 0,
+                  mb: 3,
+                  // color: 'grey.700',
+                  // backgroundColor: theme.palette.grey[50],
+                  // borderColor: theme.palette.grey[100]
+                }}
+                startIcon={<GoogleIcon />}
+                color='warning'
+              >
+                Sign In with Google
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/forgot-password" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="./register_m" variant="body2">
+                    {"Don't have an components? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="./register_m" variant="body2">
-                  {"Don't have an components? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
-  )
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    )
+  }
+  else {
+    window.open('\Home', '_self')
+    return null
+  }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-02 01:40:47
+ * @LastEditTime: 2022-05-02 19:07:32
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -16,7 +16,7 @@ import * as React from 'react'
 import axios from 'axios'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { CurrencyYenTwoTone } from '@mui/icons-material'
-import { useAuth } from '../util/firebaseAuth'
+import { auth } from "../util/firebaseAuth"
 function Details(props) {
     const { row } = props
     const [open, setOpen] = React.useState(false)
@@ -119,7 +119,6 @@ function Details(props) {
                 </Box>
             </Modal>
         </>
-
     )
 }
 
@@ -157,6 +156,7 @@ export default function User_page() {
         }
     }, [])
 
+    console.log('userpage 160:',auth.currentUser);
     if (sessionStorage.getItem('uid')) {
         return (
             <ThemeProvider theme={theme}>

@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-02 02:17:26
+ * @LastEditTime: 2022-05-02 19:05:53
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -11,6 +11,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { countries } from '../data/data'
 import { getProfile } from '../util/script'
 import { useEffect, useState } from 'react'
+import { auth, logout} from "../util/firebaseAuth"
 import {
     Alert,
     Box,
@@ -68,6 +69,19 @@ export const UpdateProfile = (props) => {
                     setOpen(true)
                 }
             })
+    }
+    const logoutUser = async () => {
+        try {
+            await logout()
+        } catch (error) {
+            console.log('register line86:', error)
+        }
+        }
+
+    const handleLogout = () => {
+        sessionStorage.clear()
+        logoutUser()
+        window.open('login','_self')
     }
 
     useEffect(() => {
@@ -251,6 +265,22 @@ export const UpdateProfile = (props) => {
 
                                 textAlign='right'
                             >
+                                <Button
+                                    onClick={handleLogout}
+                                    // fullWidth
+                                    variant="contained"
+                                    sx={{
+                                        mt: 3,
+                                        mr:3,
+                                        mb: 1,
+                                        // color: 'grey.700',
+                                        // backgroundColor: theme.palette.grey[50],
+                                        // borderColor: theme.palette.grey[100]
+                                    }}
+                                    color='primary'
+                                >
+                                    logout
+                                </Button>
                                 <Button
                                     type="submit"
                                     // fullWidth
