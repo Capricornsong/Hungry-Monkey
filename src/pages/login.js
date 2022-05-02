@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-02 19:10:31
+ * @LastEditTime: 2022-05-02 20:29:52
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GoogleIcon from '@mui/icons-material/Google'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Navbar from '../components/Navbar'
+import { useNavigate } from 'react-router-dom'
 import {
   Avatar,
   Box,
@@ -57,8 +58,15 @@ export default function SignIn() {
   //   React.useEffect(() => {
   //     logoutUser()
   // }, [])
+  const navigate = useNavigate()
+  React.useEffect(() => {
+    if (auth.currentUser) {
+      navigate('/home')
+    }
+  })
 
-  localStorage.clear()
+
+
 
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -81,125 +89,126 @@ export default function SignIn() {
     //   password: data.get('password'),
     // })
 
-
+    localStorage.clear()
     login(data.get('email'), data.get('password')).then((response) => {
-      console.log('response:',response)
+      console.log('response:', response)
       if (response) {
         console.log('currentUser.uid', response.user.uid)
         sessionStorage.setItem('uid', response.user.uid)
         // sessionStorage.setItem('firstname', currentUser.first_name)
-        window.open('user_page', '_self')
+        navigate('/user_page')
+        // window.open('user_page', '_self')
       }
       //fali...
       else {
-        
+
       }
     }).catch((err) => {
-      console.log('err:',err)
+      console.log('err:', err)
       alert('username or password is wrong')
     })
   }
 
-  if (!auth.currentUser) {
-    return (
-      <ThemeProvider theme={theme}>
-        <Navbar />
-        <Container component="main" maxWidth="sm">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            {/* The component used for the root node. Either a string to use a HTML element or a component
+  // if (!auth.currentUser) {
+  return (
+    <ThemeProvider theme={theme}>
+      <Navbar />
+      <Container component="main" maxWidth="sm">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          {/* The component used for the root node. Either a string to use a HTML element or a component
         Applies the theme typography styles. */}
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                loading={true}
-                sx={{ mt: 3, mb: 3 }}
-              >
-                Sign In
-              </Button>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              loading={true}
+              sx={{ mt: 3, mb: 3 }}
+            >
+              Sign In
+            </Button>
 
-              <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-              <Button>
+            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+            <Button>
 
-              </Button>
-              <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+            </Button>
+            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
 
-              <Button
-                
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 0,
-                  mb: 3,
-                  // color: 'grey.700',
-                  // backgroundColor: theme.palette.grey[50],
-                  // borderColor: theme.palette.grey[100]
-                }}
-                startIcon={<GoogleIcon />}
-                color='warning'
-              >
-                Sign In with Google
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="/forgot-password" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="./register_m" variant="body2">
-                    {"Don't have an components? Sign Up"}
-                  </Link>
-                </Grid>
+            <Button
+
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 0,
+                mb: 3,
+                // color: 'grey.700',
+                // backgroundColor: theme.palette.grey[50],
+                // borderColor: theme.palette.grey[100]
+              }}
+              startIcon={<GoogleIcon />}
+              color='warning'
+            >
+              Sign In with Google
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/forgot-password" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
-            </Box>
+              <Grid item>
+                <Link href="./register_m" variant="body2">
+                  {"Don't have an components? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
-        </Container>
-      </ThemeProvider>
-    )
-  }
-  else {
-    window.open('\Home', '_self')
-    return null
-  }
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
+  )
+  // }
+  // else {
+  //   window.open('\Home', '_self')
+  //   return null
+  // }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-02 18:54:25
+ * @LastEditTime: 2022-05-02 20:30:26
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -38,7 +38,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { signup, auth, login } from "../util/firebaseAuth"
 import Navbar from '../components/Navbar'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
 function Copyright(props) {
 
   return (
@@ -56,6 +56,12 @@ function Copyright(props) {
 // const theme = createTheme()
 // console.log({ countries })
 export default function SignUp() {
+  const navigate = useNavigate()
+  React.useEffect(() => {
+    if (auth.currentUser) {
+      navigate('/home')
+    }
+  })
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
@@ -98,6 +104,7 @@ export default function SignUp() {
   } = useForm({
     resolver: yupResolver(validationSchema)
   })
+
   const currentUser = auth.currentUser
   const onSubmit = (event) => {
 
@@ -116,11 +123,10 @@ export default function SignUp() {
       role: role
     })
 
-
     signup(event.email, event.password1).then((response) => {
-
       console.log('currentUser.uid in register line 133', currentUser.uid)
       // console.log('currentUser.email in register line 110', currentUser.email)
+      sessionStorage.clear()
 
       login(event.email, event.password1).then((response) => {
         console.log(currentUser)

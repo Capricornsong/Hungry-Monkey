@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-29 16:42:02
- * @LastEditTime: 2022-05-02 01:21:37
+ * @LastEditTime: 2022-05-02 20:31:48
  * @FilePath: \coursework_git\src\pages\admin_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -34,7 +34,7 @@ export default function Admin_page() {
         }),
         [prefersDarkMode],
     )
-    if (sessionStorage.getItem('uid')) {
+    // if (sessionStorage.getItem('uid')) {
         return (
             <>
                 <Box
@@ -97,10 +97,10 @@ export default function Admin_page() {
 
             </>
         )
-    }
-    else {
-        window.open('\login', '_self')
-        return null
-    }
+    // }
+    // else {
+    //     window.open('\login', '_self')，
+    //     return null
+    // }
 
 }

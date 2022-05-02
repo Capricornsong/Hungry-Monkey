@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-02 19:07:32
+ * @LastEditTime: 2022-05-02 20:20:12
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -17,6 +17,7 @@ import axios from 'axios'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { CurrencyYenTwoTone } from '@mui/icons-material'
 import { auth } from "../util/firebaseAuth"
+import { useNavigate } from 'react-router-dom'
 function Details(props) {
     const { row } = props
     const [open, setOpen] = React.useState(false)
@@ -126,6 +127,8 @@ function Details(props) {
 export default function User_page() {
     // this.props.history.push('/login')
     // console.log('uid', sessionStorage.getItem('uid'))
+    console.log('sessionuid', sessionStorage.getItem('uid'))
+    const navigate = useNavigate()
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = React.useMemo(
         () =>
@@ -154,90 +157,90 @@ export default function User_page() {
                     console.log(error)
                 })
         }
+        else {
+            navigate('/login')
+        }
     }, [])
 
-    console.log('userpage 160:',auth.currentUser);
-    if (sessionStorage.getItem('uid')) {
-        return (
-            <ThemeProvider theme={theme}>
-                <Box
-                    // component="main"
-                    sx={{
-                        flexGrow: 1,
-                        //pending top
-                        py: 8
-                    }}
-                    theme={theme}
-                >
-                    <Container maxWidth="lg">
-                        <Typography
-                            sx={{ mb: 3 }}
-                            variant="h4"
-                        >
-                            Account
-                        </Typography>
-                        <Grid
-                            container
-                            spacing={3}
-                        >
-                            <Grid
-                                item
-                                // the number of columns it uses
-                                lg={4}
-                                md={4}
-                                xs={12}
-                            >
-                                <Card sx={{
-                                    // maxWidth:345,
-                                    boxShadow: 3,
-                                }}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div" textAlign='center
-                        '>
-                                                Hi🖐 {sessionStorage.getItem('firstname')}~
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                UserId: {sessionStorage.getItem('uid')}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                                <Typography gutterBottom variant="h6" component="div" sx={{
-                                    mt: 3
-                                }}>
-                                    Order in progress
-                                </Typography>
-                                {orderlist.map((row) => (
-                                    row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
-                                ))}
-                            </Grid>
-                            <Grid
-                                item
-                                //the number of columns it uses
-                                lg={8}
-                                md={8}
-                                xs={12}
-                            >
-                                <UpdateProfile />
-                            </Grid>
-                            <Grid
-                                item
-                                lg={12}
-                                md={12}
-                                xs={12}
-                            >
-                                <OrderHistory />
-                            </Grid>
-                        </Grid>
-                    </Container>
+    console.log('userpage 160:', auth.currentUser)
 
-                </Box>
-            </ThemeProvider>
-        )
-    }
-    else {
-        window.open('\login', '_self')
-        return null
-    }
+    return (
+        <ThemeProvider theme={theme}>
+            <Box
+                // component="main"
+                sx={{
+                    flexGrow: 1,
+                    //pending top
+                    py: 8
+                }}
+                theme={theme}
+            >
+                <Container maxWidth="lg">
+                    <Typography
+                        sx={{ mb: 3 }}
+                        variant="h4"
+                    >
+                        Account
+                    </Typography>
+                    <Grid
+                        container
+                        spacing={3}
+                    >
+                        <Grid
+                            item
+                            // the number of columns it uses
+                            lg={4}
+                            md={4}
+                            xs={12}
+                        >
+                            <Card sx={{
+                                // maxWidth:345,
+                                boxShadow: 3,
+                            }}>
+                                <CardActionArea>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div" textAlign='center
+                        '>
+                                            Hi🖐 {sessionStorage.getItem('firstname')}~
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                            UserId: {sessionStorage.getItem('uid')}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                            <Typography gutterBottom variant="h6" component="div" sx={{
+                                mt: 3
+                            }}>
+                                Order in progress
+                            </Typography>
+                            {orderlist.map((row) => (
+                                row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
+                            ))}
+                        </Grid>
+                        <Grid
+                            item
+                            //the number of columns it uses
+                            lg={8}
+                            md={8}
+                            xs={12}
+                        >
+                            <UpdateProfile />
+                        </Grid>
+                        <Grid
+                            item
+                            lg={12}
+                            md={12}
+                            xs={12}
+                        >
+                            <OrderHistory />
+                        </Grid>
+                    </Grid>
+                </Container>
+
+            </Box>
+        </ThemeProvider>
+    )
+
+
 }
