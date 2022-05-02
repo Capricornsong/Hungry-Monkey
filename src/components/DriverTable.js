@@ -1,100 +1,82 @@
-import react, { useEffect, useState } from 'react'
-import Autocomplete from '@mui/material/Autocomplete'
-import { countries } from '../data/data'
-import { getProfile } from '../util/script'
-import {
-    Alert,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Divider,
-    Grid,
-    InputLabel,
-    TextField,
-    MenuItem,
-    Select,
-    Snackbar,
-    Typography,
-} from '@mui/material'
-import { ThemeContext } from '@emotion/react'
+import { Button, Card, CardContent, CardHeader, Divider, Grid, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import axios from 'axios'
+import { useState } from 'react'
 
-function DriverTable(props) {
+function DriverTable(props) {  
+    console.log(props) 
+    const [foodPickedVisible, setFoodPickedVisible] = useState(true)
+    const [foodDeliveredVisible, setFoodDeliveredVisible] = useState(false)
 
-    const uid = { uid: "111111" }
-
-    const [profileData, setProfileData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        address_second_line: '',
-        address_first_line: '',
-        country: '',
-        city: '',
-        postcode: '',
-    })
-
-    const [open, setOpen] = useState(false)
-
-    const handleClose = () => {
-        setOpen(false)
+    const handleFoodPickedUp = () => {
+        setFoodPickedVisible(false)
+        setFoodDeliveredVisible(true)
     }
 
-    // To make Input box inputable
-    const handleUpdateInputBox = (event) => {
-        setProfileData({
-            ...profileData,
-            [event.target.name]: event.target.value
+    const handleFoodDelivered = () => {
+        setFoodDeliveredVisible(false)
+        
+        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/order/updateOrderStatus', {
+            "order_id": props.orderDetails.order_id.toString(),
+            "order_status": "delivered"
+        })
+        .then(response => {
+            if(response.status === 200){
+                console.log("here")
+                props.setSnackbarOpen(true)
+            }
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
 
-    useEffect(() => {
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
-            uid: '111111',
-        })
-            .then(response => {
-                console.log(response.data)
-                setProfileData({ ...response.data })
-                console.log(profileData)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }, [])
-    
     return (
-        <>
-            <Card
-                sx={{
-                    boxShadow: 3,
-                }}>
+        <div>
+            <Card sx={{ boxShadow: 3 }}>
                 <CardHeader
-                    title='Orders'
-                    subheader='Here you can see the status of your assigned orders'
+                    title='Currently assigned order'
+                    subheader='Details of the currently assigned order'
                 />
                 <Divider />
                 <CardContent>
-                    <Grid
-                        container
-                        spacing={2}
-                    >
-                        <Grid
-                            item
-                            xs={12}
-                            md={12}
-                            lg={12}
-                        >
-                            <Typography>Order id: 1231231231</Typography>
-                            <Typography>Restaurant name: Restaurant name</Typography>
-                            <Typography>Order created at: 22:22</Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xl={6} lg={6} md={6} xs={6} >
+                            <Typography>Order id: {props.orderDetails.order_id}</Typography>
+                            <Typography>Order created at: {props.orderDetails.order_placed_time}</Typography>
+                            <Button 
+                                variant='contained' 
+                                style={{marginRight: 10, marginTop: 10}}
+                                disabled={foodPickedVisible? false : true} 
+                                onClick={handleFoodPickedUp}
+                            >
+                                Food picked up
+                            </Button>
+                            <Button 
+                                variant='contained' 
+                                style={{ marginTop: 10}} 
+                                disabled={foodDeliveredVisible? false : true}
+                                onClick={handleFoodDelivered}
+                            >
+                                Food Delivered
+                            </Button>
                         </Grid>
-
+                        <Grid item xl={6} lg={6} md={6} xs={6} >
+                            <Typography>Restaurant name: {props.orderDetails.restaurant_name}</Typography>
+                            <Typography>Order information:</Typography>
+                            {props.orderDetails.food_ordered.map((item, iterator) => (
+                                <Box boxShadow={2} style={{marginTop: 10, padding: 10}} key={'order-item-box' + iterator.toString()}>
+                                    <Typography>Item: {iterator + 1}</Typography>
+                                    <Typography>{item.food_name}</Typography>
+                                    <Typography>Price: £ {item.food_price}</Typography>
+                                    <Typography>Quantity: {item.food_amount}</Typography>
+                                </Box>
+                            ))}
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>
-        </>
+        </div>
     )
 }
 
