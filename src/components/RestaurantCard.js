@@ -44,6 +44,19 @@ function RestaurantCard(props) {
         })
     },[])
 
+    const getRestaurantImage = (restaurantId) => {
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantImage', {
+            'restaurant_id': restaurantId,
+        })
+        .then(response => {
+            console.log(response)
+            return response.data
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
     return (
         <div>
             <Card sx={{ maxWidth: 345 }} style={{marginTop: 30}}>
@@ -53,7 +66,7 @@ function RestaurantCard(props) {
                     <CardMedia
                         component="img"
                         height="160"
-                        image={require('../../src/media/kebab.jpg')}
+                        image={require('../media/kebab.jpg')}
                         alt="kebab"
                     />
                     <CardContent>
