@@ -25,7 +25,6 @@ function RestaurantOwnerPage(){
             'name': "Paskal's Burgers",
         })
         .then(response => {
-            console.log(response.data)
             setRestaurantObject(response.data[0])
             setIsLoading(false)
         })
@@ -105,8 +104,7 @@ function RestaurantOwnerPage(){
                             </Card>
                         </Grid>
                         <Grid item lg={8} md={8} xs={12}>
-                            {/** some component here */}
-                            <RestaurantDetails/>
+                            <RestaurantDetails restaurantobjectprop={restaurantObject}/>
                             <MenuDetails/>
                             <RestaurantOrders/>
                         </Grid>

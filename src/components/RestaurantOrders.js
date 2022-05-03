@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Box, Card, CardActionArea, CardContent, Collapse, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery } from '@mui/material'
+import TaskIcon from '@mui/icons-material/Task'
 
 
 function RestaurantDetails(props) { 
@@ -27,6 +28,7 @@ function RestaurantDetails(props) {
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div" textAlign='center'>
                                         Order List
+                                        <TaskIcon style={{marginLeft: 10}}/>
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" textAlign='center'>
                                         {editFormOpen? 'Click here to close the order list' : 'Click here to view and manage orders'}

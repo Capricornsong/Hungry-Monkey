@@ -1,12 +1,27 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Box, Card, CardActionArea, CardContent, Collapse, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery } from '@mui/material'
-
+import { Alert, Button, Card, CardActionArea, CardContent, Collapse, Grid, Snackbar, Table, TableBody, TableCell, TableRow, Typography, useMediaQuery } from '@mui/material'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import axios from 'axios'
+import MenuItemEdit from './MenuItemEdit'
 
 function MenuDetails(props) { 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
+    const [isLoading, setIsLoading] = React.useState(true)
     const [editFormOpen, setEditFormOpen] = React.useState(false)
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+    const [menuArray, setMenuArray] = React.useState([])  
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false)
+    }
+
+    const handleUpdate = (item) => {
+        console.log(item)
+        setSnackbarOpen(true)
+    }
 
     const theme = React.useMemo( () =>
         createTheme({
@@ -16,6 +31,26 @@ function MenuDetails(props) {
         }),
         [prefersDarkMode],
     );
+
+
+    React.useEffect(() => {
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
+            'restaurant_id': "23b3af84-b7cf-496a-8283-e20fcadb1ab6",
+        })
+        .then(response => {
+            setMenuArray(response.data)
+            setIsLoading(false)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },[])
+
+    if(isLoading){
+        return(
+            <Typography>Loading</Typography>
+        )
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -27,6 +62,7 @@ function MenuDetails(props) {
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div" textAlign='center'>
                                         Menu Details
+                                        <MenuBookIcon style={{marginLeft: 10}}/>
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" textAlign='center'>
                                         {editFormOpen? 'Click here to close the menu editor' : 'Click here to edit menu details'}
@@ -36,31 +72,31 @@ function MenuDetails(props) {
                         </Card>
 
                         <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
-                            <Card sx={{ boxShadow: 3 }}>
+                            <Card sx={{ boxShadow: 1 }}>
                                 <CardContent>
                                     <Table>
-                                        <TableBody>                
+                                        <TableBody>
+                                            {menuArray.map((item, iterator) => (
+                                                <TableRow key={iterator}>
+                                                    <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
+                                                        <MenuItemEdit itemobject={item} resturantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))} 
                                             <TableRow>
-                                                <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
-                                                    <Box
-                                                        sx={{
-                                                            margin: 1
-                                                        }}
-                                                    >
-                                                        <Typography variant="h6" gutterBottom component='div'>Details</Typography>
-                                                        <Table size='small' >
-                                                            <TableHead>
-                                                                <TableRow>
-                                                                    <TableCell style={{borderBottom: "0"}}>Food name</TableCell>
-                                                                    <TableCell style={{borderBottom: "0"}}>Price ( £)</TableCell>
-                                                                    <TableCell style={{borderBottom: "0"}}>Amount</TableCell>
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-                                                                {/** something here too */}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </Box>
+                                                <TableCell>               
+                                                    <Grid
+                                                        item xs={12} md={12} lg={12} textAlign='center' >
+                                                        <Button
+                                                            variant="contained"
+                                                            sx={{ mt: 3, mb: 1 }}
+                                                            color='primary'
+                                                            style={{width: 300}}
+                                                        >
+                                                            Add Item
+                                                            <AddCircleIcon style={{paddingLeft: 5}}/>
+                                                        </Button>
+                                                    </Grid>
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
@@ -68,7 +104,17 @@ function MenuDetails(props) {
                                 </CardContent>
                             </Card>
                         </Collapse>
-
+                        <Snackbar
+                            open={snackbarOpen}
+                            autoHideDuration={3000}
+                            onClose={handleSnackbarClose}
+                            // message="Successfully updated"
+                            severity="success"
+                        >
+                            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                                Successfully Updated
+                            </Alert>
+                        </Snackbar>
                     </Grid>
                 </Grid>
 
