@@ -1,13 +1,13 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-05-01 19:18:06
- * @LastEditTime: 2022-05-04 15:50:42
+ * @LastEditTime: 2022-05-04 20:23:52
  * @FilePath: \coursework_git\src\components\map.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
 import { Box } from '@mui/material'
-import { useJsApiLoader, GoogleMap, Marker, Autocomplete, DirectionsRenderer } from '@react-google-maps/api'
+import { useJsApiLoader, GoogleMap, Marker, Autocomplete, DirectionsRenderer} from '@react-google-maps/api'
 import { Skeleton, Typography, LinearProgress, Grid, Chip} from '@mui/material'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import PropTypes from "prop-types"
@@ -46,12 +46,15 @@ LinearProgressWithLabel.propTypes = {
 export const Map = () => {
     const [progress, setProgress] = useState(1)
     const [result, setResult] = useState(null)
+    const [lat,setLat] = useState()
+    const [lng,setLng] = useState()
 
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         // libraries:['places']
     })
 
+    
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((prevProgress) =>
@@ -74,7 +77,8 @@ export const Map = () => {
 
             }).then((response) => {
                 setResult(response)
-                console.log(response)
+                
+                console.log(response.routes[0].legs[0].distance)
             })
         }
 
@@ -85,10 +89,8 @@ export const Map = () => {
             <Skeleton variant="rectangular" width={210} height={118} />
         )
     }
-
     // eslint-disable-next-line no-undef
     const directionService = new google.maps.DirectionsService()
-
     return (
         <Box
             height={580}
@@ -99,7 +101,6 @@ export const Map = () => {
                 options={{
                     streetViewControl: true
                 }}
-            // onLoad={(map) => setMap(map)}
             >
                 {/* <Marker position={center} /> */}
                 {result && <DirectionsRenderer directions={result} />}
