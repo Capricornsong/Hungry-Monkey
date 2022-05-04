@@ -22,7 +22,9 @@ function Home() {
   const center = { lat: 50.935, lng: -1.395 }
   useEffect(() => {
     if (isLoaded) {
-      axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
+      axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurantByStatus',{
+        status:'Approve'
+      })
         .then(response => response.data)
         .then(async (data) => {
           const a = data.map(async element => {
