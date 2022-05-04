@@ -5,6 +5,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import axios from 'axios'
 import MenuItemEdit from './MenuItemEdit'
+import AddMenuItem from './AddMenuItem'
 
 function MenuDetails(props) { 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -79,23 +80,14 @@ function MenuDetails(props) {
                                             {menuArray.map((item, iterator) => (
                                                 <TableRow key={iterator}>
                                                     <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
-                                                        <MenuItemEdit itemobject={item} resturantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
+                                                        <MenuItemEdit itemobject={item} restaurantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
                                                     </TableCell>
                                                 </TableRow>
                                             ))} 
                                             <TableRow>
                                                 <TableCell>               
-                                                    <Grid
-                                                        item xs={12} md={12} lg={12} textAlign='center' >
-                                                        <Button
-                                                            variant="contained"
-                                                            sx={{ mt: 3, mb: 1 }}
-                                                            color='primary'
-                                                            style={{width: 300}}
-                                                        >
-                                                            Add Item
-                                                            <AddCircleIcon style={{paddingLeft: 5}}/>
-                                                        </Button>
+                                                    <Grid item xs={12} md={12} lg={12} textAlign='center'>
+                                                        <AddMenuItem restaurantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
                                                     </Grid>
                                                 </TableCell>
                                             </TableRow>

@@ -17,7 +17,7 @@ function MenuItemEdit(props) {
 
     useEffect(() => {
         setMenuItemObject({
-            restaurant_id: props.resturantid,
+            restaurant_id: props.restaurantid,
             food_id: props.itemobject.food_id,
             food_description: props.itemobject.food_description,
             food_price: props.itemobject.food_price,
@@ -42,6 +42,7 @@ function MenuItemEdit(props) {
                 console.log(response.data)
                 if (response.data.result) {
                     console.log('success')
+                    window.location.href = "/restaurant_owner_page";
                 }
             })
     }
@@ -116,7 +117,7 @@ function MenuItemEdit(props) {
                                 </Button>
                             </Grid>
                             <Grid
-                                item xs={12} md={12} lg={6} textAlign='right' >
+                                item xs={12} md={12} lg={6} textAlign='center' >
                                 <Button
                                     type="submit"
                                     variant="contained"
