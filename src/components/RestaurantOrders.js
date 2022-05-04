@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Box, Card, CardActionArea, CardContent, Collapse, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery } from '@mui/material'
+import { Card, CardActionArea, CardContent, Collapse, Grid, Typography, useMediaQuery } from '@mui/material'
 import TaskIcon from '@mui/icons-material/Task'
+import UnassignedOrders from './UnassignedOrders'
 
 
 function RestaurantDetails(props) { 
@@ -40,33 +41,7 @@ function RestaurantDetails(props) {
                         <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
                             <Card sx={{ boxShadow: 3 }}>
                                 <CardContent>
-                                    <Table>
-                                        <TableBody>                
-                                            <TableRow>
-                                                <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
-                                                    <Box
-                                                        sx={{
-                                                            margin: 1
-                                                        }}
-                                                    >
-                                                        <Typography variant="h6" gutterBottom component='div'>Details</Typography>
-                                                        <Table size='small' >
-                                                            <TableHead>
-                                                                <TableRow>
-                                                                    <TableCell style={{borderBottom: "0"}}>Food name</TableCell>
-                                                                    <TableCell style={{borderBottom: "0"}}>Price ( £)</TableCell>
-                                                                    <TableCell style={{borderBottom: "0"}}>Amount</TableCell>
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-                                                                {/** something here too */}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </Box>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
+                                    <UnassignedOrders restaurantName={"Paskal's Burgers"}/>
                                 </CardContent>
                             </Card>
                         </Collapse>
