@@ -7,8 +7,8 @@
  * @Description: 
  */
 import { Box } from '@mui/material'
-import { useJsApiLoader, GoogleMap, Marker, Autocomplete, DirectionsRenderer} from '@react-google-maps/api'
-import { Skeleton, Typography, LinearProgress, Grid, Chip} from '@mui/material'
+import { useJsApiLoader, GoogleMap, Marker, Autocomplete, DirectionsRenderer } from '@react-google-maps/api'
+import { Skeleton, Typography, LinearProgress, Grid, Chip } from '@mui/material'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import PropTypes from "prop-types"
 const center = { lat: 50.935, lng: -1.395 }
@@ -46,15 +46,15 @@ LinearProgressWithLabel.propTypes = {
 export const Map = () => {
     const [progress, setProgress] = useState(1)
     const [result, setResult] = useState(null)
-    const [lat,setLat] = useState()
-    const [lng,setLng] = useState()
+    const [lat, setLat] = useState()
+    const [lng, setLng] = useState()
 
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         // libraries:['places']
     })
 
-    
+
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((prevProgress) =>
@@ -77,7 +77,7 @@ export const Map = () => {
 
             }).then((response) => {
                 setResult(response)
-                
+
                 console.log(response.routes[0].legs[0].distance)
             })
         }
@@ -109,14 +109,14 @@ export const Map = () => {
             <Typography gutterBottom Typography variant="body1"
                 sx={{
                     mt: 1,
-                    ml:3,
+                    ml: 3,
                 }}>
                 Distance: <Chip label={result && result.routes[0].legs[0].distance.text} color="success" />
             </Typography>
             <Box sx={{
                 width: "95%",
                 display: 'flex',
-                ml:3,
+                ml: 3,
             }}>
                 <Grid item xs={4} sm={4}>
                     <Typography>
