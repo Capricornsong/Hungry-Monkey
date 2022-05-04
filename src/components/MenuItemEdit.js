@@ -7,7 +7,7 @@ import axios from 'axios'
 function MenuItemEdit(props) { 
 
     const [menuItemObject, setMenuItemObject] = useState({
-        restaurant_id: props.restaurant_id,
+        restaurant_id: '',
         food_id: '',
         food_description: '',
         food_price: '',
@@ -16,7 +16,14 @@ function MenuItemEdit(props) {
     })
 
     useEffect(() => {
-        setMenuItemObject(props.itemobject)
+        setMenuItemObject({
+            restaurant_id: props.resturantid,
+            food_id: props.itemobject.food_id,
+            food_description: props.itemobject.food_description,
+            food_price: props.itemobject.food_price,
+            food_name: props.itemobject.food_name,
+            food_type: props.itemobject.food_type, 
+        })
     },[])
 
     const handleUpdateInputBox = (event) => {
@@ -37,6 +44,21 @@ function MenuItemEdit(props) {
                     console.log('success')
                 }
             })
+    }
+
+    const handleDelete = () => {
+        axios.delete('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/deleteFood', {data: {
+            'restaurant_id': menuItemObject.restaurant_id,
+            'food_id': menuItemObject.food_id
+        }, headers:{Authorization: "token"}})
+
+        .then(response => {
+            console.log(response.data)
+            if (response.data.result) {
+                window.location.href = "/restaurant_owner_page";
+            }
+        })
+
     }
     
     return (
@@ -83,11 +105,11 @@ function MenuItemEdit(props) {
                             <Grid
                                 item xs={12} md={12} lg={6} textAlign='right' >
                                 <Button
-                                    type="submit"
                                     variant="contained"
                                     sx={{ mt: 3, mb: 1 }}
                                     color='error'
                                     fullWidth
+                                    onClick={() => handleDelete(menuItemObject.food_id)}
                                 >
                                     Delete Item
                                     <DeleteForeverIcon/>
