@@ -47,6 +47,7 @@ function RestaurantDetails(props) {
             .then(response => {
                 console.log(response.data)
                 if (response.data.result) {
+                    window.location.href = "/restaurant_owner_page";
                     setSnackbarOpen(true)
                 }
             })
