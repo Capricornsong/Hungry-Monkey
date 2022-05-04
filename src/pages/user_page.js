@@ -1,23 +1,57 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-02 20:20:12
+ * @LastEditTime: 2022-05-04 14:29:14
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
-
+import { useJsApiLoader, GoogleMap } from '@react-google-maps/api'
 import { UpdateProfile } from '../components/user_profile'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Container, Grid, Typography, Modal, Card, CardContent, CardActions, CardActionArea, CardMedia, useMediaQuery, } from '@mui/material'
+import { Map } from '../components/map'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Container, Dialog, DialogTitle, styled, DialogContent, DialogActions, Grid, Typography, Modal, Card, CardContent, CardActions, CardActionArea, CardMedia, useMediaQuery, } from '@mui/material'
 import { shadows, textAlign } from '@mui/system'
 import { OrderHistory } from '../components/orderHistory'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import * as React from 'react'
 import axios from 'axios'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { CurrencyYenTwoTone } from '@mui/icons-material'
 import { auth } from "../util/firebaseAuth"
 import { useNavigate } from 'react-router-dom'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
 function Details(props) {
     const { row } = props
     const [open, setOpen] = React.useState(false)
@@ -37,7 +71,7 @@ function Details(props) {
         boxShadow: 24,
         p: 4,
     }
-
+    sessionStorage.getItem('uid ')
     return (
         // <Card sx={{
         //     // maxWidth:345,
@@ -99,32 +133,40 @@ function Details(props) {
                             }}
                             color='primary'
                         >
-                            Update
+                            Location
                         </Button>
                     </Grid>
                 </AccordionDetails>
             </Accordion>
-            <Modal
-                open={open}
+            <BootstrapDialog
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                maxWidth={800}
+                disablePortal
+
             >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
-                </Box>
-            </Modal>
+                <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    Location
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <Map />
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={handleClose}>
+                        Close
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
+
         </>
     )
 }
 
 
 export default function User_page() {
+
+
     // this.props.history.push('/login')
     // console.log('uid', sessionStorage.getItem('uid'))
     console.log('sessionuid', sessionStorage.getItem('uid'))
@@ -145,24 +187,23 @@ export default function User_page() {
 
     React.useEffect(() => {
         if (sessionStorage.getItem('uid')) {
-            axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByUserUID', {
-                uid: sessionStorage.getItem('uid'),
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByUserUID', {
+            uid: sessionStorage.getItem('uid'),
+            // uid: '1'
+        })
+            .then(response => {
+                // console.log('response:',response.data)
+                // console.log('dadadada', response.data)
+                setOrderlist([...response.data])
             })
-                .then(response => {
-                    // console.log('response:',response.data)
-                    // console.log('dadadada', response.data)
-                    setOrderlist([...response.data])
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            .catch(error => {
+                console.log(error)
+            })
         }
         else {
-            navigate('/login')
+        navigate('/login')
         }
     }, [])
-
-    console.log('userpage 160:', auth.currentUser)
 
     return (
         <ThemeProvider theme={theme}>

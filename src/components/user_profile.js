@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-02 19:05:53
+ * @LastEditTime: 2022-05-03 19:29:26
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -34,7 +34,6 @@ export const UpdateProfile = (props) => {
     //use for get current user's info
     const currentUser = useAuth()
 
-    const uid = { uid: "111111" }
     const [profileData, setProfileData] = useState({
         first_name: '',
         last_name: '',
