@@ -42,7 +42,8 @@ function MenuItemEdit(props) {
                 console.log(response.data)
                 if (response.data.result) {
                     console.log('success')
-                    window.location.href = "/restaurant_owner_page";
+                    // add snackbar
+                    setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
                 }
             })
     }
@@ -56,7 +57,8 @@ function MenuItemEdit(props) {
         .then(response => {
             console.log(response.data)
             if (response.data.result) {
-                window.location.href = "/restaurant_owner_page";
+                // add snackbar
+                setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
             }
         })
 

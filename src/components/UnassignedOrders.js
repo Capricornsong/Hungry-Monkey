@@ -1,9 +1,19 @@
 import { useEffect, useState } from "react"
-import { Box, Button, Fade, Grid, Modal, Typography, Backdrop } from "@mui/material"
+import { Box, Button, Fade, Grid, Modal, Typography, Backdrop, FormControl, RadioGroup, FormControlLabel, Radio, Snackbar, Alert } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import axios from "axios"
 
 const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+  }
+
+const style2 = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -19,10 +29,22 @@ function UnassignedOrders(props) {
     const [unassignedOrders, setUnassignedOrders] = useState([])
     const [driverList, setDriverList] = useState([])
     const [selectedOrder, setSelectedOrder] = useState({})
+    const [radioSelectionId, setRadioSelectionId] = useState(0)
+    const [assignedDriver, setAssignedDriver] = useState({})
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
+    
     const [driverModalOpen, setDriverModalOpen] = useState(false)
     const handleDriverModalOpen = () => setDriverModalOpen(true)
     const handleDriverModalClose = () => setDriverModalOpen(false)
+
+    const [declineModalOpen, setDeclineModalOpen] = useState(false)
+    const handleDeclineModalOpen = () => setDeclineModalOpen(true)
+    const handleDeclineModalClose = () => setDeclineModalOpen(false)
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false)
+    }
 
     function getOrderItems(params) {
         return(
@@ -38,8 +60,6 @@ function UnassignedOrders(props) {
         { field: 'user_email', headerName: 'Customer', flex: 0.3 },
         { field: 'order_status', headerName: 'Status', flex: 0.5 },
     ]
-
-    
 
     useEffect(() => {
         // get restaurants by status
@@ -60,9 +80,7 @@ function UnassignedOrders(props) {
             "role": "deliver"
          })
         .then(response => {
-            setDriverList(response.data)
-            console.log(response.data)
-            
+            setDriverList(response.data)       
         })
         .catch(error => {
             console.log(error)
@@ -77,6 +95,49 @@ function UnassignedOrders(props) {
             }
         })
         setOrderSelected(!orderSelected)
+    }
+
+    const handleRadioSelection = (event) => {
+        setRadioSelectionId(event.target.value)
+        // get driver
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
+            "uid": event.target.value,
+         })
+        .then(response => {
+            setAssignedDriver(response.data)            
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+    const handleAssignDriver = () => {
+        // assign driver to order
+        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/order/assignOrder2Deliver', {
+            "order_id": selectedOrder.order_id,
+            "order_deliver_by": assignedDriver.email
+         })
+        .then(response => {
+            console.log("response data: " + response.data)            
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
+
+        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateDriverStatusByUID', {
+            "uid": assignedDriver.uid,
+            "deliver_status": "delivering"
+         })
+        .then(response => {
+            console.log("response data 2: " + response.data)            
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        setSnackbarOpen(true)
+        setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
     }
 
     return (
@@ -109,7 +170,7 @@ function UnassignedOrders(props) {
                         sx={{ mt: 3, mb: 1, ml: 3 }}
                         color='secondary'
                         disabled={!orderSelected}
-                        //onClick={handleDecline}
+                        onClick={handleDeclineModalOpen}
                     >
                         Decline
                     </Button>
@@ -129,19 +190,60 @@ function UnassignedOrders(props) {
             >
                 <Fade in={driverModalOpen}>
                     <Box sx={style}>
-                        <Typography id="modal-title" variant="h5">Assign a driver</Typography>
-                        {driverList.map((driver, iterator) => {
-                            if(driver.deliver_status === 'waiting') {
-                                return (
-                                    <Box key={iterator}>
-                                        <Typography>{driver.first_name + driver.last_name}</Typography>
-                                    </Box>
-                                )
-                            }
-                        })}
+                        <FormControl>
+                            <Typography variant='h5'>Select a driver</Typography>
+                            <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group" value={radioSelectionId} onChange={handleRadioSelection}>
+                                {driverList.map((driver, iterator) => {
+                                    if(driver.deliver_status === 'waiting') {
+                                        return <FormControlLabel value={driver.uid} control={<Radio />} label={driver.first_name + " " + driver.last_name} key={iterator} />
+                                    }
+                                })}
+                                </RadioGroup>
+                                
+                        </FormControl>
+                        <Button 
+                            variant='contained'
+                            onClick={() => handleAssignDriver()} 
+                            style={{marginLeft: 40}}
+                            disabled={radioSelectionId === 0? true : false}
+                        >Select driver</Button>
                     </Box>
                 </Fade>
             </Modal>
+
+            <Modal
+                aria-labelledby="transition-modal-title-2"
+                aria-describedby="transition-modal-description-2"
+                open={declineModalOpen}
+                onClose={handleDeclineModalClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+                <Fade in={driverModalOpen}>
+                    <Box sx={style2}>
+                        <Typography variant={'h5'}>Decline Order</Typography>
+                        <Typography>Please confirm that you would like to decline this order</Typography>
+                        <Button 
+                            variant='contained' 
+                            color='error'
+                        >decline order</Button>
+                    </Box>
+                </Fade>
+            </Modal>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                severity="success"
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Successfully Updated
+                </Alert>
+            </Snackbar>
         </>
     )
 }
