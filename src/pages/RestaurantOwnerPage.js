@@ -6,7 +6,6 @@ import RestaurantDetails from '../components/RestaurantDetails'
 import MenuDetails from '../components/MenuDetails'
 import RestaurantOrders from '../components/RestaurantOrders'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 
 function RestaurantOwnerPage() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -78,7 +77,6 @@ function RestaurantOwnerPage() {
         } else {
             return (
                 <ThemeProvider theme={theme}>
-                    <Navbar/>
                     <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
                         <Container maxWidth="lg">
                             <Typography
