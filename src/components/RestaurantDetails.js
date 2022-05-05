@@ -54,17 +54,19 @@ function RestaurantDetails(props) {
     }
 
     React.useEffect(() => {
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantByName', {
-            'name': "Paskal's Burgers",
-        })
-        .then(response => {
-            setRestaurantObject(response.data[0])
-            setIsLoading(false)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    },[])
+        if(props.restaurantobjectprop.name !== undefined){
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantByName', {
+                'name': props.restaurantobjectprop.name,
+            })
+            .then(response => {
+                setRestaurantObject(response.data[0])
+                setIsLoading(false)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }       
+    },[props.restaurantobjectprop.name])
 
     if(isLoading){
         return(

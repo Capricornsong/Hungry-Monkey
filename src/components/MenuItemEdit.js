@@ -37,12 +37,10 @@ function MenuItemEdit(props) {
             ...menuItemObject,
             [event.target.name]: event.target.value
         })
-        console.log(menuItemObject)
     }
 
     const handleUpdate = (event) => {
         event.preventDefault()
-        console.log(menuItemObject)
         axios.patch('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/updateFood', menuItemObject)
             .then(response => {
                 console.log(response.data)

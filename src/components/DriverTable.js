@@ -30,7 +30,6 @@ function DriverTable(props) {
         })
     }
 
-
     useEffect(() => {
         if(props.orderDetails !== undefined){
             setOrderEmpty(false)

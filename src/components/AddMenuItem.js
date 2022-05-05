@@ -33,11 +33,9 @@ function AddMenuItem(props) {
             ...newMenuItemObject,
             [event.target.name]: event.target.value
         })
-        console.log(newMenuItemObject)
     }
 
     const checkInputFields = () => {
-        console.log(newMenuItemObject)
         if(newMenuItemObject.food_name == '') {
             setNameError(true)
         } else {

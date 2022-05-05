@@ -35,83 +35,86 @@ function MenuDetails(props) {
 
 
     React.useEffect(() => {
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
-            'restaurant_id': "23b3af84-b7cf-496a-8283-e20fcadb1ab6",
-        })
-        .then(response => {
-            setMenuArray(response.data)
-            setIsLoading(false)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    },[])
+        if(props.restaurantobjectprop.restaurant_id !== undefined){
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
+                'restaurant_id': props.restaurantobjectprop.restaurant_id,
+            })
+            .then(response => {
+                setMenuArray(response.data)
+                setIsLoading(false)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+    },[props.restaurantobjectprop.restaurant_id])
 
     if(isLoading){
         return(
             <Typography>Loading</Typography>
         )
-    }
-
-    return (
-        <ThemeProvider theme={theme}>
-            <Grid container spacing={3} style={{marginTop: 20}}>
-                    <Grid item lg={12} md={12} xs={12}>
-
-                        <Card sx={{ boxShadow: 3}}>
-                            <CardActionArea onClick={() => setEditFormOpen(!editFormOpen)}>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                        Menu Details
-                                        <MenuBookIcon style={{marginLeft: 10}}/>
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                        {editFormOpen? 'Click here to close the menu editor' : 'Click here to edit menu details'}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-
-                        <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
-                            <Card sx={{ boxShadow: 1 }}>
-                                <CardContent>
-                                    <Table>
-                                        <TableBody>
-                                            {menuArray.map((item, iterator) => (
-                                                <TableRow key={iterator}>
-                                                    <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
-                                                        <MenuItemEdit itemobject={item} restaurantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
+    } else {
+        return (
+            <ThemeProvider theme={theme}>
+                <Grid container spacing={3} style={{marginTop: 20}}>
+                        <Grid item lg={12} md={12} xs={12}>
+    
+                            <Card sx={{ boxShadow: 3}}>
+                                <CardActionArea onClick={() => setEditFormOpen(!editFormOpen)}>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div" textAlign='center'>
+                                            Menu Details
+                                            <MenuBookIcon style={{marginLeft: 10}}/>
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                            {editFormOpen? 'Click here to close the menu editor' : 'Click here to edit menu details'}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+    
+                            <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
+                                <Card sx={{ boxShadow: 1 }}>
+                                    <CardContent>
+                                        <Table>
+                                            <TableBody>
+                                                {menuArray.map((item, iterator) => (
+                                                    <TableRow key={iterator}>
+                                                        <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={6}>
+                                                            <MenuItemEdit itemobject={item} restaurantid={props.restaurantobjectprop.restaurant_id}/>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))} 
+                                                <TableRow>
+                                                    <TableCell>               
+                                                        <Grid item xs={12} md={12} lg={12} textAlign='center'>
+                                                            <AddMenuItem restaurantid={props.restaurantobjectprop.restaurant_id}/>
+                                                        </Grid>
                                                     </TableCell>
                                                 </TableRow>
-                                            ))} 
-                                            <TableRow>
-                                                <TableCell>               
-                                                    <Grid item xs={12} md={12} lg={12} textAlign='center'>
-                                                        <AddMenuItem restaurantid={"23b3af84-b7cf-496a-8283-e20fcadb1ab6"}/>
-                                                    </Grid>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </CardContent>
-                            </Card>
-                        </Collapse>
-                        <Snackbar
-                            open={snackbarOpen}
-                            autoHideDuration={3000}
-                            onClose={handleSnackbarClose}
-                            // message="Successfully updated"
-                            severity="success"
-                        >
-                            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-                                Successfully Updated
-                            </Alert>
-                        </Snackbar>
+                                            </TableBody>
+                                        </Table>
+                                    </CardContent>
+                                </Card>
+                            </Collapse>
+                            <Snackbar
+                                open={snackbarOpen}
+                                autoHideDuration={3000}
+                                onClose={handleSnackbarClose}
+                                // message="Successfully updated"
+                                severity="success"
+                            >
+                                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                                    Successfully Updated
+                                </Alert>
+                            </Snackbar>
+                        </Grid>
                     </Grid>
-                </Grid>
+    
+            </ThemeProvider>
+        )
+    }
 
-        </ThemeProvider>
-    )
 }
 
 export default MenuDetails
