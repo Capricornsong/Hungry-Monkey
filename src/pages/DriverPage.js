@@ -3,12 +3,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, useMediaQuery, Snackbar, Alert } from '@mui/material'
 import DriverTable from '../components/DriverTable'
 import axios from 'axios';
+import { RepeatOneSharp } from '@mui/icons-material';
 
 function DriverPage(){
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const [currentOrder, setCurrentOrder] = React.useState([{}])
+    const [currentOrder, setCurrentOrder] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(true)
     const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+
+    const userObject = JSON.parse(sessionStorage.getItem('user'))
 
     const closeSnackbar = () => {
         setSnackbarOpen(false)
@@ -25,10 +28,15 @@ function DriverPage(){
 
     React.useEffect(() => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByDeliverEmail', {
-            'order_deliver_by': 'bobmarley@bob.com',
+            'order_deliver_by': userObject.email,
+            //'order_deliver_by': 'bobmarley@bob.com'
         })
         .then(response => {
-            setCurrentOrder(response.data)
+            response.data.forEach(order => {
+                if(order.order_status === 'delivering'){
+                    setCurrentOrder(response.data)
+                }
+            })
             setIsLoading(false)
         })
         .catch(error => {
@@ -89,19 +97,23 @@ function DriverPage(){
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                            Hi🖐 Liuosng HE~
+                                            Hi🖐 {userObject.first_name + " " + userObject.last_name}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                            UserId: 2151646
+                                            UserId: {userObject.uid}
                                         </Typography>
                                         <Typography  variant="body2" color="text.secondary" textAlign='center'>
-                                            Driver Status: Out for Delivery
+                                            Driver Status: {userObject.deliver_status}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                             </Card>
                         </Grid>
                         <Grid item lg={8} md={8} xs={12}>
+                            {/**
+                             * 
+                             * 
+                             */}
                             <DriverTable orderDetails={currentOrder[0]} setSnackbarOpen={setSnackbarOpen}/>
                         </Grid>
                     </Grid>
