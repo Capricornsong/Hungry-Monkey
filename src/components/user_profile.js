@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-05 17:07:52
+ * @LastEditTime: 2022-05-05 19:47:48
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -33,7 +33,7 @@ export const UpdateProfile = (props) => {
 
     //use for get current user's info
     const currentUser = useAuth()
-
+    const [Buttondisable,setButtondisable] = useState(true)
     const [profileData, setProfileData] = useState({
         first_name: '',
         last_name: '',
@@ -52,6 +52,7 @@ export const UpdateProfile = (props) => {
 
     // To make Input box inputable
     const handleUpdateInputBox = (event) => {
+        setButtondisable(false)
         setProfileData({
             ...profileData,
             [event.target.name]: event.target.value
@@ -296,6 +297,7 @@ export const UpdateProfile = (props) => {
                                         // borderColor: theme.palette.grey[100]
                                     }}
                                     color='primary'
+                                    disabled={Buttondisable}
                                 >
                                     Update
                                 </Button>

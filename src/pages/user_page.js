@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-05 16:27:16
+ * @LastEditTime: 2022-05-05 19:32:14
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -60,6 +60,7 @@ function Details(props) {
     const handleMap = (event) => {
         // console.log(row.order_id)
         setOpen(true)
+        // console.log(event.currentTarget);
     }
     const style = {
         position: 'absolute',
@@ -168,7 +169,7 @@ function Details(props) {
 export default function User_page() {
     // this.props.history.push('/login')
     // console.log('uid', sessionStorage.getItem('uid'))
-    console.log('sessionuid', sessionStorage.getItem('uid'))
+    // console.log('sessionuid', sessionStorage.getItem('uid'))
     const navigate = useNavigate()
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
@@ -199,6 +200,7 @@ export default function User_page() {
                     setOrderlist([...response.data])
                 })
                 .catch(error => {
+                    alert(error)
                     console.log(error)
                 })
         }

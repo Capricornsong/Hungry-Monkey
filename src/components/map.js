@@ -43,7 +43,7 @@ LinearProgressWithLabel.propTypes = {
      */
     value: PropTypes.number.isRequired
 }
-export const Map = () => {
+export const Map = (props) => {
     const [progress, setProgress] = useState(1)
     const [result, setResult] = useState(null)
     const [lat, setLat] = useState()
@@ -53,7 +53,6 @@ export const Map = () => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         // libraries:['places']
     })
-
 
     useEffect(() => {
         const timer = setInterval(() => {
