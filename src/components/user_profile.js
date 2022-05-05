@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-03 19:29:26
+ * @LastEditTime: 2022-05-05 16:00:43
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -73,7 +73,7 @@ export const UpdateProfile = (props) => {
         try {
             await logout()
         } catch (error) {
-            console.log('register line86:', error)
+            console.log('userprogile line76:', error)
         }
         }
 
@@ -96,7 +96,10 @@ export const UpdateProfile = (props) => {
             .then(response => {
                 console.log(response.data)
                 setProfileData({ ...response.data })
-                console.log(profileData)
+                console.log(response.data);
+                sessionStorage.setItem('user',JSON.stringify(response.data))
+                
+                
             })
             .catch(error => {
                 console.log(error)

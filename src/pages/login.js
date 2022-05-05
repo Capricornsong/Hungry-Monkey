@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-02 20:29:52
+ * @LastEditTime: 2022-05-05 15:50:41
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -33,6 +33,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material'
+import axios from 'axios'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -47,26 +48,12 @@ function Copyright(props) {
 }
 // const currentUser = auth.currentUser
 export default function SignIn() {
-  //   const logoutUser = async () => {
-  //     try {
-  //       // await logout()
-  //     } catch (error) {
-  //       console.log('register line86:', error)
-  //     }
-  //   }
-
-  //   React.useEffect(() => {
-  //     logoutUser()
-  // }, [])
   const navigate = useNavigate()
   React.useEffect(() => {
-    if (auth.currentUser) {
+    if (sessionStorage.getItem('uid')) {
       navigate('/home')
     }
   })
-
-
-
 
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -84,11 +71,6 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // })
-
     localStorage.clear()
     login(data.get('email'), data.get('password')).then((response) => {
       console.log('response:', response)
@@ -96,6 +78,11 @@ export default function SignIn() {
         console.log('currentUser.uid', response.user.uid)
         sessionStorage.setItem('uid', response.user.uid)
         // sessionStorage.setItem('firstname', currentUser.first_name)
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID',{
+          uid: response.user.uid
+        }).then({
+          
+        })
         navigate('/user_page')
         // window.open('user_page', '_self')
       }
