@@ -15,7 +15,7 @@ function RestaurantDetails(props) {
     const theme = React.useMemo( () =>
         createTheme({
             palette: {
-            mode: prefersDarkMode ? 'dark' : 'light',
+            mode: 'light',
             },
         }),
         [prefersDarkMode],
