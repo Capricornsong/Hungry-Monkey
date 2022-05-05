@@ -4,8 +4,8 @@ import { DataGrid } from "@mui/x-data-grid"
 import axios from "axios"
 
 
-function AssignedOrders(props) {
-    const [assignedOrders, setAssignedOrders] = useState([])
+function CompletedOrders(props) {
+    const [completedOrders, setCompletedOrders] = useState([])
 
     function getOrderItems(params) {
         return(
@@ -26,10 +26,10 @@ function AssignedOrders(props) {
         // get restaurants by status
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByRestaurantNameAndStatus', {
             "restaurant_name": "Paskal's Burgers",
-            "order_status": "delivering"
+            "order_status": "delivered"
          })
         .then(response => {
-            setAssignedOrders(response.data)
+            setCompletedOrders(response.data)
             
         })
         .catch(error => {
@@ -42,10 +42,10 @@ function AssignedOrders(props) {
     return (
         <>
             <div style={{ width: '100%' }}>
-                <Typography variant='h5'>Assigned Orders</Typography>
+                <Typography variant='h5'>Completed Orders</Typography>
                 <DataGrid
                     autoHeight
-                    rows={assignedOrders}
+                    rows={completedOrders}
                     columns={columns}
                     getRowId={(row) => row.order_id}
                 />
@@ -54,4 +54,4 @@ function AssignedOrders(props) {
     )
 }
 
-export default AssignedOrders
+export default CompletedOrders

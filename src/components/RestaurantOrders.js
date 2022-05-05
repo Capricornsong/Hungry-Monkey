@@ -3,6 +3,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Card, CardActionArea, CardContent, Collapse, Grid, Typography, useMediaQuery } from '@mui/material'
 import TaskIcon from '@mui/icons-material/Task'
 import UnassignedOrders from './UnassignedOrders'
+import AssignedOrders from './AssignedOrders'
+import CompletedOrders from './CompletedOrders'
 
 
 function RestaurantDetails(props) { 
@@ -42,6 +44,8 @@ function RestaurantDetails(props) {
                             <Card sx={{ boxShadow: 3 }}>
                                 <CardContent>
                                     <UnassignedOrders restaurantName={"Paskal's Burgers"}/>
+                                    <AssignedOrders restaurantName={"Paskal's Burgers"}/>
+                                    <CompletedOrders restaurantName={"Paskal's Burgers"}/>
                                 </CardContent>
                             </Card>
                         </Collapse>

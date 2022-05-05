@@ -1,10 +1,16 @@
-import { Box, Button, Card, CardContent, Grid, TextField } from '@mui/material'
+import { Alert, Box, Button, Card, CardContent, Grid, Snackbar, TextField } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 function MenuItemEdit(props) { 
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false)
+    }
 
     const [menuItemObject, setMenuItemObject] = useState({
         restaurant_id: '',
@@ -42,7 +48,7 @@ function MenuItemEdit(props) {
                 console.log(response.data)
                 if (response.data.result) {
                     console.log('success')
-                    // add snackbar
+                    setSnackbarOpen(true)
                     setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
                 }
             })
@@ -57,7 +63,7 @@ function MenuItemEdit(props) {
         .then(response => {
             console.log(response.data)
             if (response.data.result) {
-                // add snackbar
+                setSnackbarOpen(true)
                 setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
             }
         })
@@ -135,6 +141,18 @@ function MenuItemEdit(props) {
                     </CardContent>
                 </Card>
             </form>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                // message="Successfully updated"
+                severity="success"
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Successfully Updated
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
