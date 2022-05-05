@@ -1,3 +1,11 @@
+/*
+ * @Author: Liusong He
+ * @Date: 2022-04-27 20:42:41
+ * @LastEditTime: 2022-05-02 17:22:05
+ * @FilePath: \coursework_git\src\util\firebaseAuth.js
+ * @Email: lh2u21@soton.ac.uk
+ * @Description: 
+ */
 import {useEffect, useState} from "react"
 
 // Import the functions you need from the SDKs you need
@@ -22,7 +30,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const auth = getAuth()
+export const auth = getAuth()
 
 export function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password)

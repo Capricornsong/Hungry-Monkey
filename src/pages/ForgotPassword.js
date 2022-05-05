@@ -1,17 +1,16 @@
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material'
-import { createTheme } from '@mui/system'
+import { Box, Button, Container, TextField, Typography, CssBaseline } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
 import Navbar from '../components/Navbar'
 
-function ForgotPassword() {
-  const theme = createTheme()
+const theme = createTheme()
 
+function ForgotPassword() {
   return (
-    <div id="forgot-password-div">
-      <Navbar />
       <ThemeProvider theme={theme}>
+        <Navbar />
         <Container component="main" maxWidth="sm">
+        <CssBaseline />
           <Box
             sx={{
               marginTop: 8,
@@ -44,7 +43,6 @@ function ForgotPassword() {
           </Box>
         </Container>
       </ThemeProvider>
-    </div>
   )
 }
 
