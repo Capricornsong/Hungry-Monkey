@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-05 16:16:25
+ * @LastEditTime: 2022-05-05 19:32:14
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -20,6 +20,7 @@ import { auth } from "../util/firebaseAuth"
 import { useNavigate } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import Navbar from '../components/Navbar'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -59,6 +60,7 @@ function Details(props) {
     const handleMap = (event) => {
         // console.log(row.order_id)
         setOpen(true)
+        // console.log(event.currentTarget);
     }
     const style = {
         position: 'absolute',
@@ -165,11 +167,9 @@ function Details(props) {
 
 
 export default function User_page() {
-
-
     // this.props.history.push('/login')
     // console.log('uid', sessionStorage.getItem('uid'))
-    console.log('sessionuid', sessionStorage.getItem('uid'))
+    // console.log('sessionuid', sessionStorage.getItem('uid'))
     const navigate = useNavigate()
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
@@ -200,6 +200,7 @@ export default function User_page() {
                     setOrderlist([...response.data])
                 })
                 .catch(error => {
+                    alert(error)
                     console.log(error)
                 })
         }
@@ -210,6 +211,7 @@ export default function User_page() {
 
     return (
         <ThemeProvider theme={theme}>
+            <Navbar/>
             <Box
                 // component="main"
                 sx={{
@@ -250,7 +252,7 @@ export default function User_page() {
                                         <Typography variant="body2" color="text.secondary" textAlign='center'>
                                             UserId: {sessionStorage.getItem('uid')}
                                         </Typography>
-                                    </CardContent>
+                                    </CardContent>\
                                 </CardActionArea>
                             </Card>
                             <Typography gutterBottom variant="h6" component="div" sx={{

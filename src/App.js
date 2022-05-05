@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 17:52:35
- * @LastEditTime: 2022-04-29 17:13:04
+ * @LastEditTime: 2022-05-05 19:14:01
  * @FilePath: \coursework_git\src\App.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -17,7 +17,6 @@ import Checkout from './pages/Checkout'
 import { CartProvider } from './components/CartContext'
 import DriverPage from "./pages/DriverPage"
 import RestaurantOwnerPage from "./pages/RestaurantOwnerPage"
-
 function App() {
     return (
         <BrowserRouter>
@@ -29,6 +28,7 @@ function App() {
                 <li><Link to="/admin_page">Admin_page</Link></li>
                 <li><Link to="/driver_page">Driver page</Link></li>
                 <li><Link to="/restaurant_owner_page">RestaurantOwnerPage</Link></li>
+                <li><Link to="/forbidden">Forbidden page</Link></li>
             </ul>
             <Routes>
                 <Route path="user_page" element={<User_page/>}/>
