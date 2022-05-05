@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-04 14:29:14
+ * @LastEditTime: 2022-05-05 16:01:45
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -71,7 +71,7 @@ function Details(props) {
         boxShadow: 24,
         p: 4,
     }
-    sessionStorage.getItem('uid ')
+    // sessionStorage.getItem('uid ')
     return (
         // <Card sx={{
         //     // maxWidth:345,
@@ -242,7 +242,7 @@ export default function User_page() {
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" textAlign='center
                         '>
-                                            Hi🖐 {sessionStorage.getItem('firstname')}~
+                                            Hi🖐 {JSON.parse(sessionStorage.getItem('user')).first_name}~
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" textAlign='center'>
                                             UserId: {sessionStorage.getItem('uid')}
