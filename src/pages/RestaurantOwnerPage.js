@@ -11,6 +11,7 @@ function RestaurantOwnerPage(){
     const [isLoading, setIsLoading] = React.useState(false)
     const [restaurantObject, setRestaurantObject] = React.useState([]);
 
+    sessionStorage.getItem('uid')
     const theme = React.useMemo( () =>
         createTheme({
             palette: {
