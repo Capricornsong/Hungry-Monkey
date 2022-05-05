@@ -184,7 +184,6 @@ function RestaurantDetails(props) {
                                                                             <Input accept="image/*" id="icon-button-file" type="file" />
                                                                             {selectedFile ? selectedFile.name : "Select Image"}
                                                                         </label>
-
                                                                     </Grid>
                                                                     <Grid
                                                                         item xs={12} md={12} lg={12} textAlign='right' >
