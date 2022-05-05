@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-05 18:57:03
+ * @LastEditTime: 2022-05-05 19:17:14
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -38,7 +38,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+      <Link color="inherit" href="">
         Hungry Monkey
       </Link>{' '}
       {new Date().getFullYear()}
