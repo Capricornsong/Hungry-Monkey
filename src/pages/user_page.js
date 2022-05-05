@@ -20,6 +20,7 @@ import { auth } from "../util/firebaseAuth"
 import { useNavigate } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import Navbar from '../components/Navbar'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -165,8 +166,6 @@ function Details(props) {
 
 
 export default function User_page() {
-
-
     // this.props.history.push('/login')
     // console.log('uid', sessionStorage.getItem('uid'))
     console.log('sessionuid', sessionStorage.getItem('uid'))
@@ -210,6 +209,7 @@ export default function User_page() {
 
     return (
         <ThemeProvider theme={theme}>
+            <Navbar/>
             <Box
                 // component="main"
                 sx={{

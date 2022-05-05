@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-05 16:57:46
+ * @LastEditTime: 2022-05-05 19:11:59
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -59,7 +59,7 @@ export default function SignUp() {
   const navigate = useNavigate()
   React.useEffect(() => {
     if (sessionStorage.getItem('uid')) {
-      navigate('/home')
+      navigate('/user_page')
     }
   })
   const validationSchema = Yup.object().shape({
@@ -155,7 +155,7 @@ export default function SignUp() {
               console.log('response:', response.data)
               // sessionStorage.setItem('uid', currentUser.uid)
               navigate('/user_page')
-              sessionStorage.setItem('user',JSON.stringify(newAccount) )
+              sessionStorage.setItem('user', JSON.stringify(newAccount))
               // setOrderlist([...response.data])
               // window.open('user_page','_self')
             })
@@ -198,7 +198,7 @@ export default function SignUp() {
   const [firstname, setFirstname] = React.useState('')
 
   // console.log('currentUser.uid',currentUser);
-  if (!auth.currentUser) {
+  if (!sessionStorage.getItem('uid')) {
     return (
       <ThemeProvider theme={theme}>
         <Navbar />
@@ -468,7 +468,8 @@ export default function SignUp() {
     )
   }
   else {
-    window.open('\Home', '_self')
+    // window.open('\Home', '_self')
+    navigate('/user_page')
     return null
   }
 }

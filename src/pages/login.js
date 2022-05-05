@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-05 16:42:57
+ * @LastEditTime: 2022-05-05 18:57:03
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -51,7 +51,7 @@ export default function SignIn() {
   const navigate = useNavigate()
   React.useEffect(() => {
     if (sessionStorage.getItem('uid')) {
-      navigate('/home')
+      navigate('/user_page')
     }
   })
 
@@ -89,6 +89,10 @@ export default function SignIn() {
       console.log('err:', err)
       alert('username or password is wrong')
     })
+  }
+
+  const handleGooleLogin = () => {
+    console.log('dsadad')
   }
 
   // if (!auth.currentUser) {
@@ -167,6 +171,7 @@ export default function SignIn() {
               }}
               startIcon={<GoogleIcon />}
               color='warning'
+              onClick={handleGooleLogin}
             >
               Sign In with Google
             </Button>

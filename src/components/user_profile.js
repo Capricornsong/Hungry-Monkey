@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-05 16:49:35
+ * @LastEditTime: 2022-05-05 17:07:52
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -11,7 +11,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { countries } from '../data/data'
 import { getProfile } from '../util/script'
 import { useEffect, useState } from 'react'
-import { auth, logout} from "../util/firebaseAuth"
+import { auth, logout } from "../util/firebaseAuth"
 import {
     Alert,
     Box,
@@ -75,12 +75,12 @@ export const UpdateProfile = (props) => {
         } catch (error) {
             console.log('userprogile line76:', error)
         }
-        }
+    }
 
     const handleLogout = () => {
         sessionStorage.clear()
         logoutUser()
-        window.open('login','_self')
+        window.open('login', '_self')
     }
 
     useEffect(() => {
@@ -90,7 +90,7 @@ export const UpdateProfile = (props) => {
         //        console.log(responsedata)
         //    })
         console.log('what happend', sessionStorage.getItem('uid'))
-        
+
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
             uid: sessionStorage.getItem('uid'),
         })
@@ -98,8 +98,8 @@ export const UpdateProfile = (props) => {
                 console.log(response.data)
                 setProfileData({ ...response.data })
                 console.log(response.data)
-                if(!sessionStorage.getItem('user')){
-                    sessionStorage.setItem('user',JSON.stringify(response.data))
+                if (!sessionStorage.getItem('user')) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data))
                 }
             })
             .catch(error => {
@@ -274,7 +274,7 @@ export const UpdateProfile = (props) => {
                                     variant="contained"
                                     sx={{
                                         mt: 3,
-                                        mr:3,
+                                        mr: 3,
                                         mb: 1,
                                         // color: 'grey.700',
                                         // backgroundColor: theme.palette.grey[50],
