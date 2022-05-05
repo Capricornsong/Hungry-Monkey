@@ -75,7 +75,6 @@ function Home() {
           <Skeleton variant="rectangular" />
         </Container>
       </ThemeProvider>
-
     )
   }
 
