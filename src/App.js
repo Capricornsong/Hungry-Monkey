@@ -15,6 +15,8 @@ import ForgotPassword from './pages/ForgotPassword'
 import Admin_page from './pages/admin_page'
 import Checkout from './pages/Checkout'
 import { CartProvider } from './components/CartContext'
+import DriverPage from "./pages/DriverPage"
+import RestaurantOwnerPage from "./pages/RestaurantOwnerPage"
 
 function App() {
     return (
