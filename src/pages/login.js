@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 18:07:07
- * @LastEditTime: 2022-05-05 15:50:41
+ * @LastEditTime: 2022-05-05 16:42:57
  * @FilePath: \coursework_git\src\pages\login.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -78,11 +78,6 @@ export default function SignIn() {
         console.log('currentUser.uid', response.user.uid)
         sessionStorage.setItem('uid', response.user.uid)
         // sessionStorage.setItem('firstname', currentUser.first_name)
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID',{
-          uid: response.user.uid
-        }).then({
-          
-        })
         navigate('/user_page')
         // window.open('user_page', '_self')
       }

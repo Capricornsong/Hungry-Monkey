@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-02 20:30:26
+ * @LastEditTime: 2022-05-05 16:57:46
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -58,7 +58,7 @@ function Copyright(props) {
 export default function SignUp() {
   const navigate = useNavigate()
   React.useEffect(() => {
-    if (auth.currentUser) {
+    if (sessionStorage.getItem('uid')) {
       navigate('/home')
     }
   })
@@ -105,7 +105,7 @@ export default function SignUp() {
     resolver: yupResolver(validationSchema)
   })
 
-  const currentUser = auth.currentUser
+
   const onSubmit = (event) => {
 
     // console.log(event)
@@ -124,6 +124,7 @@ export default function SignUp() {
     })
 
     signup(event.email, event.password1).then((response) => {
+      const currentUser = auth.currentUser
       console.log('currentUser.uid in register line 133', currentUser.uid)
       // console.log('currentUser.email in register line 110', currentUser.email)
       sessionStorage.clear()
@@ -135,8 +136,9 @@ export default function SignUp() {
           console.log('currentUser.uid', currentUser.uid)
           sessionStorage.setItem('uid', currentUser.uid)
           sessionStorage.setItem('firstname', currentUser.first_name)
+          // sessionStorage.setItem('user',)
           // window.open('user_page', '_self')
-          axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', {
+          const newAccount = {
             'uid': currentUser.uid,
             'email': event.email,
             'first_name': event.firstName,
@@ -147,10 +149,13 @@ export default function SignUp() {
             'city': event.city,
             'country': event.country,
             'postcode': event.postcode
-          })
+          }
+          axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
             .then(response => {
               console.log('response:', response.data)
               // sessionStorage.setItem('uid', currentUser.uid)
+              navigate('/user_page')
+              sessionStorage.setItem('user',JSON.stringify(newAccount) )
               // setOrderlist([...response.data])
               // window.open('user_page','_self')
             })

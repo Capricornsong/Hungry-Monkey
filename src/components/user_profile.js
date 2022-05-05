@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 21:29:39
- * @LastEditTime: 2022-05-05 16:00:43
+ * @LastEditTime: 2022-05-05 16:49:35
  * @FilePath: \coursework_git\src\components\user_profile.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: This page is used to update users information
@@ -90,16 +90,17 @@ export const UpdateProfile = (props) => {
         //        console.log(responsedata)
         //    })
         console.log('what happend', sessionStorage.getItem('uid'))
+        
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID', {
             uid: sessionStorage.getItem('uid'),
         })
             .then(response => {
                 console.log(response.data)
                 setProfileData({ ...response.data })
-                console.log(response.data);
-                sessionStorage.setItem('user',JSON.stringify(response.data))
-                
-                
+                console.log(response.data)
+                if(!sessionStorage.getItem('user')){
+                    sessionStorage.setItem('user',JSON.stringify(response.data))
+                }
             })
             .catch(error => {
                 console.log(error)
