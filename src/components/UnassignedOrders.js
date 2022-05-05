@@ -64,7 +64,7 @@ function UnassignedOrders(props) {
     useEffect(() => {
         // get restaurants by status
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByRestaurantNameAndStatus', {
-            "restaurant_name": "Paskal's Burgers",
+            "restaurant_name": props.restaurantName,
             "order_status": "placed"
          })
         .then(response => {
