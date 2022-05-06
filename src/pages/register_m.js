@@ -7,50 +7,51 @@
  * @Description: The meterial version of the login-in page
  */
 import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  CssBaseline,
-  Container,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-  useMediaQuery,
-  Select,
-  MenuItem
+    Avatar,
+    Box,
+    Button,
+    Checkbox,
+    CssBaseline,
+    Container,
+    Divider,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    InputLabel,
+    Grid,
+    Link,
+    TextField,
+    Typography,
+    useMediaQuery,
+    Select,
+    MenuItem, Alert, Snackbar
 } from '@mui/material'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import {useForm, Controller} from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { countries } from '../data/data'
+import {countries} from '../data/data'
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { useFormControl } from '@mui/material/FormControl'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import {useFormControl} from '@mui/material/FormControl'
+import {createTheme, ThemeProvider} from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
-import { signup, auth, login } from "../util/firebaseAuth"
+import {signup, auth, login} from "../util/firebaseAuth"
 import Navbar from '../components/Navbar'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
+
 function Copyright(props) {
 
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="">
-        Hungry Monkey
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="">
+                Hungry Monkey
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    )
 }
 
 // const theme = createTheme()
@@ -92,89 +93,79 @@ export default function SignUp() {
   //   }
   // }
 
-  // React.useEffect(() => {
-  //   logoutUser()
-  // }, [])
+    // React.useEffect(() => {
+    //   logoutUser()
+    // }, [])
 
-  //use for get current user's info
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(validationSchema)
-  })
+    //use for get current user's info
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: {errors}
+    } = useForm({
+        resolver: yupResolver(validationSchema)
+    })
 
   const [handleAddressInput, setHandleAddressInput] = React.useState('')
   const onSubmit = (event) => {
 
-    // console.log(event)
-    // event.preventDefault()
-    // const data = new FormData(event);
-    console.log({
-      firstName: event.firstName,
-      lastName: event.lastName,
-      email: event.email,
-      password1: event.password1,
-      password2: event.password2,
-      address1: event.address1,
-      address2: event.address2,
-      country: event.country,
-      role: role
-    })
+        console.log({
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            password1: event.password1,
+            password2: event.password2,
+            address1: event.address1,
+            address2: event.address2,
+            country: event.country,
+            role: role
+        })
+        signup(event.email, event.password1).then((response) => {
+            const currentUser = auth.currentUser
+            console.log('currentUser.uid in register line 133', currentUser.uid)
+            sessionStorage.clear()
+            console.log(currentUser)
+            if (currentUser) {
+                console.log('-------------------')
+                console.log('currentUser.uid', currentUser.uid)
+                //sessionStorage.setItem('uid', currentUser.uid)
+                //sessionStorage.setItem('firstname', currentUser.first_name)
+                const newAccount = {
+                    'uid': currentUser.uid,
+                    'email': event.email,
+                    'first_name': event.firstName,
+                    'last_name': event.lastName,
+                    'role': role,
+                    'address_first_line': event.address1,
+                    'address_second_line': event.address2,
+                    'city': event.city,
+                    'country': event.country,
+                    'postcode': event.postcode
+                }
+                axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
+                    .then(response => {
+                        console.log('response:', response.data)
+                        //sessionStorage.setItem('user', JSON.stringify(newAccount))
+                        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/verifyEmail',{
+                            uid: currentUser.uid,
+                            email: event.email
+                        }).then(()=>{
+                            //TODO 弹框提醒已经发送邮件， 重定向至login
+                            setEmptyItem(true)
+                            console.log("Verification Email Sent")
+                            navigate('/login')
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
 
-    signup(event.email, event.password1).then((response) => {
-      const currentUser = auth.currentUser
-      console.log('currentUser.uid in register line 133', currentUser.uid)
-      // console.log('currentUser.email in register line 110', currentUser.email)
-      sessionStorage.clear()
-
-      login(event.email, event.password1).then((response) => {
-        console.log(currentUser)
-        if (currentUser) {
-          console.log('-------------------')
-          console.log('currentUser.uid', currentUser.uid)
-          sessionStorage.setItem('uid', currentUser.uid)
-          sessionStorage.setItem('firstname', currentUser.first_name)
-          // sessionStorage.setItem('user',)
-          // window.open('user_page', '_self')
-          const newAccount = {
-            'uid': currentUser.uid,
-            'email': event.email,
-            'first_name': event.firstName,
-            'last_name': event.lastName,
-            'role': role,
-            'address_first_line': event.address1,
-            'address_second_line': event.address2,
-            'city': event.city,
-            'country': event.country,
-            'postcode': event.postcode
-          }
-          axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
-            .then(response => {
-              console.log('response:', response.data)
-              // sessionStorage.setItem('uid', currentUser.uid)
-              navigate('/user_page')
-              sessionStorage.setItem('user', JSON.stringify(newAccount))
-              // setOrderlist([...response.data])
-              // window.open('user_page','_self')
-            })
-            .catch(error => {
-              console.log(error)
-            })
-        }
-        //fali...
-        else {
-
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
-      console.log("Success")
-    }).catch((err) => {
-      console.log(err)
-    })
+            }
+            console.log("Sign Up Success")
+        }).catch((err) => {
+            console.log(err)
+        })
 
 
   }
@@ -191,48 +182,51 @@ export default function SignUp() {
     console.log(event.target.value)
   }
 
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          // mode: prefersDarkMode ? 'dark' : 'light',
-          mode: 'light'
-        },
-      }),
-    [prefersDarkMode],
-  )
-  const [firstname, setFirstname] = React.useState('')
+    const handleClose = () =>{
+        setEmptyItem(false)
+    }
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const theme = React.useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    // mode: prefersDarkMode ? 'dark' : 'light',
+                    mode: 'light'
+                },
+            }),
+        [prefersDarkMode],
+    )
+    const [firstname, setFirstname] = React.useState('')
 
-  // console.log('currentUser.uid',currentUser);
-  if (!sessionStorage.getItem('uid')) {
-    return (
-      <ThemeProvider theme={theme}>
-        <Navbar />
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            {/* icon */}
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
+    // console.log('currentUser.uid',currentUser);
+    if (!sessionStorage.getItem('uid')) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Navbar/>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline/>
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {/* icon */}
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
+                        </Avatar>
 
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            <FormControl component="form" noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }
-              }>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
+                        <Typography component="h1" variant="h5">
+                            Sign up
+                        </Typography>
+                        <FormControl component="form" noValidate
+                                     onSubmit={handleSubmit}
+                                     sx={{mt: 3}
+                                     }>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
 
                   <InputLabel>Role</InputLabel>
                   <Select
@@ -336,7 +330,7 @@ export default function SignUp() {
                   </Typography>
                 </Grid>
 
-                
+
                   <Grid item xs={12} display={handleAddressInput}>
                     <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
 
@@ -448,7 +442,7 @@ export default function SignUp() {
                 />
               </Grid> */}
                 </Grid>
-              
+
 
               <Button
                 type="submit"
@@ -467,16 +461,25 @@ export default function SignUp() {
                 </Grid>
               </Grid>
 
-            </FormControl>
-          </Box>
-          <Copyright sx={{ mt: 5 }} />
-        </Container>
-      </ThemeProvider>
-    )
-  }
-  else {
-    // window.open('\Home', '_self')
-    navigate('/user_page')
-    return null
-  }
+                        </FormControl>
+                    </Box>
+                    <Snackbar
+                        open={emptyItem}
+                        autoHideDuration={3000}
+                        onClose={handleClose}
+                        severity="info"
+                    >
+                        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                            No item been selected!
+                        </Alert>
+                    </Snackbar>
+                    <Copyright sx={{mt: 5}}/>
+                </Container>
+            </ThemeProvider>
+        )
+    } else {
+        // window.open('\Home', '_self')
+        navigate('/user_page')
+        return null
+    }
 }
