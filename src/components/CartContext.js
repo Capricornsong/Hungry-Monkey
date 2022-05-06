@@ -60,6 +60,7 @@ export function CartProvider({ children }) {
     const clearCart = () => {
         setCartItems([])
         setCartTotal(0)
+        setChosenRestaurant('')
     }
 
     const setRestaurant = (chosenRestaurantId) => {
@@ -69,7 +70,7 @@ export function CartProvider({ children }) {
     
 
     return(
-        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo, setRestaurant}}>{children}</CartContext.Provider>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo, setRestaurant, chosenRestaurant}}>{children}</CartContext.Provider>
     );
 }
 

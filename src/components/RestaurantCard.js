@@ -27,7 +27,6 @@ function RestaurantCard(props) {
 
     const [isLoading, setIsLoading] = useState(false)
     const [menuItems, setMenuItems] = useState([]);
-    console.dir({props})
 
     useEffect(() => {
         if(props.restaurantid !== undefined){
@@ -125,7 +124,7 @@ function RestaurantCard(props) {
                                                 startIcon={<AddCircleOutlineIcon/>}
                                                 onClick={() => {
                                                     addToCart(item.food_name, item.food_price, 1)
-                                                    setRestaurant('11121')
+                                                    setRestaurant(props.name)
                                                 }}
                                             >Add to cart</Button>
                                         </TableCell>

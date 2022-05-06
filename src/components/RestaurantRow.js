@@ -42,7 +42,6 @@ function RestaurantRow(props) {
                         alignItems="center"
                     >  
                         {props.allRestaurants.map((item) => {
-                            console.log("item here", item)
                             return <RestaurantCard 
                                 name={item.name}
                                 key={item.name}
