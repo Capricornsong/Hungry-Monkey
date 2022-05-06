@@ -99,7 +99,6 @@ export default function SignIn() {
           alert('username or password is wrong')
         })
       }else{
-        //TODO 弹窗
         setEmptyItem(true)
         console.log("Email not verified")
       }
@@ -242,7 +241,7 @@ export default function SignIn() {
             severity="info"
         >
           <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            No item been selected!
+            Please verify your email first
           </Alert>
         </Snackbar>
         <Copyright sx={{ mt: 8, mb: 4 }} />

@@ -152,7 +152,6 @@ export default function SignUp() {
               uid: currentUser.uid,
               email: event.email
             }).then(() => {
-              //TODO 弹框提醒已经发送邮件， 重定向至login
               setEmptyItem(true)
               console.log("Verification Email Sent")
               navigate('/login')
@@ -471,7 +470,7 @@ export default function SignUp() {
             severity="info"
           >
             <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-              No item been selected!
+              Verification Email Sent
             </Alert>
           </Snackbar>
           <Copyright sx={{ mt: 5 }} />
