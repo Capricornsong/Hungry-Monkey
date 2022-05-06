@@ -98,10 +98,12 @@ function RestaurantDetails(props) {
 
     
     const handleCapture = (event) => {
+        console.log('handlecapture')
         console.log(event.target.value);
         setSelectedFile(event)
     }
     const handleUploadImage = () => {
+        console.log('handlecapture')
         // saveFace(selectedFile)
         // console.log(selectedFile);
     }
