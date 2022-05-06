@@ -10,7 +10,7 @@ export function CartProvider({ children }) {
     const [userInfo, setUserInfo] = useState([])
 
     const calculateTotal = (price) => {
-        setCartTotal(cartTotal + price)
+        setCartTotal(cartItems.reduce((a, b) => a + b.price * b.quantity, price));
     }
 
     useEffect(() => {
@@ -20,11 +20,11 @@ export function CartProvider({ children }) {
         }
         const cartTotal = window.localStorage.getItem('cartTotal');
         if(cartTotal !== null) {
-            setCartTotal(JSON.parse(cartTotal));
+            setCartTotal(cartTotal);
         }
         const chosenRestaurant = window.localStorage.getItem('chosenRestaurant');
         if(chosenRestaurant !== null) {
-            setCartTotal(JSON.parse(chosenRestaurant));
+            setChosenRestaurant(JSON.parse(chosenRestaurant));
         }
       }, []);
 
@@ -33,7 +33,7 @@ export function CartProvider({ children }) {
       }, [cartItems]);
 
     useEffect(() => {
-        window.localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
+        window.localStorage.setItem('cartTotal', cartTotal);
     }, [cartTotal]);
 
     useEffect(() => {
