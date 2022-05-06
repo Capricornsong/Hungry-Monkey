@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Avatar,
   Box,
+  Alert,
   Button,
   Checkbox,
   CssBaseline,
@@ -31,6 +32,7 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  Snackbar,
 } from '@mui/material'
 import axios from 'axios'
 import {signWithGoogle, splitName} from "../util/firebaseAuth"
@@ -55,6 +57,13 @@ export default function SignIn() {
       navigate('/user_page')
     }
   })
+
+  const[emptyItem, setEmptyItem] = React.useState(false)
+
+  const handleClose = () =>{
+    setEmptyItem(false)
+  }
+
 
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -93,12 +102,14 @@ export default function SignIn() {
         })
       }else{
         //TODO 弹窗
-
+        setEmptyItem(true)
         console.log("Email not verified")
       }
     })
 
   }
+
+
 
   const handleGoogleLogin = () => {
     console.log('Google Here')
@@ -224,6 +235,16 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
+        <Snackbar
+            open={emptyItem}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            severity="info"
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            No item been selected!
+          </Alert>
+        </Snackbar>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
