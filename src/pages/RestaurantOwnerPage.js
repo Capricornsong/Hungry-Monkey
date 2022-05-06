@@ -32,6 +32,7 @@ function RestaurantOwnerPage() {
     React.useEffect(() => {
         axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
             .then(response => {
+                console.log("Bug in Restaurant Owner Hit!")
                 response.data.forEach(restaurant => {
                     if(restaurant.owner === userObject.email){
                         setRestaurantObject(restaurant)
@@ -56,8 +57,18 @@ function RestaurantOwnerPage() {
             })
             .catch(error => {
                 console.log(error)
+                setNewOwner(true)
+                setNewOwnerObject({
+                    name: '',
+                    description: '',
+                    location: '',
+                    open_time: '',
+                    close_time: '',
+                    owner: userObject.email,
+                })
+                setIsLoading(false)
             })     
-    }, [restaurantObject])
+    }, [])
 
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
