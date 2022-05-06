@@ -1,8 +1,10 @@
-import { Box, Container, Button, Typography, CssBaseline, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TableFooter } from '@mui/material'
+import { Box, Container, Button, Typography, CssBaseline, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TableFooter, Snackbar, Alert } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../components/Navbar'
 import CartContext from '../components/CartContext'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const theme = createTheme()
 
@@ -11,10 +13,37 @@ function Checkout() {
   const { cartItems } = useContext(CartContext)
   const { clearCart } = useContext(CartContext)
   const { cartTotal } = useContext(CartContext)
+  const { chosenRestaurant } = useContext(CartContext)
+  const currentDate = new Date()
+  const timeParameter = currentDate.getHours() + ':' + currentDate.getMinutes()
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const navigate = useNavigate()
 
-  const handleOrderAdd = () => {
-    console.log(sessionStorage.get('uid'))
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false)
+}
+
+  const handleOrderAdd = () => { 
+    axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/placeNewOrder', {
+        'user_uid': sessionStorage.getItem('uid'),
+        'restaurant_name': chosenRestaurant,
+        'food_ordered': cartItems,
+        'order_placed_time': timeParameter,
+        'order_price': cartTotal
+    })
+    .then(response => {
+        setSnackbarOpen(true)
+        clearCart()
+        setTimeout(() => { navigate('/user_page') }, 700)
+    })
+    .catch(error => {
+        console.log(error)
+    })
   }
+
+    if (!sessionStorage.getItem('uid')) {
+        navigate('/login')
+    }
   
   return (
       <ThemeProvider theme={theme}>
@@ -46,9 +75,9 @@ function Checkout() {
                           </TableRow>
                       </TableHead>
                       <TableBody>
-                      {cartItems.map((item) => (
+                      {cartItems.map((item, iterator) => (
                           <TableRow
-                              key={item.food_name}
+                              key={iterator}
                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           >
                               <TableCell component="th" scope="row">{item.name}</TableCell>
@@ -77,6 +106,17 @@ function Checkout() {
                   </Table>
               </TableContainer>
           </Typography>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                // message="Successfully updated"
+                severity="success"
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Order successfully placed
+                </Alert>
+            </Snackbar>
           </Box>
         </Container>
       </ThemeProvider>

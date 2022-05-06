@@ -10,7 +10,7 @@ export function CartProvider({ children }) {
     const [userInfo, setUserInfo] = useState([])
 
     const calculateTotal = (price) => {
-        setCartTotal(cartTotal + price)
+        setCartTotal(cartItems.reduce((a, b) => a + b.price * b.quantity, price));
     }
 
     useEffect(() => {
@@ -20,11 +20,11 @@ export function CartProvider({ children }) {
         }
         const cartTotal = window.localStorage.getItem('cartTotal');
         if(cartTotal !== null) {
-            setCartTotal(JSON.parse(cartTotal));
+            setCartTotal(cartTotal);
         }
         const chosenRestaurant = window.localStorage.getItem('chosenRestaurant');
         if(chosenRestaurant !== null) {
-            setCartTotal(JSON.parse(chosenRestaurant));
+            setChosenRestaurant(JSON.parse(chosenRestaurant));
         }
       }, []);
 
@@ -33,7 +33,7 @@ export function CartProvider({ children }) {
       }, [cartItems]);
 
     useEffect(() => {
-        window.localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
+        window.localStorage.setItem('cartTotal', cartTotal);
     }, [cartTotal]);
 
     useEffect(() => {
@@ -47,9 +47,9 @@ export function CartProvider({ children }) {
             setCartItems(
                 cartItems.map((element) => 
                     element.name === name ? {...exists, quantity: exists.quantity + quantity} : element,
-                    calculateTotal(price*quantity)
                 )
             )
+            calculateTotal(price*quantity)
         } else {
             setCartItems((prevState) => [...prevState, {name, price, quantity}])
             calculateTotal(price*quantity)
@@ -60,6 +60,7 @@ export function CartProvider({ children }) {
     const clearCart = () => {
         setCartItems([])
         setCartTotal(0)
+        setChosenRestaurant('')
     }
 
     const setRestaurant = (chosenRestaurantId) => {
@@ -69,7 +70,7 @@ export function CartProvider({ children }) {
     
 
     return(
-        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo, setRestaurant}}>{children}</CartContext.Provider>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo, setRestaurant, chosenRestaurant}}>{children}</CartContext.Provider>
     );
 }
 
