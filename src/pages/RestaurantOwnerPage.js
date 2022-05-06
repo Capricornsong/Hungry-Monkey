@@ -32,13 +32,16 @@ function RestaurantOwnerPage() {
     React.useEffect(() => {
         axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
             .then(response => {
-                console.log("Bug in Restaurant Owner Hit!")
+                console.log(response.data)
+
                 response.data.forEach(restaurant => {
                     if(restaurant.owner === userObject.email){
                         setRestaurantObject(restaurant)
                         setIsLoading(false)
+                        setNewOwner(false)
                     }
                 })
+
                 if(restaurantObject.length < 1){
                     setNewOwner(true)
                     setNewOwnerObject({
@@ -50,9 +53,6 @@ function RestaurantOwnerPage() {
                         owner: userObject.email,
                     })
                     setIsLoading(false)
-                } else {
-                    console.log()
-                    setNewOwner(false)
                 }
             })
             .catch(error => {
@@ -66,20 +66,17 @@ function RestaurantOwnerPage() {
                     close_time: '',
                     owner: userObject.email,
                 })
-                setIsLoading(false)
+                
             })     
     }, [])
+    
 
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
     } else if (JSON.parse(sessionStorage.getItem('user')).role === 'restaurant') {
-        if (isLoading) {
-            return (
-                <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                    Loading
-                </Typography>
-            )
-        } else if(newOwner) {
+
+        
+        if(isLoading) {
             // new owner
             return (
                 <ThemeProvider theme={theme}>
@@ -129,7 +126,8 @@ function RestaurantOwnerPage() {
                     </Box>
                 </ThemeProvider>
             )
-        } else {
+        } 
+
             return (
                 <ThemeProvider theme={theme}>
                     <Navbar/>
@@ -178,7 +176,7 @@ function RestaurantOwnerPage() {
                     </Box>
                 </ThemeProvider>
             )
-        }
+
     }
     else {
         window.open('/forbidden.html', "_self")

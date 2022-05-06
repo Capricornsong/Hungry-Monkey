@@ -195,6 +195,7 @@ function RestaurantDetails(props) {
                                                                                 name='open_time'
                                                                                 required
                                                                                 label='Opening time'
+                                                                                type="time"
                                                                                 value={newRestaurantObject.open_time}
                                                                                 onChange={handleNewUpdateInputBox}
                                                                             />
@@ -205,6 +206,7 @@ function RestaurantDetails(props) {
                                                                                 name='close_time'
                                                                                 required
                                                                                 label='Closing time'
+                                                                                type="time"
                                                                                 value={newRestaurantObject.close_time}
                                                                                 onChange={handleNewUpdateInputBox}
                                                                             />
@@ -323,6 +325,7 @@ function RestaurantDetails(props) {
                                                                                 name='open_time'
                                                                                 required
                                                                                 label='Opening time'
+                                                                                type="time"
                                                                                 value={restaurantObject.open_time}
                                                                                 onChange={handleUpdateInputBox}
                                                                             />
@@ -333,6 +336,7 @@ function RestaurantDetails(props) {
                                                                                 name='close_time'
                                                                                 required
                                                                                 label='Closing time'
+                                                                                type="time"
                                                                                 value={restaurantObject.close_time}
                                                                                 onChange={handleUpdateInputBox}
                                                                             />
