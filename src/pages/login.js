@@ -105,8 +105,10 @@ export default function SignIn() {
         setEmptyItem(true)
         console.log("Email not verified")
       }
+    }).catch(()=>{
+      alert("Email doesn't exist")
+      console.log("User doesn't exist")
     })
-
   }
 
 
