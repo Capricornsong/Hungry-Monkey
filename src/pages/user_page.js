@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-05 19:32:14
+ * @LastEditTime: 2022-05-06 02:41:00
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -252,7 +252,7 @@ export default function User_page() {
                                         <Typography variant="body2" color="text.secondary" textAlign='center'>
                                             UserId: {sessionStorage.getItem('uid')}
                                         </Typography>
-                                    </CardContent>\
+                                    </CardContent>
                                 </CardActionArea>
                             </Card>
                             <Typography gutterBottom variant="h6" component="div" sx={{
