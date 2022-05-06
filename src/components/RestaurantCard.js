@@ -16,6 +16,7 @@ const style = {
 
 function RestaurantCard(props) {
     const { addToCart } = useContext(CartContext)
+    const { setRestaurant } = useContext(CartContext)
     const [menuModalOpen, setMenuModalOpen] = React.useState(false)
     const handleMenuModalOpen = () => setMenuModalOpen(true)
     const handleMenuModalClose = () => setMenuModalOpen(false)
@@ -128,6 +129,7 @@ function RestaurantCard(props) {
                                                 startIcon={<AddCircleOutlineIcon/>}
                                                 onClick={() => {
                                                     addToCart(item.food_name, item.food_price, 1)
+                                                    setRestaurant('11121')
                                                 }}
                                             >Add to cart</Button>
                                         </TableCell>

@@ -5,7 +5,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([])
     const [cartTotal, setCartTotal] = useState(0)
-
+    const [chosenRestaurant, setChosenRestaurant] = useState('')
     //
     const [userInfo, setUserInfo] = useState([])
 
@@ -22,6 +22,10 @@ export function CartProvider({ children }) {
         if(cartTotal !== null) {
             setCartTotal(JSON.parse(cartTotal));
         }
+        const chosenRestaurant = window.localStorage.getItem('chosenRestaurant');
+        if(chosenRestaurant !== null) {
+            setCartTotal(JSON.parse(chosenRestaurant));
+        }
       }, []);
 
     useEffect(() => {
@@ -31,6 +35,11 @@ export function CartProvider({ children }) {
     useEffect(() => {
         window.localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
     }, [cartTotal]);
+
+    useEffect(() => {
+        window.localStorage.setItem('chosenRestaurant', JSON.stringify(chosenRestaurant));
+    }, [chosenRestaurant]);
+
 
     const addToCart = (name, price, quantity) => {
         const exists = cartItems.find(element => element.name === name)
@@ -53,10 +62,14 @@ export function CartProvider({ children }) {
         setCartTotal(0)
     }
 
+    const setRestaurant = (chosenRestaurantId) => {
+        setChosenRestaurant(chosenRestaurantId)
+    }
+
     
 
     return(
-        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo}}>{children}</CartContext.Provider>
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart, cartTotal, userInfo, setRestaurant}}>{children}</CartContext.Provider>
     );
 }
 
