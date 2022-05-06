@@ -23,6 +23,7 @@ import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useAuth } from '../util/firebaseAuth'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
 export default function Admin_page() {
     // const currentUser = useAuth()
@@ -44,6 +45,7 @@ export default function Admin_page() {
     else if (JSON.parse(sessionStorage.getItem('user')).role === 'manager') {
         return (
             <>
+                <Navbar/>
                 <Box
                     // component="main"
                     sx={{

@@ -21,15 +21,6 @@ function App() {
     return (
         <BrowserRouter>
         <CartProvider>
-            <ul>
-                <li><Link to="/register_m">register</Link></li>
-                <li><Link to="/login">login</Link></li>
-                <li><Link to="/user_page">User_page</Link></li>
-                <li><Link to="/admin_page">Admin_page</Link></li>
-                <li><Link to="/driver_page">Driver page</Link></li>
-                <li><Link to="/restaurant_owner_page">RestaurantOwnerPage</Link></li>
-                <li><Link to="/forbidden">Forbidden page</Link></li>
-            </ul>
             <Routes>
                 <Route path="user_page" element={<User_page/>}/>
                 <Route path="home" element={<Home/>}/>
@@ -38,7 +29,6 @@ function App() {
                 <Route path="login" element={<Login/>}/>
                 <Route path="forgot-password" element={<ForgotPassword/>}/>
                 <Route path="admin_page" element={<Admin_page/>}/>
-
                 <Route path="checkout" element={<Checkout/>}/>
                 <Route path="driver_page" element={<DriverPage/>}/>
                 <Route path="restaurant_owner_page" element={<RestaurantOwnerPage/>}/>

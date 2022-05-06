@@ -31,7 +31,8 @@ function DriverTable(props) {
     }
 
     useEffect(() => {
-        if(props.orderDetails !== undefined){
+        console.log(props.orderDetails[0])
+        if(props.orderDetails[0] !== undefined){
             setOrderEmpty(false)
         }
     },[])
@@ -41,21 +42,21 @@ function DriverTable(props) {
     if(orderEmpty) {
         return (
             <div>
-            <Card sx={{ boxShadow: 3 }}>
-                <CardHeader
-                    title='Currently assigned order'
-                    subheader='Details of the currently assigned order'
-                />
-                <Divider />
-                <CardContent>
-                    <Grid container spacing={2}>
-                        <Grid item xl={12} lg={12} md={12} xs={12} >
-                            <Typography>You have no orders assigned at the moment. Please check later when you have been assigned an order.</Typography>
+                <Card sx={{ boxShadow: 3 }}>
+                    <CardHeader
+                        title='Currently assigned order'
+                        subheader='Details of the currently assigned order'
+                    />
+                    <Divider />
+                    <CardContent>
+                        <Grid container spacing={2}>
+                            <Grid item xl={12} lg={12} md={12} xs={12} >
+                                <Typography>You have no orders assigned at the moment. Please check later when you have been assigned an order.</Typography>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </CardContent>
-            </Card>
-        </div>
+                    </CardContent>
+                </Card>
+            </div>
         )
     } else {
         return (
