@@ -4,6 +4,7 @@ import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, us
 import DriverTable from '../components/DriverTable'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import { RepeatOneSharp } from '@mui/icons-material';
 
 function DriverPage() {
@@ -22,7 +23,7 @@ function DriverPage() {
     const theme = React.useMemo(() =>
         createTheme({
             palette: {
-                mode: prefersDarkMode ? 'dark' : 'light',
+                mode:  'light',
             },
         }),
         [prefersDarkMode],
@@ -31,7 +32,7 @@ function DriverPage() {
     React.useEffect(() => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByDeliverEmail', {
             'order_deliver_by': userObject.email,
-            //'order_deliver_by': 'bobmarley@bob.com'
+            //'order_deliver_by': 'amazing@driver.com'
         })
         .then(response => {
             response.data.forEach(order => {
@@ -49,6 +50,7 @@ function DriverPage() {
     if (isLoading) {
         return (
             <ThemeProvider theme={theme}>
+                <Navbar/>
                 <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
                     <Container maxWidth="lg">
                         <Typography
@@ -88,6 +90,7 @@ function DriverPage() {
     else if(JSON.parse(sessionStorage.getItem('user')).role === 'deliver'){
         return (
             <ThemeProvider theme={theme}>
+                <Navbar/>
                 <Box sx={{ flexGrow: 1, py: 8}} theme={theme}>
                     <Container maxWidth="lg">
                         <Typography
@@ -115,10 +118,6 @@ function DriverPage() {
                                 </Card>
                             </Grid>
                             <Grid item lg={8} md={8} xs={12}>
-                                {/**
-                                 *
-                                 *
-                                 */}
                                 <DriverTable orderDetails={currentOrder[0]} setSnackbarOpen={setSnackbarOpen}/>
                             </Grid>
                         </Grid>

@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-05 19:17:20
+ * @LastEditTime: 2022-05-06 03:04:26
  * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
@@ -24,7 +24,7 @@ import {
   Typography,
   useMediaQuery,
   Select,
-  MenuItem
+  MenuItem, Alert, Snackbar
 } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -39,6 +39,7 @@ import { signup, auth, login } from "../util/firebaseAuth"
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+
 function Copyright(props) {
 
   return (
@@ -62,6 +63,8 @@ export default function SignUp() {
       navigate('/user_page')
     }
   })
+  const [emptyItem, setEmptyItem] = React.useState(false)
+  const [role, setRole] = React.useState('normal')
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
@@ -75,12 +78,12 @@ export default function SignUp() {
     password2: Yup.string()
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password1'), null], 'Confirm Password does not match'),
-    address1: Yup.string().required('Address is required!'),
-    address2: Yup.string().required('Address is required!'),
-    postcode: Yup.string().required('Postcode is required!'),
+    address1: role === 'normal' ? Yup.string().required('Address is required!') : null,
+    address2: role === 'normal' ? Yup.string().required('Address is required!') : null,
+    postcode: role === 'normal' ? Yup.string().required('Postcode is required!') : null,
     // acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
-    country: Yup.string().required('Country is required!'),
-    city: Yup.string().required('City is requirement'),
+    country: role === 'normal' ? Yup.string().required('Country is required!') : null,
+    city: role === 'normal' ? Yup.string().required('City is requirement') : null,
     // role: Yup.string('Role is required!'),
   })
   // const logoutUser = async () => {
@@ -105,12 +108,9 @@ export default function SignUp() {
     resolver: yupResolver(validationSchema)
   })
 
-
+  const [handleAddressInput, setHandleAddressInput] = React.useState('')
   const onSubmit = (event) => {
 
-    // console.log(event)
-    // event.preventDefault()
-    // const data = new FormData(event);
     console.log({
       firstName: event.firstName,
       lastName: event.lastName,
@@ -122,68 +122,69 @@ export default function SignUp() {
       country: event.country,
       role: role
     })
-
     signup(event.email, event.password1).then((response) => {
       const currentUser = auth.currentUser
       console.log('currentUser.uid in register line 133', currentUser.uid)
-      // console.log('currentUser.email in register line 110', currentUser.email)
       sessionStorage.clear()
-
-      login(event.email, event.password1).then((response) => {
-        console.log(currentUser)
-        if (currentUser) {
-          console.log('-------------------')
-          console.log('currentUser.uid', currentUser.uid)
-          sessionStorage.setItem('uid', currentUser.uid)
-          sessionStorage.setItem('firstname', currentUser.first_name)
-          // sessionStorage.setItem('user',)
-          // window.open('user_page', '_self')
-          const newAccount = {
-            'uid': currentUser.uid,
-            'email': event.email,
-            'first_name': event.firstName,
-            'last_name': event.lastName,
-            'role': role,
-            'address_first_line': event.address1,
-            'address_second_line': event.address2,
-            'city': event.city,
-            'country': event.country,
-            'postcode': event.postcode
-          }
-          axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
-            .then(response => {
-              console.log('response:', response.data)
-              // sessionStorage.setItem('uid', currentUser.uid)
-              navigate('/user_page')
-              sessionStorage.setItem('user', JSON.stringify(newAccount))
-              // setOrderlist([...response.data])
-              // window.open('user_page','_self')
-            })
-            .catch(error => {
-              console.log(error)
-            })
+      console.log(currentUser)
+      if (currentUser) {
+        console.log('-------------------')
+        console.log('currentUser.uid', currentUser.uid)
+        //sessionStorage.setItem('uid', currentUser.uid)
+        //sessionStorage.setItem('firstname', currentUser.first_name)
+        const newAccount = {
+          'uid': currentUser.uid,
+          'email': event.email,
+          'first_name': event.firstName,
+          'last_name': event.lastName,
+          'role': role,
+          'address_first_line': event.address1,
+          'address_second_line': event.address2,
+          'city': event.city,
+          'country': event.country,
+          'postcode': event.postcode
         }
-        //fali...
-        else {
+        axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
+          .then(response => {
+            console.log('response:', response.data)
+            //sessionStorage.setItem('user', JSON.stringify(newAccount))
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/verifyEmail', {
+              uid: currentUser.uid,
+              email: event.email
+            }).then(() => {
+              setEmptyItem(true)
+              console.log("Verification Email Sent")
+              navigate('/login')
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
 
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
-      console.log("Success")
+      }
+      console.log("Sign Up Success")
     }).catch((err) => {
       console.log(err)
     })
 
 
   }
-  const [role, setRole] = React.useState('normal')
+
 
   const handleSelector = (event) => {
     setRole(event.target.value)
-    console.log(role)
+    if (event.target.value != 'normal') {
+      setHandleAddressInput('none')
+    }
+    else {
+      setHandleAddressInput('')
+    }
+    console.log(event.target.value)
   }
 
+  const handleClose = () => {
+    setEmptyItem(false)
+  }
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = React.useMemo(
     () =>
@@ -234,8 +235,6 @@ export default function SignUp() {
                     label="Role"
                     onChange={handleSelector}
                     fullWidth
-                  // {...register('role')}
-                  // error={errors.role ? true : false}
                   >
                     <MenuItem value='normal'>Customer</MenuItem>
                     <MenuItem value='deliver'>Courier</MenuItem>
@@ -330,13 +329,13 @@ export default function SignUp() {
                     {errors.password2?.message}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
+
+
+                <Grid item xs={12} display={handleAddressInput}>
                   <Divider sx={{ mt: 3, mb: 1 }} orientation="horizontal">Address</Divider>
 
                 </Grid>
-
-
-                <Grid item xs={12}>
+                <Grid item xs={12} display={handleAddressInput}>
                   <TextField
                     required
                     fullWidth
@@ -352,7 +351,7 @@ export default function SignUp() {
                     {errors.address1?.message}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} display={handleAddressInput}>
                   <TextField
                     required
                     fullWidth
@@ -368,7 +367,7 @@ export default function SignUp() {
                     {errors.address2?.message}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} display={handleAddressInput}>
                   <TextField
                     required
                     fullWidth
@@ -384,7 +383,7 @@ export default function SignUp() {
                     {errors.postcode?.message}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} display={handleAddressInput}>
                   <TextField
                     required
                     fullWidth
@@ -399,7 +398,7 @@ export default function SignUp() {
                     {errors.city?.message}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} display={handleAddressInput}>
                   <Autocomplete
                     options={countries}
                     autoHighlight
@@ -443,6 +442,8 @@ export default function SignUp() {
                 />
               </Grid> */}
               </Grid>
+
+
               <Button
                 type="submit"
                 fullWidth
@@ -462,12 +463,21 @@ export default function SignUp() {
 
             </FormControl>
           </Box>
+          <Snackbar
+            open={emptyItem}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            severity="info"
+          >
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+              Verification Email Sent
+            </Alert>
+          </Snackbar>
           <Copyright sx={{ mt: 5 }} />
         </Container>
       </ThemeProvider>
     )
-  }
-  else {
+  } else {
     // window.open('\Home', '_self')
     navigate('/user_page')
     return null

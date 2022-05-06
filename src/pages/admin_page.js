@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-29 16:42:02
- * @LastEditTime: 2022-05-05 18:17:19
+ * @LastEditTime: 2022-05-06 03:04:42
  * @FilePath: \coursework_git\src\pages\admin_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -23,6 +23,7 @@ import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useAuth } from '../util/firebaseAuth'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
 export default function Admin_page() {
     // const currentUser = useAuth()
@@ -44,6 +45,7 @@ export default function Admin_page() {
     else if (JSON.parse(sessionStorage.getItem('user')).role === 'manager') {
         return (
             <>
+                <Navbar/>
                 <Box
                     // component="main"
                     sx={{
@@ -107,7 +109,7 @@ export default function Admin_page() {
     else {
         //open forbidden page 
         // window.open('\ forbidden.html', '_self')
-        window.open('/forbidden.html',"_self")
+        window.open('/forbidden.html', "_self")
         return null
     }
 

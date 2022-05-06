@@ -15,7 +15,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged,
-    signOut
+    signOut,
+    GoogleAuthProvider,
+    signInWithPopup
 } from "firebase/auth"
 
 // Your web app's Firebase configuration
@@ -29,6 +31,7 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
+const provider = new GoogleAuthProvider()
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth()
 
@@ -44,6 +47,10 @@ export function logout() {
     return signOut(auth)
 }
 
+export function signWithGoogle(){
+    return signInWithPopup(auth, provider)
+}
+
 // Custom Hook
 export function useAuth() {
     const [currentUser, setCurrentUser] = useState()
@@ -54,4 +61,8 @@ export function useAuth() {
     }, [])
 
     return currentUser
+}
+
+export function splitName(str){
+    return str.trim().split(/\s+/)
 }
