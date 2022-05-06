@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-06 02:41:00
+ * @LastEditTime: 2022-05-06 03:04:38
  * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -211,7 +211,7 @@ export default function User_page() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Navbar/>
+            <Navbar />
             <Box
                 // component="main"
                 sx={{
