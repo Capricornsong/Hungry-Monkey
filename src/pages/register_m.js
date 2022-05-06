@@ -24,7 +24,7 @@ import {
     Typography,
     useMediaQuery,
     Select,
-    MenuItem
+    MenuItem, Alert, Snackbar
 } from '@mui/material'
 import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -108,6 +108,7 @@ export default function SignUp() {
 
 
     const onSubmit = (event) => {
+
         console.log({
             firstName: event.firstName,
             lastName: event.lastName,
@@ -150,6 +151,7 @@ export default function SignUp() {
                             email: event.email
                         }).then(()=>{
                             //TODO 弹框提醒已经发送邮件， 重定向至login
+                            setEmptyItem(true)
                             console.log("Verification Email Sent")
                             navigate('/login')
                         })
@@ -172,7 +174,11 @@ export default function SignUp() {
         setRole(event.target.value)
         console.log(role)
     }
+    const[emptyItem, setEmptyItem] = React.useState(false)
 
+    const handleClose = () =>{
+        setEmptyItem(false)
+    }
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = React.useMemo(
         () =>
@@ -451,6 +457,16 @@ export default function SignUp() {
 
                         </FormControl>
                     </Box>
+                    <Snackbar
+                        open={emptyItem}
+                        autoHideDuration={3000}
+                        onClose={handleClose}
+                        severity="info"
+                    >
+                        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                            No item been selected!
+                        </Alert>
+                    </Snackbar>
                     <Copyright sx={{mt: 5}}/>
                 </Container>
             </ThemeProvider>

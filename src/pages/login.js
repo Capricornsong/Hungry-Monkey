@@ -57,13 +57,11 @@ export default function SignIn() {
       navigate('/user_page')
     }
   })
-
   const[emptyItem, setEmptyItem] = React.useState(false)
 
   const handleClose = () =>{
     setEmptyItem(false)
   }
-
 
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
