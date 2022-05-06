@@ -5,6 +5,7 @@ import DriverTable from '../components/DriverTable'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { RepeatOneSharp } from '@mui/icons-material';
 
 function DriverPage() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -12,6 +13,8 @@ function DriverPage() {
     const [isLoading, setIsLoading] = React.useState(true)
     const [snackbarOpen, setSnackbarOpen] = React.useState(false)
     const navigate = useNavigate()
+
+    const userObject = JSON.parse(sessionStorage.getItem('user'))
 
     const closeSnackbar = () => {
         setSnackbarOpen(false)
@@ -28,16 +31,21 @@ function DriverPage() {
 
     React.useEffect(() => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByDeliverEmail', {
-            'order_deliver_by': 'bobmarley@bob.com',
+            'order_deliver_by': userObject.email,
+            //'order_deliver_by': 'bobmarley@bob.com'
         })
-            .then(response => {
-                setCurrentOrder(response.data)
-                setIsLoading(false)
+        .then(response => {
+            response.data.forEach(order => {
+                if(order.order_status === 'delivering'){
+                    setCurrentOrder(response.data)
+                }
             })
-            .catch(error => {
-                console.log(error)
-            })
-    }, [])
+            setIsLoading(false)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },[])
 
     if (isLoading) {
         return (
@@ -76,14 +84,13 @@ function DriverPage() {
             </ThemeProvider>
         )
     }
-
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
     }
-    else if (JSON.parse(sessionStorage.getItem('user')).role === 'deliver') {
+    else if(JSON.parse(sessionStorage.getItem('user')).role === 'deliver'){
         return (
             <ThemeProvider theme={theme}>
-                <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
+                <Box sx={{ flexGrow: 1, py: 8}} theme={theme}>
                     <Container maxWidth="lg">
                         <Typography
                             sx={{ mb: 3 }}
@@ -93,24 +100,28 @@ function DriverPage() {
                         </Typography>
                         <Grid container spacing={3}>
                             <Grid item lg={4} md={4} xs={12}>
-                                <Card sx={{ boxShadow: 3, }}>
+                                <Card sx={{ boxShadow: 3,}}>
                                     <CardActionArea>
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                                Hi🖐 Liuosng HE~
+                                                Hi🖐 {userObject.first_name + " " + userObject.last_name}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                UserId: 2151646
+                                                UserId: {userObject.uid}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Driver Status: Out for Delivery
+                                            <Typography  variant="body2" color="text.secondary" textAlign='center'>
+                                                Driver Status: {userObject.deliver_status}
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
                             </Grid>
                             <Grid item lg={8} md={8} xs={12}>
-                                <DriverTable orderDetails={currentOrder[0]} setSnackbarOpen={setSnackbarOpen} />
+                                {/**
+                                 *
+                                 *
+                                 */}
+                                <DriverTable orderDetails={currentOrder[0]} setSnackbarOpen={setSnackbarOpen}/>
                             </Grid>
                         </Grid>
                     </Container>
@@ -129,8 +140,7 @@ function DriverPage() {
             </ThemeProvider>
         )
     }
-    else {
-        //jump to forbidden page
+    else{
         window.open('/forbidden.html', "_self")
         return null
     }

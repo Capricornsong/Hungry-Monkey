@@ -264,9 +264,6 @@ export const UpdateProfile = (props) => {
                                 xs={12}
                                 md={12}
                                 lg={12}
-                                // justifyContent='flex-end'
-                                direction='row-reverse'
-
                                 textAlign='right'
                             >
                                 <Button

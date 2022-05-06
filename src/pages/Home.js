@@ -36,7 +36,7 @@ function Home() {
                   console.log(lng())
                   setLat(lat())
                   setLng(lng())
-                  console.log(response)
+                  //console.log(response)
                   directionService.route({
                     origin: { lat: lat(), lng: lng() },
                     destination: center,
@@ -53,7 +53,7 @@ function Home() {
             if (response && response.routes[0].legs[0].distance.value < 5000) {
               nearByRestaurants.push(element)
               console.log('nearby!!!')
-              console.log(nearByRestaurants)
+              //console.log(nearByRestaurants)
             }
             else {
               console.log('not near by!!')
@@ -75,7 +75,6 @@ function Home() {
           <Skeleton variant="rectangular" />
         </Container>
       </ThemeProvider>
-
     )
   }
 

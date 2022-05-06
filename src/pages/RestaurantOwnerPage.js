@@ -12,7 +12,11 @@ function RestaurantOwnerPage() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const [isLoading, setIsLoading] = React.useState(false)
     const [restaurantObject, setRestaurantObject] = React.useState([])
+
+    const userObject = JSON.parse(sessionStorage.getItem('user'))
+
     const navigate = useNavigate()
+
     const theme = React.useMemo(() =>
         createTheme({
             palette: {
@@ -23,102 +27,104 @@ function RestaurantOwnerPage() {
     )
 
     React.useEffect(() => {
-        axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantByName', {
-            'name': "Paskal's Burgers",
-        })
+        axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
             .then(response => {
-                setRestaurantObject(response.data[0])
-                setIsLoading(false)
+                response.data.forEach(restaurant => {
+                    if(restaurant.owner === userObject.email){
+                        setRestaurantObject(restaurant)
+                        setIsLoading(false)
+                    }
+                })
             })
             .catch(error => {
                 console.log(error)
-            })
+            })     
     }, [])
 
-    if (isLoading) {
-        return (
-            <ThemeProvider theme={theme}>
-                <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
-                    <Container maxWidth="lg">
-                        <Typography
-                            sx={{ mb: 3 }}
-                            variant="h4"
-                        >
-                            Restaurant
-                        </Typography>
-                        <Grid container spacing={3}>
-                            <Grid item lg={4} md={4} xs={12}>
-                                <Card sx={{ boxShadow: 3, }}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                                Loading
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Loading
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                </Box>
-            </ThemeProvider>
-        )
-    }
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
-    }
-    else if (JSON.parse(sessionStorage.getItem('user')).role === 'restaurant') {
-        return (
-            <ThemeProvider theme={theme}>
-                <Navbar/>
-                <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
-                    <Container maxWidth="lg">
-                        <Typography
-                            sx={{ mb: 3 }}
-                            variant="h4"
-                        >
-                            Restaurant
-                        </Typography>
-                        <Grid container spacing={3}>
-                            <Grid item lg={4} md={4} xs={12}>
-                                <Card sx={{ boxShadow: 3, }}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                                {restaurantObject.name}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Owner: {restaurantObject.owner}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Status: {restaurantObject.status}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Opening Time: {restaurantObject.open_time}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Closing Time: {restaurantObject.close_time}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                Location: {restaurantObject.location}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
+    } else if (JSON.parse(sessionStorage.getItem('user')).role === 'restaurant') {
+        if (isLoading) {
+            return (
+                <ThemeProvider theme={theme}>
+                    <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
+                        <Container maxWidth="lg">
+                            <Typography
+                                sx={{ mb: 3 }}
+                                variant="h4"
+                            >
+                                Restaurant
+                            </Typography>
+                            <Grid container spacing={3}>
+                                <Grid item lg={4} md={4} xs={12}>
+                                    <Card sx={{ boxShadow: 3, }}>
+                                        <CardActionArea>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="div" textAlign='center'>
+                                                    Loading
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Loading
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                                <RestaurantDetails restaurantobjectprop={restaurantObject} />
-                                <MenuDetails />
-                                <RestaurantOrders />
+                        </Container>
+                    </Box>
+                </ThemeProvider>
+            )
+        } else {
+            return (
+                <ThemeProvider theme={theme}>
+                    <Navbar/>
+                    <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
+                        <Container maxWidth="lg">
+                            <Typography
+                                sx={{ mb: 3 }}
+                                variant="h4"
+                            >
+                                Restaurant
+                            </Typography>
+                            <Grid container spacing={3}>
+                                <Grid item lg={4} md={4} xs={12}>
+                                    <Card sx={{ boxShadow: 3, }}>
+                                        <CardActionArea>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="div" textAlign='center'>
+                                                    {restaurantObject.name}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Owner: {restaurantObject.owner}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Status: {restaurantObject.status === 'Approve'? "Approved" : "Loading"}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Opening Time: {restaurantObject.open_time}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Closing Time: {restaurantObject.close_time}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Location: {restaurantObject.location}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={12}>
+                                    <RestaurantDetails restaurantobjectprop={restaurantObject} />
+                                    <MenuDetails restaurantobjectprop={restaurantObject}/>
+                                    <RestaurantOrders restaurantobjectprop={restaurantObject}/>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Container>
-                </Box>
-            </ThemeProvider>
-        )
+                        </Container>
+                    </Box>
+                </ThemeProvider>
+            )
+        }
     }
     else {
         window.open('/forbidden.html', "_self")

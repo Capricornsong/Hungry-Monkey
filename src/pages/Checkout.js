@@ -11,6 +11,10 @@ function Checkout() {
   const { cartItems } = useContext(CartContext)
   const { clearCart } = useContext(CartContext)
   const { cartTotal } = useContext(CartContext)
+
+  const handleOrderAdd = () => {
+    console.log(sessionStorage.get('uid'))
+  }
   
   return (
       <ThemeProvider theme={theme}>
@@ -66,7 +70,7 @@ function Checkout() {
                               <Button style={{color: 'red'}} onClick={() => clearCart()}>Clear basket</Button>
                             </TableCell>
                             <TableCell align="right">
-                              <Button align="right"variant="contained">Place order</Button>
+                              <Button align="right"variant="contained" onClick={() => handleOrderAdd()}>Place order</Button>
                             </TableCell>
                           </TableRow>
                       </TableFooter>

@@ -43,9 +43,9 @@ function RestaurantDetails(props) {
                         <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
                             <Card sx={{ boxShadow: 3 }}>
                                 <CardContent>
-                                    <UnassignedOrders restaurantName={"Paskal's Burgers"}/>
-                                    <AssignedOrders restaurantName={"Paskal's Burgers"}/>
-                                    <CompletedOrders restaurantName={"Paskal's Burgers"}/>
+                                    <UnassignedOrders restaurantName={props.restaurantobjectprop.name}/>
+                                    <AssignedOrders restaurantName={props.restaurantobjectprop.name}/>
+                                    <CompletedOrders restaurantName={props.restaurantobjectprop.name}/>
                                 </CardContent>
                             </Card>
                         </Collapse>
