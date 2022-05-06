@@ -4,6 +4,7 @@ import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, us
 import DriverTable from '../components/DriverTable'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import { RepeatOneSharp } from '@mui/icons-material';
 
 function DriverPage() {
@@ -22,7 +23,7 @@ function DriverPage() {
     const theme = React.useMemo(() =>
         createTheme({
             palette: {
-                mode: prefersDarkMode ? 'dark' : 'light',
+                mode:  'light',
             },
         }),
         [prefersDarkMode],
@@ -49,6 +50,7 @@ function DriverPage() {
     if (isLoading) {
         return (
             <ThemeProvider theme={theme}>
+                <Navbar/>
                 <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
                     <Container maxWidth="lg">
                         <Typography

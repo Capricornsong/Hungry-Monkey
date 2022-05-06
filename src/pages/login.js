@@ -11,7 +11,6 @@ import { logout } from '../util/firebaseAuth'
 import { login, auth } from '../util/firebaseAuth'
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-// import { useSelector } from 'react-redux';
 import GoogleIcon from '@mui/icons-material/Google'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Navbar from '../components/Navbar'
@@ -19,6 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Avatar,
   Box,
+  Alert,
   Button,
   Checkbox,
   CssBaseline,
@@ -32,8 +32,11 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  Snackbar,
 } from '@mui/material'
 import axios from 'axios'
+import {signWithGoogle, splitName} from "../util/firebaseAuth"
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -54,6 +57,11 @@ export default function SignIn() {
       navigate('/user_page')
     }
   })
+  const[emptyItem, setEmptyItem] = React.useState(false)
+
+  const handleClose = () =>{
+    setEmptyItem(false)
+  }
 
   //switch mode depend on system setting 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -72,27 +80,64 @@ export default function SignIn() {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     localStorage.clear()
-    login(data.get('email'), data.get('password')).then((response) => {
-      console.log('response:', response)
-      if (response) {
-        console.log('currentUser.uid', response.user.uid)
-        sessionStorage.setItem('uid', response.user.uid)
-        // sessionStorage.setItem('firstname', currentUser.first_name)
-        navigate('/user_page')
-        // window.open('user_page', '_self')
+    axios.post("https://hungry-monkey-api.azurewebsites.net/api/user/checkUserStatus", {
+      email: data.get('email')
+    }).then((res)=>{
+      console.log("Check User Status Is: "+ res.data.result)
+      if (res.data.result.toString() === 'true'){
+        login(data.get('email'), data.get('password')).then((response) => {
+          console.log('response:', response)
+          if (response) {
+            console.log('currentUser.uid', response.user.uid)
+            sessionStorage.setItem('uid', response.user.uid)
+            navigate('/user_page')
+          } else {
+            console.log("Login Failed")
+          }
+        }).catch((err) => {
+          console.log('err:', err)
+          alert('username or password is wrong')
+        })
+      }else{
+        setEmptyItem(true)
+        console.log("Email not verified")
       }
-      //fali...
-      else {
-
-      }
-    }).catch((err) => {
-      console.log('err:', err)
-      alert('username or password is wrong')
+    }).catch(()=>{
+      alert("Email doesn't exist")
+      console.log("User doesn't exist")
     })
   }
 
-  const handleGooleLogin = () => {
-    console.log('dsadad')
+
+
+  const handleGoogleLogin = () => {
+    console.log('Google Here')
+    signWithGoogle().then((it)=>{
+      const userFromGoogle = it.user
+      axios.post("https://hungry-monkey-api.azurewebsites.net/api/user/getUserByUID",{
+        uid: userFromGoogle.uid
+      }).then((it)=>{
+          console.log("Google Sign In 200")
+        sessionStorage.setItem('uid',userFromGoogle.uid)
+        navigate('/user_page')
+      }).catch(()=>{
+        console.log("Google Sign In 400!!!")
+        const nameList = splitName(userFromGoogle.displayName)
+        console.log(`Name is ${nameList}`)
+        axios.post("https://hungry-monkey-api.azurewebsites.net/api/user/createUser", {
+          uid: userFromGoogle.uid,
+          email: userFromGoogle.email,
+          first_name: nameList[0],
+          last_name: nameList[1],
+          role: "normal",
+          status: "confirmed"
+        }).then((it)=>{
+          console.log("Google Sign In complete")
+          sessionStorage.setItem('uid',userFromGoogle.uid)
+          navigate('/user_page')
+        })
+      })
+    })
   }
 
   // if (!auth.currentUser) {
@@ -171,7 +216,7 @@ export default function SignIn() {
               }}
               startIcon={<GoogleIcon />}
               color='warning'
-              onClick={handleGooleLogin}
+              onClick={handleGoogleLogin}
             >
               Sign In with Google
             </Button>
@@ -189,6 +234,16 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
+        <Snackbar
+            open={emptyItem}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            severity="info"
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            Please verify your email first
+          </Alert>
+        </Snackbar>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
