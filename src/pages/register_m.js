@@ -108,10 +108,6 @@ export default function SignUp() {
 
 
     const onSubmit = (event) => {
-
-        // console.log(event)
-        // event.preventDefault()
-        // const data = new FormData(event);
         console.log({
             firstName: event.firstName,
             lastName: event.lastName,
@@ -123,7 +119,6 @@ export default function SignUp() {
             country: event.country,
             role: role
         })
-
         signup(event.email, event.password1).then((response) => {
             const currentUser = auth.currentUser
             console.log('currentUser.uid in register line 133', currentUser.uid)
@@ -132,8 +127,8 @@ export default function SignUp() {
             if (currentUser) {
                 console.log('-------------------')
                 console.log('currentUser.uid', currentUser.uid)
-                sessionStorage.setItem('uid', currentUser.uid)
-                sessionStorage.setItem('firstname', currentUser.first_name)
+                //sessionStorage.setItem('uid', currentUser.uid)
+                //sessionStorage.setItem('firstname', currentUser.first_name)
                 const newAccount = {
                     'uid': currentUser.uid,
                     'email': event.email,
@@ -149,13 +144,13 @@ export default function SignUp() {
                 axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/createUser', newAccount)
                     .then(response => {
                         console.log('response:', response.data)
-
-                        sessionStorage.setItem('user', JSON.stringify(newAccount))
+                        //sessionStorage.setItem('user', JSON.stringify(newAccount))
                         axios.post('https://hungry-monkey-api.azurewebsites.net/api/user/verifyEmail',{
                             uid: currentUser.uid,
                             email: event.email
                         }).then(()=>{
                             //TODO 弹框提醒已经发送邮件， 重定向至login
+                            console.log("Verification Email Sent")
                             navigate('/login')
                         })
                     })

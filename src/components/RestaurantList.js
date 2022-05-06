@@ -226,7 +226,7 @@ export const RestaurantList = (props) => {
                 severity="info"
             >
                 <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                    No item been selectd!
+                    No item been selected!
                 </Alert>
             </Snackbar>
         </>

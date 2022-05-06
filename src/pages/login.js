@@ -73,23 +73,31 @@ export default function SignIn() {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     localStorage.clear()
-    login(data.get('email'), data.get('password')).then((response) => {
-      console.log('response:', response)
-      if (response) {
-        console.log('currentUser.uid', response.user.uid)
-        sessionStorage.setItem('uid', response.user.uid)
-        // sessionStorage.setItem('firstname', currentUser.first_name)
-        navigate('/user_page')
-        // window.open('user_page', '_self')
-      }
-      //fali...
-      else {
+    axios.post("https://hungry-monkey-api.azurewebsites.net/api/user/checkUserStatus", {
+      email: data.get('email')
+    }).then((res)=>{
+      console.log("Check User Status Is: "+ res.data.result)
+      if (res.data.result.toString() === 'true'){
+        login(data.get('email'), data.get('password')).then((response) => {
+          console.log('response:', response)
+          if (response) {
+            console.log('currentUser.uid', response.user.uid)
+            sessionStorage.setItem('uid', response.user.uid)
+            navigate('/user_page')
+          } else {
+            console.log("Login Failed")
+          }
+        }).catch((err) => {
+          console.log('err:', err)
+          alert('username or password is wrong')
+        })
+      }else{
+        //TODO 弹窗
 
+        console.log("Email not verified")
       }
-    }).catch((err) => {
-      console.log('err:', err)
-      alert('username or password is wrong')
     })
+
   }
 
   const handleGoogleLogin = () => {
