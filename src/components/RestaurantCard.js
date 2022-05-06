@@ -25,18 +25,14 @@ function RestaurantCard(props) {
     const handleInfoModalOpen = () => setInfoModalOpen(true)
     const handleInfoModalClose = () => setInfoModalOpen(false)
 
-    const [quantity, setQuantity] = React.useState(1);
-    const handleQuantityChange = (event) => {
-        setQuantity(event.target.value);
-      };
-
     const [isLoading, setIsLoading] = useState(false)
     const [menuItems, setMenuItems] = useState([]);
-      
+    console.dir({props})
+
     useEffect(() => {
-        if(props.id === undefined){
+        if(props.restaurantid !== undefined){
                 axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
-                'restaurant_id': '11121',
+                'restaurant_id': props.restaurantid,
             })
             .then(response => {
                 setMenuItems(response.data)
@@ -46,7 +42,7 @@ function RestaurantCard(props) {
                 console.log(error)
             })
         }
-    },[props.restaurantid])
+    },[])
 
     if(isLoading){
         return(

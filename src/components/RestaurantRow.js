@@ -41,20 +41,21 @@ function RestaurantRow(props) {
                         justifyContent="space-evenly"
                         alignItems="center"
                     >  
-                        {props.allRestaurants.map((item) => (
-                            <RestaurantCard 
+                        {props.allRestaurants.map((item) => {
+                            console.log("item here", item)
+                            return <RestaurantCard 
                                 name={item.name}
                                 key={item.name}
                                 description={item.description}
-                                id={item.id}
-                                restaurantid={item.id}
+                                id={item.restaurant_id}
+                                restaurantid={item.restaurant_id}
                                 rating="5/5"
                                 price="4/5"
                                 opens={item.open_time}
                                 closes={item.close_time}
                                 address={item.location}
                             />
-                        ))}  
+                        })}  
                 </Grid>      
             </Container>
         </ThemeProvider>

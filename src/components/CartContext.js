@@ -47,9 +47,9 @@ export function CartProvider({ children }) {
             setCartItems(
                 cartItems.map((element) => 
                     element.name === name ? {...exists, quantity: exists.quantity + quantity} : element,
-                    calculateTotal(price*quantity)
                 )
             )
+            calculateTotal(price*quantity)
         } else {
             setCartItems((prevState) => [...prevState, {name, price, quantity}])
             calculateTotal(price*quantity)
