@@ -7,11 +7,14 @@ import MenuDetails from '../components/MenuDetails'
 import RestaurantOrders from '../components/RestaurantOrders'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { isEmpty } from '@firebase/util'
 
 function RestaurantOwnerPage() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const [isLoading, setIsLoading] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(true)
     const [restaurantObject, setRestaurantObject] = React.useState([])
+    const [newOwner, setNewOwner] = React.useState(false)
+    const [newOwnerObject, setNewOwnerObject] = React.useState({})
 
     const userObject = JSON.parse(sessionStorage.getItem('user'))
 
@@ -35,18 +38,41 @@ function RestaurantOwnerPage() {
                         setIsLoading(false)
                     }
                 })
+                if(restaurantObject.length < 1){
+                    setNewOwner(true)
+                    setNewOwnerObject({
+                        name: '',
+                        description: '',
+                        location: '',
+                        open_time: '',
+                        close_time: '',
+                        owner: userObject.email,
+                    })
+                    setIsLoading(false)
+                } else {
+                    console.log()
+                    setNewOwner(false)
+                }
             })
             .catch(error => {
                 console.log(error)
             })     
-    }, [])
+    }, [restaurantObject])
 
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
     } else if (JSON.parse(sessionStorage.getItem('user')).role === 'restaurant') {
         if (isLoading) {
             return (
+                <Typography gutterBottom variant="h5" component="div" textAlign='center'>
+                    Loading
+                </Typography>
+            )
+        } else if(newOwner) {
+            // new owner
+            return (
                 <ThemeProvider theme={theme}>
+                    <Navbar/>
                     <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
                         <Container maxWidth="lg">
                             <Typography
@@ -61,14 +87,31 @@ function RestaurantOwnerPage() {
                                         <CardActionArea>
                                             <CardContent>
                                                 <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-                                                    Loading
+                                                    {restaurantObject.name}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                                    Loading
+                                                    Owner: {restaurantObject.owner}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Status: {restaurantObject.status === 'Approve'? "Approved" : "Loading"}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Opening Time: {restaurantObject.open_time}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Closing Time: {restaurantObject.close_time}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                    Location: {restaurantObject.location}
                                                 </Typography>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={12}>
+                                    <Typography variant='h4'>Hello new Restaurant owner</Typography>
+                                    <Typography variant='h6' style={{marginBottom: 20}}>Please provide the details of your restaurant using the form below</Typography>
+                                    <RestaurantDetails restaurantobjectprop={newOwnerObject} />
                                 </Grid>
                             </Grid>
                         </Container>
