@@ -29,6 +29,14 @@ const firebaseConfig = {
     messagingSenderId: "200889206145",
     appId: "1:200889206145:web:aa623537369aa70e311480"
 }
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDkbAfw990f1bxolouCDtvAME2uf-i9UcA",
+//     authDomain: "hungry-monkey-new-test.firebaseapp.com",
+//     projectId: "hungry-monkey-new-test",
+//     storageBucket: "hungry-monkey-new-test.appspot.com",
+//     messagingSenderId: "871706005060",
+//     appId: "1:871706005060:web:95d6930c224626cb813611"
+// };
 
 // Initialize Firebase
 const provider = new GoogleAuthProvider()
