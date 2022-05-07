@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Grid, Typography, CssBaseline, Container } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import RestaurantCard from './RestaurantCard'
+import axios from 'axios'
 
 const theme = createTheme()
 
@@ -10,6 +11,7 @@ function RestaurantRow(props) {
     const [isLoading, setIsLoading] = useState(true)
     const restaurantList = []
     const [stateArray, setStateArray] = useState()
+    const [imageUrlArray, setImageUrlArray] = useState([])
 
     useEffect(() => {
         if(props.allRestaurants.length > 0){
@@ -19,6 +21,18 @@ function RestaurantRow(props) {
             setStateArray(restaurantList)
             setIsLoading(false)
         }
+        props.allRestaurants.forEach(restaurant => {
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantImage', {
+                "restaurant_id": restaurant.restaurant_id,
+            })
+            .then(response => {
+                setImageUrlArray((prevState) => [...prevState, response.data])
+                console.log(imageUrlArray)
+            })
+            .catch(error => {
+                console.log(error)
+            })  
+        })
 
     },[props.allRestaurants])
 
@@ -41,11 +55,12 @@ function RestaurantRow(props) {
                         justifyContent="space-evenly"
                         alignItems="center"
                     >  
-                        {props.allRestaurants.map((item) => {
+                        {props.allRestaurants.map((item, iterator) => {
                             return <RestaurantCard 
                                 name={item.name}
                                 key={item.name}
                                 description={item.description}
+                                imageUrl={imageUrlArray[iterator]}
                                 id={item.restaurant_id}
                                 restaurantid={item.restaurant_id}
                                 rating="5/5"
