@@ -44,6 +44,14 @@ function RestaurantCard(props) {
         }
     },[])
 
+    const getImage = (url) => {
+        if(url !== undefined) {
+            return url
+        } else if (url === ''){
+            return require('../media/pizza.jpg')
+        }
+    }
+
     if(isLoading){
         return(
             <Typography>Loading</Typography>
@@ -60,6 +68,7 @@ function RestaurantCard(props) {
                             height="160"
                             //image={require('../media/kebab.jpg')}
                             image={props.imageUrl !== undefined? props.imageUrl.url : require('../media/pizza.jpg')}
+                            //image={getImage(props.imageUrl.url)}
                             alt="restaurant_image"
                         />
                         <CardContent>
