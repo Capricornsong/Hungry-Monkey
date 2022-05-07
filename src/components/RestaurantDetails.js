@@ -98,10 +98,12 @@ function RestaurantDetails(props) {
 
     
     const handleCapture = (event) => {
+        console.log('handlecapture')
         console.log(event.target.value);
         setSelectedFile(event)
     }
     const handleUploadImage = () => {
+        console.log('handlecapture')
         // saveFace(selectedFile)
         // console.log(selectedFile);
     }
@@ -193,6 +195,7 @@ function RestaurantDetails(props) {
                                                                                 name='open_time'
                                                                                 required
                                                                                 label='Opening time'
+                                                                                type="time"
                                                                                 value={newRestaurantObject.open_time}
                                                                                 onChange={handleNewUpdateInputBox}
                                                                             />
@@ -203,6 +206,7 @@ function RestaurantDetails(props) {
                                                                                 name='close_time'
                                                                                 required
                                                                                 label='Closing time'
+                                                                                type="time"
                                                                                 value={newRestaurantObject.close_time}
                                                                                 onChange={handleNewUpdateInputBox}
                                                                             />
@@ -321,6 +325,7 @@ function RestaurantDetails(props) {
                                                                                 name='open_time'
                                                                                 required
                                                                                 label='Opening time'
+                                                                                type="time"
                                                                                 value={restaurantObject.open_time}
                                                                                 onChange={handleUpdateInputBox}
                                                                             />
@@ -331,6 +336,7 @@ function RestaurantDetails(props) {
                                                                                 name='close_time'
                                                                                 required
                                                                                 label='Closing time'
+                                                                                type="time"
                                                                                 value={restaurantObject.close_time}
                                                                                 onChange={handleUpdateInputBox}
                                                                             />
@@ -350,13 +356,16 @@ function RestaurantDetails(props) {
                                                                             <label htmlFor="contained-button-file">
                                                                                 <Input accept="image/png" id="contained-button-file" multiple type="file"
                                                                                     onChange={handleCapture} />
-                                                                                <Button variant="contained" component="span" color='secondary' fullWidth onClick={handleUploadImage}>
-                                                                                    Upload Image
+                                                                                <Button variant="contained" component="span" color='secondary' fullWidth >
+                                                                                    Upload Image1
                                                                                 </Button>
                                                                             </label>
-                                                                            <label htmlFor="icon-button-file">
-                                                                                <Input accept="image/*" id="icon-button-file" type="file" />
-                                                                                {selectedFile ? selectedFile.name : "Select Image"}
+                                                                            <label htmlFor="uploadImage">
+                                                                                <Input accept="image/*" id="uploadImage" type="file" />
+                                                                                {/* {selectedFile ? selectedFile.name : "Select Image"} */}
+                                                                                <Button variant="contained" component="span" color='secondary' fullWidth onClick={handleUploadImage}>
+                                                                                    Choose image 
+                                                                                </Button>
                                                                             </label>
                                                                         </Grid>
                                                                         <Grid
