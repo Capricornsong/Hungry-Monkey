@@ -33,51 +33,39 @@ function RestaurantOwnerPage() {
         axios.get('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurant')
             .then(response => {
                 console.log(response.data)
-
                 response.data.forEach(restaurant => {
                     if(restaurant.owner === userObject.email){
                         setRestaurantObject(restaurant)
-                        setIsLoading(false)
                         setNewOwner(false)
                     }
                 })
-
-                if(restaurantObject.length < 1){
-                    setNewOwner(true)
-                    setNewOwnerObject({
-                        name: '',
-                        description: '',
-                        location: '',
-                        open_time: '',
-                        close_time: '',
-                        owner: userObject.email,
-                    })
-                    setIsLoading(false)
-                }
             })
             .catch(error => {
-                console.log(error)
-                setNewOwner(true)
-                setNewOwnerObject({
-                    name: '',
-                    description: '',
-                    location: '',
-                    open_time: '',
-                    close_time: '',
-                    owner: userObject.email,
-                })
-                
+                console.log(error)               
             })     
     }, [])
+
+    React.useEffect(() => {
+        if(restaurantObject.length < 1){
+            setNewOwnerObject({
+                name: '',
+                description: '',
+                location: '',
+                open_time: '',
+                close_time: '',
+                owner: userObject.email,
+            })
+            setNewOwner(true)
+        }
+
+    }, [userObject.email, restaurantObject.length])
     
 
     if (!sessionStorage.getItem('uid')) {
         navigate('/login')
     } else if (JSON.parse(sessionStorage.getItem('user')).role === 'restaurant') {
 
-        
-        if(isLoading) {
-            // new owner
+        if(newOwner) {
             return (
                 <ThemeProvider theme={theme}>
                     <Navbar/>
