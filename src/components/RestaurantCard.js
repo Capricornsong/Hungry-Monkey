@@ -30,6 +30,7 @@ function RestaurantCard(props) {
 
     useEffect(() => {
         if(props.restaurantid !== undefined){
+            console.log()
                 axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
                 'restaurant_id': props.restaurantid,
             })
@@ -57,8 +58,9 @@ function RestaurantCard(props) {
                         <CardMedia
                             component="img"
                             height="160"
-                            image={require('../media/kebab.jpg')}
-                            alt="kebab"
+                            //image={require('../media/kebab.jpg')}
+                            image={props.imageUrl !== undefined? props.imageUrl.url : require('../media/pizza.jpg')}
+                            alt="restaurant_image"
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">{props.name}</Typography>
