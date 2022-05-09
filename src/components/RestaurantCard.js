@@ -26,12 +26,13 @@ function RestaurantCard(props) {
     const handleInfoModalClose = () => setInfoModalOpen(false)
 
     const [isLoading, setIsLoading] = useState(false)
-    const [menuItems, setMenuItems] = useState([]);
+    const [menuItems, setMenuItems] = useState([])
+    const [cardImage, setCardImage] = useState('')
+
 
     useEffect(() => {
         if(props.restaurantid !== undefined){
-            console.log()
-                axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/menu/getAllFoodByRestaurantID', {
                 'restaurant_id': props.restaurantid,
             })
             .then(response => {
@@ -41,16 +42,22 @@ function RestaurantCard(props) {
             .catch(error => {
                 console.log(error)
             })
+
+            
+            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantImage', {
+                "restaurant_id": props.restaurantid,
+            })
+            .then(response => {
+                setCardImage(response.data.url)
+            })
+            
+            .catch(error => {
+                console.log(error)
+            })
+            
+            
         }
     },[])
-
-    const getImage = (url) => {
-        if(url !== undefined) {
-            return url
-        } else if (url === ''){
-            return require('../media/pizza.jpg')
-        }
-    }
 
     if(isLoading){
         return(
@@ -66,9 +73,8 @@ function RestaurantCard(props) {
                         <CardMedia
                             component="img"
                             height="160"
-                            //image={require('../media/kebab.jpg')}
-                            image={props.imageUrl !== undefined? props.imageUrl.url : require('../media/pizza.jpg')}
-                            //image={getImage(props.imageUrl.url)}
+                            image={cardImage}
+                            onError = {() => { setCardImage('https://images.squaremeal.co.uk/cloud/article/10048/images/best-new-restaurant-opening-london-zahter_20012022042422.jpg?w=1000') }}
                             alt="restaurant_image"
                         />
                         <CardContent>

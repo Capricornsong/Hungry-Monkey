@@ -11,7 +11,6 @@ function RestaurantRow(props) {
     const [isLoading, setIsLoading] = useState(true)
     const restaurantList = []
     const [stateArray, setStateArray] = useState()
-    const [imageUrlArray, setImageUrlArray] = useState([])
 
     useEffect(() => {
         if(props.allRestaurants.length > 0){
@@ -21,22 +20,6 @@ function RestaurantRow(props) {
             setStateArray(restaurantList)
             setIsLoading(false)
         }
-        /*
-        props.allRestaurants.forEach(restaurant => {
-            axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantImage', {
-                "restaurant_id": restaurant.restaurant_id,
-            })
-            .then(response => {
-                setImageUrlArray((prevState) => [...prevState, response.data])
-                console.log(imageUrlArray)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-              
-        })
-        */
-
     },[props.allRestaurants])
 
     return (
@@ -60,12 +43,11 @@ function RestaurantRow(props) {
                     >  
                         {props.allRestaurants.map((item, iterator) => {
                             return (
-                             <Grid item xl={4}>
+                             <Grid item xl={4} key={iterator}>
                                  <RestaurantCard 
                                     name={item.name}
                                     key={item.name}
                                     description={item.description}
-                                    imageUrl={imageUrlArray[iterator]}
                                     id={item.restaurant_id}
                                     restaurantid={item.restaurant_id}
                                     rating="5/5"
