@@ -14,6 +14,7 @@ import { Box } from '@mui/system'
 import CartContext from './CartContext'
 import { useNavigate } from 'react-router-dom'
 import { logout } from "../util/firebaseAuth"
+import BigButton from '../css/BigButton.css'
 
 function Navbar() {
     const { cartItems } = useContext(CartContext)
@@ -53,6 +54,17 @@ function Navbar() {
     useEffect(() => {
         setUserObject(JSON.parse(sessionStorage.getItem('user')))
     }, [])
+
+    const bigButtonStyle = {
+        // Adding media query..
+        '@media screen and (maxWidth: 600px)': {
+          backgroundColor: '#ededed', 
+          color: 'red'  
+        },
+        "@media (maxWidth: 767px)": {
+            color: 'red',
+        }
+      };
     
     if(userObject == null) {
         // not signed in user navbar
@@ -232,7 +244,7 @@ function Navbar() {
                             </Grid>
                             <Grid item xs={1} sm={3.3} md={4} lg={5.4} xl={6.3}/>
                             <Grid item xs={3.6} sm={2.2} md={1.8} lg={1.5} xl={1.1}>
-                                <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/driver_page')}>Order page</Button>
+                                <Button variant="contained" id="big-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/driver_page')}>Order page</Button>
                             </Grid>
                             <Grid item xs={2} sm={1.5} md={1.2} lg={1.1} xl={0.8}>
                                 <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/user_page')}>Profile</Button>
@@ -259,7 +271,7 @@ function Navbar() {
                             </Grid>
                             <Grid item xs={1} sm={3.3} md={4} lg={5.4} xl={6.3}/>
                             <Grid item xs={3.6} sm={2.2} md={1.8} lg={1.5} xl={1.1}>
-                                <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/restaurant_owner_page')}>Restaurant page</Button>
+                                <Button variant="contained" id="big-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/restaurant_owner_page')}>Restaurant page</Button>
                             </Grid>
                             <Grid item xs={2} sm={1.5} md={1.2} lg={1.1} xl={0.8}>
                                 <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/user_page')}>Profile</Button>
@@ -279,20 +291,20 @@ function Navbar() {
                 <AppBar position="static">
                     <Toolbar variant="dense">
                         <Grid container alignItems="center">
-                            <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
+                            <Grid item xs={2} sm={3} md={3} lg={3} xl={3}>
                                 <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
                                     Hungry Monkey
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1} sm={3.3} md={4} lg={5.4} xl={6.3}/>
-                            <Grid item xs={3.6} sm={2.2} md={1.8} lg={1.5} xl={1.1}>
-                                <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/admin_page')}>Administrator panel</Button>
+                            <Grid item xs={0} sm={0.5} md={3} lg={4.5} xl={5.8}/>
+                            <Grid item xs={5.7} sm={4.5} md={3} lg={2.2} xl={1.6}>
+                                <Button variant="contained" id="big-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/admin_page')}>Administrator panel</Button>
                             </Grid>
-                            <Grid item xs={2} sm={1.5} md={1.2} lg={1.1} xl={0.8}>
+                            <Grid item xs={2.2} sm={1.8} md={1.2} lg={1.1} xl={0.8}>
                                 <Button variant="contained" id="profile-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={() => navigate('/user_page')}>Profile</Button>
                             </Grid>
                             <Grid item xs={2} sm={2} md={1} lg={1} xl={0.8}>
-                                <Link onClick={handleLogout} variant="body2" style={{ color: '#ededed', marginLeft: 20 }}>Log out</Link>
+                                <Link onClick={handleLogout} variant="body2" id="logout-link" style={{ color: '#ededed', marginLeft: 20 }}>Log out</Link>
                             </Grid>
                         </Grid>
                     </Toolbar>

@@ -50,7 +50,7 @@ function Home() {
             const response = await eachRestaurant
 
             console.log('distance', response.routes[0].legs[0].distance.value)
-            if (response && response.routes[0].legs[0].distance.value < 5000) {
+            if (response && response.routes[0].legs[0].distance.value < 15000) {
               nearByRestaurants.push(element)
               console.log('nearby!!!')
               //console.log(nearByRestaurants)
@@ -87,7 +87,10 @@ function Home() {
       <Navbar />
       <Container component="main" maxWidth="xl">
         <CssBaseline />
-        <PostcodeSearch />
+        {/**
+         * 
+         * <PostcodeSearch />
+         */}
         <RestaurantRow allRestaurants={allRestaurants} />
       </Container>
     </ThemeProvider>
