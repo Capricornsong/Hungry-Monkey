@@ -1,3 +1,61 @@
+/* Guest user navbar buttons*/
+
+@media only screen and (max-width: 360px) {
+    #login-button {
+      font-size: 12px;
+      margin-right: 4px;
+      width: 120px;
+    }
+    #create-account-link {
+        font-size: 13px;
+        margin-left: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 354px) {
+    #login-button {
+        font-size: 12px;
+        margin-left: 4px;
+        width: 110px;
+      }
+      #create-account-link {
+          font-size: 12px;
+          margin-left: 5px;
+      }
+  }
+
+  @media only screen and (max-width: 333px) {
+    #login-button {
+        font-size: 12px;
+        margin-left: 8px;
+        width: 105px;
+      }
+      #create-account-link {
+          font-size: 11px;
+          margin-left: 5px;
+      }
+  }
+
+  @media only screen and (max-width: 313px) {
+    #login-button {
+        font-size: 12px;
+        margin-left: 8px;
+        margin-right: 4px;
+        width: 100px;
+      }
+      #create-account-link {
+          font-size: 10px;
+          margin-left: 5px;
+      }
+  }
+
+/* Regular user bar buttons*/
+
+/* Driver nav bar buttons*/
+
+/* Restaurant Owner nav bar buttons*/
+
+/* Admin nav bar buttons*/
 @media only screen and (max-width: 667px) {
     #big-button {
       font-size: 13px;

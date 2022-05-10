@@ -54,17 +54,6 @@ function Navbar() {
     useEffect(() => {
         setUserObject(JSON.parse(sessionStorage.getItem('user')))
     }, [])
-
-    const bigButtonStyle = {
-        // Adding media query..
-        '@media screen and (maxWidth: 600px)': {
-          backgroundColor: '#ededed', 
-          color: 'red'  
-        },
-        "@media (maxWidth: 767px)": {
-            color: 'red',
-        }
-      };
     
     if(userObject == null) {
         // not signed in user navbar
@@ -73,12 +62,13 @@ function Navbar() {
                 <AppBar position="static">
                     <Toolbar variant="dense">
                         <Grid container alignItems="center">
-                            <Grid item xs={9}>
-                                <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
+                            <Grid item xs={2.3} sm={3} md={3} lg={3} xl={3}>
+                                <Typography variant="h6" color="inherit" component="div" onClick={() => { navigate('/home') }}>
                                     Hungry Monkey
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1} >
+                            <Grid item xs={0} sm={2.5} md={4.5} lg={5.8} xl={6.6}/>
+                            <Grid item xs={1.5} sm={1.1} md={1} lg={0.7} xl={0.5}>
                                 <IconButton
                                     size="large"
                                     aria-label="account of current user"
@@ -134,14 +124,15 @@ function Navbar() {
                                         </TableContainer>
                                     </Typography>
                                     <Typography style={{ textAlign: 'center', marginBottom: 5, marginTop: 5 }}>Subtotal: £{cartTotal}</Typography>
-                                    <Button variant={'contained'} onClick={() => { window.location = "/checkout" }} style={{ marginBottom: 5, marginTop: 5, marginLeft: '37%' }}>Go to Checkout</Button>
+                                    <Button variant={'contained'} onClick={() => { navigate('/checkout') }} style={{ marginBottom: 5, marginTop: 5, marginLeft: '37%' }}>Go to Checkout</Button>
                                 </Menu>
                             </Grid>
-                            <Grid item xs={2} >
-                                <Button variant="contained" id="login-button" style={{ backgroundColor: '#ededed', color: 'blue' }}
-                                    onClick={handleLoginButton}
-                                >Login</Button>
-                                <Link href="/register_m" variant="body2" style={{ color: '#ededed', marginLeft: 20 }}>Create account</Link>
+                            <Grid item xs={4} sm={2.4} md={1.6} lg={1.2} xl={1} >
+                                <Button variant="contained" id="login-button" style={{ backgroundColor: '#ededed', color: 'blue' }} onClick={handleLoginButton}>Login</Button>
+                                
+                            </Grid>
+                            <Grid item xs={4.1} sm={2.6} md={1.6} lg={1.2} xl={0.9}>
+                                <Link href="/register_m" variant="body2" id="create-account-link" style={{ color: '#ededed', marginLeft: 20 }}>Create account</Link>
                             </Grid>
                         </Grid>
                     </Toolbar>
@@ -155,8 +146,8 @@ function Navbar() {
                     <AppBar position="static">
                         <Toolbar variant="dense">
                             <Grid container alignItems="center">
-                                <Grid item xs={9}>
-                                    <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
+                                <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
+                                    <Typography variant="h6" color="inherit" component="div" onClick={() => { navigate('/home') }}>
                                         Hungry Monkey
                                     </Typography>
                                 </Grid>
@@ -238,7 +229,7 @@ function Navbar() {
                     <Toolbar variant="dense">
                         <Grid container alignItems="center">
                             <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
-                                <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
+                                <Typography variant="h6" color="inherit" component="div" onClick={() => { navigate('/home') }}>
                                     Hungry Monkey
                                 </Typography>
                             </Grid>
@@ -265,7 +256,7 @@ function Navbar() {
                     <Toolbar variant="dense">
                         <Grid container alignItems="center">
                             <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
-                                <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
+                                <Typography variant="h6" color="inherit" component="div" onClick={() => { navigate('/home') }}>
                                     Hungry Monkey
                                 </Typography>
                             </Grid>
@@ -292,7 +283,7 @@ function Navbar() {
                     <Toolbar variant="dense">
                         <Grid container alignItems="center">
                             <Grid item xs={2} sm={3} md={3} lg={3} xl={3}>
-                                <Typography variant="h6" color="inherit" component="div" onClick={() => { window.location = "/home" }}>
+                                <Typography variant="h6" color="inherit" component="div" onClick={() => {navigate('/home') }}>
                                     Hungry Monkey
                                 </Typography>
                             </Grid>
