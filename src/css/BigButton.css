@@ -1,5 +1,15 @@
-/* Guest user navbar buttons*/
+#monkey-logo {
+    width: 50px;
+    height: 50px;
+}
 
+@media only screen and (max-width: 599px) {
+    #monkey-logo {
+        visibility: hidden;
+    }
+  }
+
+/* Guest user navbar buttons*/
 @media only screen and (max-width: 360px) {
     #login-button {
       font-size: 12px;
@@ -49,11 +59,155 @@
       }
   }
 
-/* Regular user bar buttons*/
-
 /* Driver nav bar buttons*/
+@media only screen and (max-width: 455px) {
+    #driver-logout-link{
+        font-size: 12px;
+    }
+  }
+
+@media only screen and (max-width: 439px) {
+    #driver-page-button {
+      font-size: 12px;
+    }
+
+    #driver-profile-button {
+        font-size: 12px;
+    }
+
+    #driver-logout-link{
+        font-size: 12px;
+    }
+  }
+
+  @media only screen and (max-width: 418px) {
+    #driver-logout-link{
+        font-size: 11px;
+    }
+  }
+
+  @media only screen and (max-width: 397px) {
+    #driver-page-button {
+        font-size: 11px;
+      }
+    #driver-logout-link{
+        font-size: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 377px) {
+    #driver-page-button {
+      font-size: 10px;
+    }
+
+    #driver-profile-button {
+        font-size: 10px;
+    }
+
+    #driver-logout-link{
+        font-size: 9px;
+    }
+  }
+
+  @media only screen and (max-width: 357px) {
+    #driver-page-button {
+      font-size: 9px;
+    }
+
+    #driver-profile-button {
+        font-size: 9px;
+    }
+
+    #driver-logout-link{
+        font-size: 8px;
+    }
+  }
+
+  @media only screen and (max-width: 337px) {
+    #driver-page-button {
+      font-size: 7.5px;
+    }
+
+    #driver-profile-button {
+        font-size: 9px;
+    }
+
+    #driver-logout-link{
+        font-size: 6px;
+    }
+  }
+
+  @media only screen and (max-width: 316px) {
+    #driver-page-button {
+      font-size: 8px;
+    }
+
+    #driver-profile-button {
+        font-size: 8px;
+    }
+
+    #driver-logout-link{
+        font-size: 5px;
+    }
+  }
 
 /* Restaurant Owner nav bar buttons*/
+@media only screen and (max-width: 510px) {
+    #restaurant-page-button {
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+
+  @media only screen and (max-width: 469px) {
+    #restaurant-page-button {
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    #owner-logout-link {
+        font-size: 11px;
+        margin-left: 4px;
+    }
+  }
+
+  @media only screen and (max-width: 441px) {
+    #restaurant-page-button {
+      font-size: 10px;
+      margin-left: 4px;
+    }
+  }
+
+  @media only screen and (max-width: 413px) {
+    #restaurant-page-button {
+      font-size: 9px;
+      margin-left: 4px;
+    }
+  }
+
+  @media only screen and (max-width: 388px) {
+    #restaurant-page-button {
+      font-size: 8px;
+      margin-left: 4px;
+    }
+  }
+
+  @media only screen and (max-width: 362px) {
+    #restaurant-page-button {
+      font-size: 7px;
+      margin-left: 4px;
+    }
+
+    #owner-logo-title {
+        font-size: 15px;
+    }
+  }
+
+  @media only screen and (max-width: 337px) {
+    #restaurant-page-button {
+      font-size: 6px;
+      margin-left: 4px;
+    }
+  }
 
 /* Admin nav bar buttons*/
 @media only screen and (max-width: 667px) {
@@ -83,6 +237,9 @@
         font-size: 11px;
         margin-left: 10px;
     }
+    #logout-link {
+        font-size: 9px;
+    }
 }
 
 @media only screen and (max-width: 419px) {
@@ -95,7 +252,7 @@
         margin-left: 0px;
     }
     #logout-link {
-        font-size: 12px;
+        font-size: 9px;
         margin-left: 0px;
     }
 }
@@ -110,7 +267,7 @@
         margin-left: 0px;
     }
     #logout-link {
-        font-size: 11px;
+        font-size: 9px;
         margin-left: 0px;
     }
 }
@@ -125,7 +282,7 @@
         margin-left: 0px;
     }
     #logout-link {
-        font-size: 10px;
+        font-size: 8px;
         margin-left: 0px;
     }
 }
@@ -140,7 +297,7 @@
         margin-left: 0px;
     }
     #logout-link {
-        font-size: 9px;
+        font-size: 8px;
         margin-left: 0px;
     }
 }
