@@ -10,7 +10,7 @@ export function CartProvider({ children }) {
     const [userInfo, setUserInfo] = useState([])
 
     const calculateTotal = (price) => {
-        setCartTotal(cartItems.reduce((a, b) => a + b.price * b.quantity, price));
+        setCartTotal(cartItems.reduce((a, b) => a + b.food_price * b.food_amount, price));
     }
 
     useEffect(() => {
@@ -41,18 +41,18 @@ export function CartProvider({ children }) {
     }, [chosenRestaurant]);
 
 
-    const addToCart = (name, price, quantity) => {
-        const exists = cartItems.find(element => element.name === name)
+    const addToCart = (food_name, food_price, food_amount) => {
+        const exists = cartItems.find(element => element.food_name === food_name)
         if (exists) {
             setCartItems(
                 cartItems.map((element) => 
-                    element.name === name ? {...exists, quantity: exists.quantity + quantity} : element,
+                    element.food_name === food_name ? {...exists, quantity: exists.food_amount + food_amount} : element,
                 )
             )
-            calculateTotal(price*quantity)
+            calculateTotal(food_price*food_amount)
         } else {
-            setCartItems((prevState) => [...prevState, {name, price, quantity}])
-            calculateTotal(price*quantity)
+            setCartItems((prevState) => [...prevState, {food_name, food_price, food_amount}])
+            calculateTotal(food_price*food_amount)
         }
         
     }
@@ -64,6 +64,12 @@ export function CartProvider({ children }) {
     }
 
     const setRestaurant = (chosenRestaurantId) => {
+        if(chosenRestaurant !== ''){
+            if(chosenRestaurantId !== chosenRestaurant){
+                setCartItems([])
+                setCartTotal(0)
+            }
+        }
         setChosenRestaurant(chosenRestaurantId)
     }
 

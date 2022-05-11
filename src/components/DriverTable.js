@@ -17,8 +17,21 @@ function DriverTable(props) {
         setFoodDeliveredVisible(false)
         
         axios.patch('https://hungry-monkey-api.azurewebsites.net/api/order/updateOrderStatus', {
-            "order_id": props.orderDetails.order_id.toString(),
+            "order_id": props.orderDetails.order_id,
             "order_status": "delivered"
+        })
+        .then(response => {
+            if(response.status === 200){
+                props.setSnackbarOpen(true)
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateDriverStatusByUID', {
+            "uid": sessionStorage.getItem('uid'),
+            "deliver_status": "waiting"
         })
         .then(response => {
             if(response.status === 200){
@@ -31,11 +44,11 @@ function DriverTable(props) {
     }
 
     useEffect(() => {
-        console.log(props.orderDetails[0])
-        if(props.orderDetails[0] !== undefined){
+        console.log("props : ", props.orderDetails)
+        if(JSON.stringify(props.orderDetails) !== '{}'){
             setOrderEmpty(false)
         }
-    },[])
+    },[props.orderDetails])
 
     
 

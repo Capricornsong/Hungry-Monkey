@@ -32,19 +32,20 @@ function DriverPage() {
     React.useEffect(() => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/order/getOrderByDeliverEmail', {
             'order_deliver_by': userObject.email,
-            //'order_deliver_by': 'amazing@driver.com'
+            //'order_deliver_by': 'bobmarley@bob.com'
         })
         .then(response => {
+            console.log(response.data)
             response.data.forEach(order => {
                 if(order.order_status === 'delivering'){
-                    setCurrentOrder(response.data)
+                    setCurrentOrder(order)
                 }
             })
-            setIsLoading(false)
         })
         .catch(error => {
             console.log(error)
         })
+        setIsLoading(false)
     },[])
 
     if (isLoading) {

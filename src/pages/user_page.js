@@ -6,7 +6,7 @@
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
-import { useJsApiLoader, GoogleMap } from '@react-google-maps/api'
+//import { useJsApiLoader, GoogleMap } from '@react-google-maps/api'
 import { UpdateProfile } from '../components/user_profile'
 import { Map } from '../components/map'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Container, Dialog, DialogTitle, styled, DialogContent, DialogActions, Grid, Typography, Modal, Card, CardContent, CardActions, CardActionArea, CardMedia, useMediaQuery, } from '@mui/material'

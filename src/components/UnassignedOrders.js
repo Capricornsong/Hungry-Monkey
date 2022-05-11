@@ -118,23 +118,26 @@ function UnassignedOrders(props) {
             "order_deliver_by": assignedDriver.email
          })
         .then(response => {
-            console.log("response data: " + response.data)            
+            console.log("response data: " + response.data)   
+            
+            axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateDriverStatusByUID', {
+                "uid": assignedDriver.uid,
+                "deliver_status": "delivering"
+             })
+            .then(response => {
+                console.log("response data 2: " + response.data)            
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            
         })
         .catch(error => {
             console.log(error)
         })
         
 
-        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateDriverStatusByUID', {
-            "uid": assignedDriver.uid,
-            "deliver_status": "delivering"
-         })
-        .then(response => {
-            console.log("response data 2: " + response.data)            
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        
 
         setSnackbarOpen(true)
         setTimeout(() => { window.location.href = "/restaurant_owner_page"; }, 500);
