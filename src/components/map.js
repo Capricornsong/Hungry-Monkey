@@ -1,20 +1,22 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-05-01 19:18:06
- * @LastEditTime: 2022-05-04 20:23:52
- * @FilePath: \coursework_git\src\components\map.js
+ * @LastEditTime: 2022-05-11 23:08:56
+ * @FilePath: \monkey\Hungry-Monkey\src\components\map.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
-import { Box } from '@mui/material'
+import { Box, duration } from '@mui/material'
 import { useJsApiLoader, GoogleMap, Marker, Autocomplete, DirectionsRenderer } from '@react-google-maps/api'
 import { Skeleton, Typography, LinearProgress, Grid, Chip } from '@mui/material'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import PropTypes from "prop-types"
 const center = { lat: 50.935, lng: -1.395 }
-const de = { lat: 50.938, lng: -1.389 }
+// const de = { lat: 50.938, lng: -1.389 }
 
 function LinearProgressWithLabel(props) {
+    const dur = props.dur
+    
     return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={{ width: "100%", mr: 1 }}>
@@ -30,7 +32,8 @@ function LinearProgressWithLabel(props) {
             <Box sx={{ minWidth: 45 }}>
 
                 <Typography variant="body2" color="text.secondary">
-                    {Math.round(3 * (100 - props.value))} s
+                    {Math.round( (dur/100) * (100 - props.value))} s
+                    {/* {props.value} */}
                 </Typography>
             </Box>
         </Box>
@@ -44,43 +47,44 @@ LinearProgressWithLabel.propTypes = {
     value: PropTypes.number.isRequired
 }
 export const Map = (props) => {
+    const [dur,setDur] = useState()
     const [progress, setProgress] = useState(1)
     const [result, setResult] = useState(null)
-    const [lat, setLat] = useState()
-    const [lng, setLng] = useState()
-
+    const row = props.row
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-        // libraries:['places']
     })
-
+    // console.log('row ', row)
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((prevProgress) =>
-                prevProgress >= 100 ? 0.3 : prevProgress + 0.3
+                prevProgress >= 100 ? dur/1000 : prevProgress + dur/1000
             )
         }, 1000)
         return () => {
             clearInterval(timer)
         }
-    }, [])
+    }, [dur])
 
     useEffect(() => {
         if (isLoaded) {
-            directionService.route({
-                origin: center,
-                destination: de,
-
-                // eslint-disable-next-line no-undef
-                travelMode: google.maps.TravelMode.DRIVING
-
-            }).then((response) => {
-                setResult(response)
-
-                console.log(response.routes[0].legs[0].distance)
-            })
+            const getOD = async () => {
+                const orgin = await geocode(row.user_postcode)
+                const destination = await geocode(row.restaurant_postcode)
+                directionService.route({
+                    origin: orgin,
+                    destination: destination,
+                    // eslint-disable-next-line no-undef
+                    travelMode: google.maps.TravelMode.DRIVING
+                }).then((response) => {
+                    setResult(response)
+                    setDur(response.routes[0].legs[0].duration.value)
+                    // console.log(response.routes[0].legs[0].duration.value);
+                    // console.log(response.routes[0].legs[0].distance)
+                })
+            }
+            getOD()
         }
-
     }, [isLoaded])
 
     if (!isLoaded) {
@@ -90,6 +94,24 @@ export const Map = (props) => {
     }
     // eslint-disable-next-line no-undef
     const directionService = new google.maps.DirectionsService()
+    // eslint-disable-next-line no-undef
+    const geocoder = new google.maps.Geocoder()
+    function geocode(request) {
+        return new Promise((res, rej) => {
+            geocoder
+                .geocode({ address: request })
+                .then((response) => {
+                    const { lat, lng } = response.results[0].geometry.location
+                    const latitute = lat()
+                    const longtitute = lng()
+                    const coordinate = { lat: latitute, lng: longtitute }
+                    res(coordinate)
+                })
+                .catch((e) => {
+                    // alert("Geocode was not successful for the following reason: " + e)
+                })
+        })
+    }
     return (
         <Box
             height={580}
@@ -122,7 +144,7 @@ export const Map = (props) => {
                         Estimated time: <Chip label={result && result.routes[0].legs[0].duration.text} color="primary" />
                     </Typography>
                 </Grid>
-                <Grid item xs={8} sm={8}><LinearProgressWithLabel value={progress} /></Grid>
+                <Grid item xs={8} sm={8}><LinearProgressWithLabel value={progress} dur = {result && result.routes[0].legs[0].duration.value} /></Grid>
             </Box>
             {/* <h1>dadwadda</h1> */}
         </Box>

@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-06 03:04:26
- * @FilePath: \coursework_git\src\pages\register_m.js
+ * @LastEditTime: 2022-05-11 18:50:21
+ * @FilePath: \monkey\Hungry-Monkey\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
  */
@@ -120,7 +120,8 @@ export default function SignUp() {
       address1: event.address1,
       address2: event.address2,
       country: event.country,
-      role: role
+      role: role,
+      postcode: event.postcode,
     })
     signup(event.email, event.password1).then((response) => {
       const currentUser = auth.currentUser

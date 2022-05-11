@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-06 03:04:38
- * @FilePath: \coursework_git\src\pages\user_page.js
+ * @LastEditTime: 2022-05-11 22:03:14
+ * @FilePath: \monkey\Hungry-Monkey\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
@@ -141,18 +141,18 @@ function Details(props) {
                 </AccordionDetails>
             </Accordion>
             <BootstrapDialog
+                
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 maxWidth={800}
                 disablePortal
-
             >
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Location
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <Map />
+                    <Map row = {row}/>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleClose}>

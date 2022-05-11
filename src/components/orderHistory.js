@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-28 13:00:08
- * @LastEditTime: 2022-05-02 02:17:21
- * @FilePath: \coursework_git\src\components\orderHistory.js
+ * @LastEditTime: 2022-05-11 23:07:32
+ * @FilePath: \monkey\Hungry-Monkey\src\components\orderHistory.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
@@ -19,7 +19,7 @@ import { useAuth } from '../util/firebaseAuth'
 function Details(props) {
     const { row } = props
     const [open, setOpen] = useState(false)
-
+    console.log('orderdatails',row);
     return (
         <Fragment>
             <TableRow
