@@ -17,8 +17,10 @@ import {
     onAuthStateChanged,
     signOut,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    sendPasswordResetEmail
 } from "firebase/auth"
+import {boolean} from "yup"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,6 +55,10 @@ export function login(email, password) {
 
 export function logout() {
     return signOut(auth)
+}
+
+export function forgetPassword(email){
+    return sendPasswordResetEmail(auth, email)
 }
 
 export function signWithGoogle(){
