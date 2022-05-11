@@ -24,14 +24,12 @@ function RestaurantDetails(props) {
     );
 
     React.useEffect(() => {
-           if(props.restaurantobjectprop.length > 0){
-                setIsLoading(false)
-           }
            if(props.restaurantobjectprop.status === 'WaitConfirm'){
                 setNewRestaurant(true)
                 setIsLoading(false)
            }
-    }, [])
+           setIsLoading(false)
+    }, [props.restaurantobjectprop])
 
     if(isLoading){
         return <Typography>Loading</Typography>
