@@ -38,7 +38,7 @@ function DriverPage() {
             console.log(response.data)
             response.data.forEach(order => {
                 if(order.order_status === 'delivering'){
-                    setCurrentOrder(response.data)
+                    setCurrentOrder(order)
                 }
             })
         })
