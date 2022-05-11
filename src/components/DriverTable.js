@@ -28,6 +28,19 @@ function DriverTable(props) {
         .catch(error => {
             console.log(error)
         })
+
+        axios.patch('https://hungry-monkey-api.azurewebsites.net/api/user/updateDriverStatusByUID', {
+            "uid": sessionStorage.getItem('uid'),
+            "deliver_status": "waiting"
+        })
+        .then(response => {
+            if(response.status === 200){
+                props.setSnackbarOpen(true)
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     useEffect(() => {
