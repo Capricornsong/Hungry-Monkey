@@ -4,6 +4,7 @@ import { Alert, Box, Button, FilledInput, Card, CardActionArea, CardContent, sty
 import StoreIcon from '@mui/icons-material/Store'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 
 const Input = styled('input')({
     display: 'none',
@@ -19,6 +20,8 @@ function RestaurantDetails(props) {
     const [newOwner, setNewOwner] = React.useState(false)
     const navigate = useNavigate()
     const userObject = JSON.parse(sessionStorage.getItem('user'))
+
+
 
     const theme = React.useMemo(() =>
         createTheme({
@@ -78,45 +81,95 @@ function RestaurantDetails(props) {
     }
 
     React.useEffect(() => {
-        if(props.restaurantobjectprop.name !== ''){
+        if (props.restaurantobjectprop.name !== '') {
             axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getRestaurantByName', {
                 'name': props.restaurantobjectprop.name,
             })
-            .then(response => {
-                setRestaurantObject(response.data[0])
-                setIsLoading(false)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+                .then(response => {
+                    setRestaurantObject(response.data[0])
+                    setIsLoading(false)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         } else {
             // new owner
             setNewOwner(true)
             setIsLoading(false)
-        }      
-    },[props.restaurantobjectprop.name])
+        }
+    }, [props.restaurantobjectprop.name])
 
-    
-    const handleCapture = (event) => {
+
+    const handleUploadImage = (event) => {
+        const file = event.target.files[0]
         console.log('handlecapture')
-        console.log(event.target.value);
+        console.log(event.target.type)
+        if (!file || file.type.indexOf('png') === -1) {
+            console.log('Please select a .png file!')
+            return
+        }
         setSelectedFile(event)
+        const storage = getStorage()
+        // Create the file metadata
+        const metadata = {
+            contentType: 'image/png'
+        }
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        const storageRef = ref(storage, 'RestaurantImage/' + restaurantObject.restaurant_id + '.png')
+        const uploadTask = uploadBytesResumable(storageRef, file, metadata)
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                console.log('Upload is ' + progress + '% done')
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused')
+                        break
+                    case 'running':
+                        console.log('Upload is running')
+                        break
+                }
+            },
+            (error) => {
+                // A full list of error codes is available at
+                // https://firebase.google.com/docs/storage/web/handle-errors
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break
+
+                    // ...
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect error.serverResponse
+                        break
+                }
+            },
+            () => {
+                setSnackbarOpen(true)
+                // Upload completed successfully, now we can get the download URL
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL)
+                })
+            }
+        )
     }
-    const handleUploadImage = () => {
-        console.log('handlecapture')
-        // saveFace(selectedFile)
-        // console.log(selectedFile);
-    }
+
 
     const handleRestaurantRegister = () => {
         axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/createNewRestaurant', {
-                "name": newRestaurantObject.name,
-                "description": newRestaurantObject.description,
-                "location": newRestaurantObject.location,
-                "open_time": newRestaurantObject.open_time,
-                "close_time": newRestaurantObject.close_time,
-                "owner": userObject.email
-            })
+            "name": newRestaurantObject.name,
+            "description": newRestaurantObject.description,
+            "location": newRestaurantObject.location,
+            "open_time": newRestaurantObject.open_time,
+            "close_time": newRestaurantObject.close_time,
+            "owner": userObject.email
+        })
             .then(response => {
                 setSnackbarOpen(true)
                 setTimeout(() => { navigate('/user_page') }, 700)
@@ -131,13 +184,13 @@ function RestaurantDetails(props) {
         return (
             <Typography>Loading</Typography>
         )
-    } else if(newOwner) {
+    } else if (newOwner) {
         // new owner table
         return (
             <ThemeProvider theme={theme}>
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={12} xs={12}>
-    
+
                         <Card sx={{ boxShadow: 3 }}>
                             <CardActionArea onClick={() => setEditFormOpen(!editFormOpen)}>
                                 <CardContent>
@@ -151,7 +204,7 @@ function RestaurantDetails(props) {
                                 </CardContent>
                             </CardActionArea>
                         </Card>
-    
+
                         <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
                             <Card sx={{ boxShadow: 1 }}>
                                 <CardContent>
@@ -234,7 +287,7 @@ function RestaurantDetails(props) {
                                                                                 Register Restaurant
                                                                             </Button>
                                                                         </Grid>
-    
+
                                                                     </Grid>
                                                                 </CardContent>
                                                             </Card>
@@ -267,7 +320,7 @@ function RestaurantDetails(props) {
             <ThemeProvider theme={theme}>
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={12} xs={12}>
-    
+
                         <Card sx={{ boxShadow: 3 }}>
                             <CardActionArea onClick={() => setEditFormOpen(!editFormOpen)}>
                                 <CardContent>
@@ -281,7 +334,7 @@ function RestaurantDetails(props) {
                                 </CardContent>
                             </CardActionArea>
                         </Card>
-    
+
                         <Collapse in={editFormOpen} timeout='auto' unmountOnExit>
                             <Card sx={{ boxShadow: 1 }}>
                                 <CardContent>
@@ -355,18 +408,12 @@ function RestaurantDetails(props) {
                                                                             item xs={12} md={12} lg={12} textAlign='right' >
                                                                             <label htmlFor="contained-button-file">
                                                                                 <Input accept="image/png" id="contained-button-file" multiple type="file"
-                                                                                    onChange={handleCapture} />
+                                                                                    onChange={handleUploadImage} />
                                                                                 <Button variant="contained" component="span" color='secondary' fullWidth >
                                                                                     Upload Image1
                                                                                 </Button>
                                                                             </label>
-                                                                            <label htmlFor="uploadImage">
-                                                                                <Input accept="image/*" id="uploadImage" type="file" />
-                                                                                {/* {selectedFile ? selectedFile.name : "Select Image"} */}
-                                                                                <Button variant="contained" component="span" color='secondary' fullWidth onClick={handleUploadImage}>
-                                                                                    Choose image 
-                                                                                </Button>
-                                                                            </label>
+
                                                                         </Grid>
                                                                         <Grid
                                                                             item xs={12} md={12} lg={12} textAlign='right' >
@@ -380,7 +427,7 @@ function RestaurantDetails(props) {
                                                                                 Update
                                                                             </Button>
                                                                         </Grid>
-    
+
                                                                     </Grid>
                                                                 </CardContent>
                                                             </Card>
@@ -410,7 +457,7 @@ function RestaurantDetails(props) {
         )
     }
 
-    
+
 }
 
 export default RestaurantDetails

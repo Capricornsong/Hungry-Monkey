@@ -19,7 +19,19 @@ function Home() {
   })
 
   const nearByRestaurants = []
+  const [currLat, setCuttLat] = useState(50.935)
+  const [currLng, setCuttLng] = useState(-1.395)
   const center = { lat: 50.935, lng: -1.395 }
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+    console.log("Latitude is :", position.coords.latitude);
+    console.log("Longitude is :", position.coords.longitude);
+    setCuttLat(position.coords.latitude)
+    setCuttLng(position.coords.longitude)
+  })
+  },[])
+  
   useEffect(() => {
     if (isLoaded) {
       axios.post('https://hungry-monkey-api.azurewebsites.net/api/restaurant/getAllRestaurantByStatus',{
@@ -32,14 +44,15 @@ function Home() {
               geocoder.geocode({ address: element.location })
                 .then((response) => {
                   const { lat, lng } = response.results[0].geometry.location
-                  console.log(lat())
-                  console.log(lng())
+                  // console.log(lat())
+                  // console.log(lng())
                   setLat(lat())
                   setLng(lng())
                   //console.log(response)
                   directionService.route({
                     origin: { lat: lat(), lng: lng() },
-                    destination: center,
+                    // destination: center,
+                    destination: {lat: currLat, lng: currLng},
                     // eslint-disable-next-line no-undef
                     travelMode: google.maps.TravelMode.DRIVING
                   }).then((response) => {
@@ -63,7 +76,7 @@ function Home() {
           setAllRestaurants([...nearByRestaurants])
         })
     }
-  }, [isLoaded])
+  }, [isLoaded,currLng])
 
   if (!isLoaded) {
     return (
