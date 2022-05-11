@@ -125,9 +125,9 @@ function Navbar() {
                                                             key={iterator}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                         >
-                                                            <TableCell component="th" scope="row">{item.name}</TableCell>
-                                                            <TableCell align="center">£ {item.price}</TableCell>
-                                                            <TableCell align="right">{item.quantity}</TableCell>
+                                                            <TableCell component="th" scope="row">{item.food_name}</TableCell>
+                                                            <TableCell align="center">£ {item.food_price}</TableCell>
+                                                            <TableCell align="right">{item.food_amount}</TableCell>
                                                         </TableRow>
                                                     ))}
                                                 </TableBody>
@@ -218,9 +218,9 @@ function Navbar() {
                                                             key={iterator}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                         >
-                                                            <TableCell component="th" scope="row">{item.name}</TableCell>
-                                                            <TableCell align="center">£ {item.price}</TableCell>
-                                                            <TableCell align="right">{item.quantity}</TableCell>
+                                                            <TableCell component="th" scope="row">{item.food_name}</TableCell>
+                                                            <TableCell align="center">£ {item.food_price}</TableCell>
+                                                            <TableCell align="right">{item.food_amount}</TableCell>
                                                         </TableRow>
                                                     ))}
                                                 </TableBody>
