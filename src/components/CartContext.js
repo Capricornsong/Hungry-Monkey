@@ -64,6 +64,11 @@ export function CartProvider({ children }) {
     }
 
     const setRestaurant = (chosenRestaurantId) => {
+        if(chosenRestaurantId === chosenRestaurant){
+            console.log('same restaurant')
+        } else {
+            console.log('different restaurant')
+        }
         setChosenRestaurant(chosenRestaurantId)
     }
 
