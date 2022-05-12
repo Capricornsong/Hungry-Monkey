@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-11 22:03:14
+ * @LastEditTime: 2022-05-12 15:58:27
  * @FilePath: \monkey\Hungry-Monkey\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -117,7 +117,11 @@ function Details(props) {
                         }}>{food.food_amount} × {food.food_name} </Typography>
                     ))}
                     <Typography variant="subtitle2" color="text.secondary" component="div" sx={{ ml: 1 }} >
-                        Total Price: {row.order_price}  £
+                        <br/>
+                        Total Price: £ {row.order_price}  
+                    </Typography>
+                    <Typography variant="subtitle2" color="text.secondary" component="div" sx={{ ml: 1 }} >
+                        Order Status: {row.order_status}  
                     </Typography>
                     <Grid
                         item
