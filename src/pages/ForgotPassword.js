@@ -1,6 +1,6 @@
-import {Box, Button, Container, TextField, Typography, CssBaseline, FormControl} from '@mui/material'
+import {Box, Button, Container, TextField, Typography, CssBaseline, FormControl, Snackbar, Alert} from '@mui/material'
 import {createTheme, ThemeProvider} from '@mui/material/styles'
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import * as Yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -10,6 +10,12 @@ import {forgetPassword} from "../util/firebaseAuth"
 const theme = createTheme()
 
 function ForgotPassword() {
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false)
+    }
+
     const validationSchema = Yup.object().shape({
         email: Yup.string().required('Email is required').email('Email is invalid')
     })
@@ -27,6 +33,8 @@ function ForgotPassword() {
         console.log({email: event.email})
         forgetPassword(event.email).then(()=>{
             //TODO ADD A POP UP Window!
+            setSnackbarOpen(true)
+            setTimeout(() => { window.location.href = "/login" }, 1000)
         }).catch((e)=>{
             console.log(e.message)
             alert("Firebase connection error")
@@ -74,6 +82,18 @@ function ForgotPassword() {
                         >Submit</Button>
                     </Box>
                 </FormControl>
+
+                <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={3000}
+                    onClose={handleSnackbarClose}
+                    // message="Successfully updated"
+                    severity="success"
+                >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Password request sent
+                </Alert>
+            </Snackbar>
             </Container>
         </ThemeProvider>
     )
