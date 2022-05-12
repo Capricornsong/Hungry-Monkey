@@ -135,7 +135,7 @@ function Navbar() {
                                         </TableContainer>
                                     </Typography>
                                     <Typography style={{ textAlign: 'center', marginBottom: 5, marginTop: 5 }}>Subtotal: £{cartTotal}</Typography>
-                                    <Button variant={'contained'} onClick={() => { navigate('/checkout') }} style={{ marginBottom: 5, marginTop: 5, marginLeft: '37%' }}>Go to Checkout</Button>
+                                    <Button variant={'contained'} onClick={() => { navigate('/checkout') }} style={{ marginBottom: 5, marginTop: 5, marginLeft: '37%' }} disabled>Go to Checkout</Button>
                                 </Menu>
                             </Grid>
                             <Grid item xs={4} sm={2.4} md={1.6} lg={1.2} xl={1} >

@@ -46,7 +46,7 @@ export function CartProvider({ children }) {
         if (exists) {
             setCartItems(
                 cartItems.map((element) => 
-                    element.food_name === food_name ? {...exists, quantity: exists.food_amount + food_amount} : element,
+                    element.food_name === food_name ? {...exists, food_amount: exists.food_amount + food_amount} : element,
                 )
             )
             calculateTotal(food_price*food_amount)
