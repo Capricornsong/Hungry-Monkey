@@ -84,7 +84,10 @@ function Home() {
         <Navbar />
         <Container component="main" maxWidth="xl">
           <CssBaseline />
-          <PostcodeSearch />
+          {/**
+         * 
+         * <PostcodeSearch />
+         */}
           <Skeleton variant="rectangular" />
         </Container>
       </ThemeProvider>

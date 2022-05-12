@@ -9,7 +9,7 @@ import { RepeatOneSharp } from '@mui/icons-material';
 
 function DriverPage() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const [currentOrder, setCurrentOrder] = React.useState([{}])
+    const [currentOrder, setCurrentOrder] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(true)
     const [snackbarOpen, setSnackbarOpen] = React.useState(false)
     const navigate = useNavigate()
@@ -35,7 +35,7 @@ function DriverPage() {
             //'order_deliver_by': 'bobmarley@bob.com'
         })
         .then(response => {
-            console.log(response.data)
+            console.log("response: ", response.data)
             response.data.forEach(order => {
                 if(order.order_status === 'delivering'){
                     setCurrentOrder(order)
@@ -111,15 +111,12 @@ function DriverPage() {
                                             <Typography variant="body2" color="text.secondary" textAlign='center'>
                                                 UserId: {userObject.uid}
                                             </Typography>
-                                            <Typography  variant="body2" color="text.secondary" textAlign='center'>
-                                                Driver Status: {userObject.deliver_status}
-                                            </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
                             </Grid>
                             <Grid item lg={8} md={8} xs={12}>
-                                <DriverTable orderDetails={currentOrder[0]} setSnackbarOpen={setSnackbarOpen}/>
+                                <DriverTable orderDetails={currentOrder} setSnackbarOpen={setSnackbarOpen}/>
                             </Grid>
                         </Grid>
                     </Container>

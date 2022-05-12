@@ -44,7 +44,6 @@ function DriverTable(props) {
     }
 
     useEffect(() => {
-        console.log("props : ", props.orderDetails)
         if(JSON.stringify(props.orderDetails) !== '{}'){
             setOrderEmpty(false)
         }
