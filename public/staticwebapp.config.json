@@ -1,10 +1,4 @@
 {
-  "routes": [
-    {
-      "route": "/register_m",
-      "allowedRoles": ["anonymous"]
-    }
-  ],
   "navigationFallback": {
     "rewrite": "index.html",
     "exclude": ["/static/media/*.{png,jpg,gif,svg}", "/static/css/*"]
