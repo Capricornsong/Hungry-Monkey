@@ -9,7 +9,7 @@
 //import { useJsApiLoader, GoogleMap } from '@react-google-maps/api'
 import { UpdateProfile } from '../components/user_profile'
 import { Map } from '../components/map'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Container, Dialog, DialogTitle, styled, DialogContent, DialogActions, Grid, Typography, Modal, Card, CardContent, CardActions, CardActionArea, CardMedia, useMediaQuery, } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Container, Dialog, DialogTitle, styled, DialogContent, DialogActions, Grid, Typography, Modal, Card, CardContent, CardActions, CardActionArea, CardMedia, useMediaQuery, CssBaseline, } from '@mui/material'
 import { shadows, textAlign } from '@mui/system'
 import { OrderHistory } from '../components/orderHistory'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -216,6 +216,7 @@ export default function User_page() {
     return (
         <ThemeProvider theme={theme}>
             <Navbar />
+            <CssBaseline />
             <Box
                 // component="main"
                 sx={{

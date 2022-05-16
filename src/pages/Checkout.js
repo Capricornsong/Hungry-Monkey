@@ -48,16 +48,9 @@ function Checkout() {
   return (
       <ThemeProvider theme={theme}>
         <Navbar />
-        <Container component="main" maxWidth="sm">
+        <Container component="main">
         <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+          <Box>
             <Typography component="h1" variant="h5">
               Checkout
             </Typography>
@@ -66,7 +59,7 @@ function Checkout() {
             </h5>
             <Typography component={'span'} variant={'body2'}>
               <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <Table aria-label="simple table">
                       <TableHead>
                           <TableRow>
                               <TableCell>Menu Item</TableCell>
@@ -79,6 +72,7 @@ function Checkout() {
                           <TableRow
                               key={iterator}
                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                              style={{justifyContent: 'center'}}
                           >
                               <TableCell component="th" scope="row">{item.food_name}</TableCell>
                               <TableCell align="right">£ {item.food_price}</TableCell>

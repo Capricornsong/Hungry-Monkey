@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, useMediaQuery, Snackbar, Alert } from '@mui/material'
+import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, useMediaQuery, Snackbar, Alert, CssBaseline } from '@mui/material'
 import DriverTable from '../components/DriverTable'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -92,6 +92,7 @@ function DriverPage() {
         return (
             <ThemeProvider theme={theme}>
                 <Navbar/>
+                <CssBaseline />
                 <Box sx={{ flexGrow: 1, py: 8}} theme={theme}>
                     <Container maxWidth="lg">
                         <Typography

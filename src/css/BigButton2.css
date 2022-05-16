@@ -1,0 +1,59 @@
+/* All pages */
+#monkey-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+}
+
+@media only screen and (max-width: 599px) {
+    #monkey-logo {
+      width: 0px;
+      height: 0px;
+      margin-right: 0px;
+    }
+}
+
+/* Driver page */
+@media only screen and (max-width: 395px) {
+    #driver-page-button {
+        font-size: 10px;
+        height: 37px;
+    }
+}
+
+/* Restaurant Owner page */
+@media only screen and (max-width: 443px) {
+    #restaurant-page-button {
+        font-size: 10px;
+        height: 37px;
+    }
+}
+
+@media only screen and (max-width: 330px) {
+    #restaurant-page-button {
+        font-size: 9px;
+        width: 90px;
+    }
+}
+
+/* Admin page */
+@media only screen and (max-width: 474px) {
+    #admin-page-button {
+        font-size: 12px;
+        height: 37px;
+    }
+}
+
+@media only screen and (max-width: 449px) {
+    #admin-page-button {
+        font-size: 11px;
+        padding: 0px;
+    }
+}
+
+@media only screen and (max-width: 436px) {
+    #admin-page-button {
+        font-size: 10px;
+        
+    }
+}

@@ -18,6 +18,7 @@ import {
     Typography,
     TableBody,
     useMediaQuery,
+    CssBaseline,
 } from '@mui/material'
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -46,6 +47,7 @@ export default function Admin_page() {
         return (
             <>
                 <Navbar/>
+                <CssBaseline />
                 <Box
                     // component="main"
                     sx={{

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, useMediaQuery } from '@mui/material'
+import { Box, Container, Grid, Typography, Card, CardContent, CardActionArea, useMediaQuery, CssBaseline } from '@mui/material'
 import axios from 'axios'
 import RestaurantDetails from '../components/RestaurantDetails'
 import MenuDetails from '../components/MenuDetails'
@@ -119,6 +119,7 @@ function RestaurantOwnerPage() {
             return (
                 <ThemeProvider theme={theme}>
                     <Navbar/>
+                    <CssBaseline />
                     <Box sx={{ flexGrow: 1, py: 8 }} theme={theme}>
                         <Container maxWidth="lg">
                             <Typography
