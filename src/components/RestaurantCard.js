@@ -120,7 +120,7 @@ function RestaurantCard(props) {
                             <Typography id="menu-modal-description" sx={{ mt: 2 }}></Typography>
                             <Typography id="menu-modal-table" sx={{ mt: 2 }} component={'span'} variant={'body2'}>
                             <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <Table sx={{ minWidth: 200 }} sm={{ minWidth: 450}} aria-label="simple table">
                                     <TableHead>
                                     <TableRow>
                                         <TableCell>Menu Item</TableCell>
