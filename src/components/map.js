@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-05-01 19:18:06
- * @LastEditTime: 2022-05-11 23:08:56
- * @FilePath: \monkey\Hungry-Monkey\src\components\map.js
+ * @LastEditTime: 2022-05-17 17:36:29
+ * @FilePath: \coursework_git\src\components\map.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
@@ -58,7 +58,7 @@ export const Map = (props) => {
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((prevProgress) =>
-                prevProgress >= 100 ? dur/1000 : prevProgress + dur/1000
+                prevProgress >= 100 ? 100 : prevProgress + 100/dur
             )
         }, 1000)
         return () => {

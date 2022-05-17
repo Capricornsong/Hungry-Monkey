@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-28 13:00:08
- * @LastEditTime: 2022-05-11 23:07:32
- * @FilePath: \monkey\Hungry-Monkey\src\components\orderHistory.js
+ * @LastEditTime: 2022-05-17 16:45:54
+ * @FilePath: \coursework_git\src\components\orderHistory.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
@@ -34,6 +34,7 @@ function Details(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
+                <TableCell>{row.order_id}</TableCell>
                 <TableCell component='th' scope='row'>{row.restaurant_name}</TableCell>
                 <TableCell>{row.order_placed_time}</TableCell>
                 <TableCell>{row.order_price} </TableCell>
@@ -107,6 +108,7 @@ export const OrderHistory = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell />
+                            <TableCell>Order ID</TableCell>
                             <TableCell>Restaurant Name</TableCell>
                             <TableCell>Order Placed Date</TableCell>
                             <TableCell>Total Price ( £)</TableCell>
