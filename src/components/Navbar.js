@@ -1,7 +1,7 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-27 17:30:10
- * @LastEditTime: 2022-05-02 20:32:36
+ * @LastEditTime: 2022-05-19 18:36:08
  * @FilePath: \coursework_git\src\components\Navbar.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
@@ -54,7 +54,7 @@ function Navbar() {
 
     useEffect(() => {
         setUserObject(JSON.parse(sessionStorage.getItem('user')))
-    }, [])
+    }, [sessionStorage.getItem('user')])
 
     const isSmallWindow = window.screen.width > 600
     
