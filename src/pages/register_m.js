@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-25 19:01:30
- * @LastEditTime: 2022-05-11 18:50:21
- * @FilePath: \monkey\Hungry-Monkey\src\pages\register_m.js
+ * @LastEditTime: 2022-05-19 18:31:53
+ * @FilePath: \coursework_git\src\pages\register_m.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: The meterial version of the login-in page
  */
@@ -10,13 +10,10 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   CssBaseline,
   Container,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
   InputLabel,
   Grid,
   Link,
@@ -32,7 +29,6 @@ import * as Yup from 'yup'
 import { countries } from '../data/data'
 import * as React from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { useFormControl } from '@mui/material/FormControl'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import { signup, auth, login } from "../util/firebaseAuth"
@@ -64,6 +60,7 @@ export default function SignUp() {
     }
   })
   const [emptyItem, setEmptyItem] = React.useState(false)
+  const [emailUsed, setEmailUsed] = React.useState(false)
   const [role, setRole] = React.useState('normal')
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
@@ -165,6 +162,9 @@ export default function SignUp() {
       }
       console.log("Sign Up Success")
     }).catch((err) => {
+      if(err.code === 'auth/email-already-in-use'){
+        setEmailUsed(true)
+      }
       console.log(err)
     })
 
@@ -185,6 +185,7 @@ export default function SignUp() {
 
   const handleClose = () => {
     setEmptyItem(false)
+    setEmailUsed(false)
   }
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = React.useMemo(
@@ -472,6 +473,16 @@ export default function SignUp() {
           >
             <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
               Verification Email Sent
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={emailUsed}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            severity="info"
+          >
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+              The email is already used!
             </Alert>
           </Snackbar>
           <Copyright sx={{ mt: 5 }} />

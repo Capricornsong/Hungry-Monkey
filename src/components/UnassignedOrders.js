@@ -168,7 +168,7 @@ function UnassignedOrders(props) {
                     >
                         Assign Driver
                     </Button>
-                    <Button
+                    {/* <Button
                         variant="contained"
                         sx={{ mt: 3, mb: 1, ml: 3 }}
                         color='secondary'
@@ -176,7 +176,7 @@ function UnassignedOrders(props) {
                         onClick={handleDeclineModalOpen}
                     >
                         Decline
-                    </Button>
+                    </Button> */}
                 </Grid>
             </form>
 
