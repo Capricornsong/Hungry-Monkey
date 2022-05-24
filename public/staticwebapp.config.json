@@ -3,9 +3,7 @@
     "rewrite": "index.html",
     "exclude": ["/static/media/*.{png,jpg,gif,svg}", "/static/css/*"]
   },
-  "globalHeaders": {
-    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline';object-src 'none';script-src maps.googleapis.com;img-src data: maps.gstatic.com *.googleapis.com *.ggpht.com"
-  },
+
   "mimeTypes": {
     ".json": "text/json"
   }
