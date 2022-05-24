@@ -1,8 +1,8 @@
 /*
  * @Author: Liusong He
  * @Date: 2022-04-26 17:55:13
- * @LastEditTime: 2022-05-12 15:58:27
- * @FilePath: \monkey\Hungry-Monkey\src\pages\user_page.js
+ * @LastEditTime: 2022-05-24 15:04:59
+ * @FilePath: \coursework_git\src\pages\user_page.js
  * @Email: lh2u21@soton.ac.uk
  * @Description: 
  */
@@ -117,11 +117,11 @@ function Details(props) {
                         }}>{food.food_amount} × {food.food_name} </Typography>
                     ))}
                     <Typography variant="subtitle2" color="text.secondary" component="div" sx={{ ml: 1 }} >
-                        <br/>
-                        Total Price: £ {row.order_price}  
+                        <br />
+                        Total Price: £ {row.order_price}
                     </Typography>
                     <Typography variant="subtitle2" color="text.secondary" component="div" sx={{ ml: 1 }} >
-                        Order Status: {row.order_status}  
+                        Order Status: {row.order_status}
                     </Typography>
                     <Grid
                         item
@@ -145,7 +145,7 @@ function Details(props) {
                 </AccordionDetails>
             </Accordion>
             <BootstrapDialog
-                
+
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
@@ -156,7 +156,7 @@ function Details(props) {
                     Location
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <Map row = {row}/>
+                    <Map row={row} />
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleClose}>
@@ -213,85 +213,157 @@ export default function User_page() {
         }
     }, [])
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Navbar />
-            <CssBaseline />
-            <Box
-                // component="main"
-                sx={{
-                    flexGrow: 1,
-                    //pending top
-                    py: 8
-                }}
-                theme={theme}
-            >
-                <Container maxWidth="lg">
-                    <Typography
-                        sx={{ mb: 3 }}
-                        variant="h4"
-                    >
-                        Account
-                    </Typography>
-                    <Grid
-                        container
-                        spacing={3}
-                    >
-                        <Grid
-                            item
-                            // the number of columns it uses
-                            lg={4}
-                            md={4}
-                            xs={12}
+    if (sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).role === 'normal') {
+        return (
+            <ThemeProvider theme={theme}>
+                <Navbar />
+                <CssBaseline />
+                <Box
+                    // component="main"
+                    sx={{
+                        flexGrow: 1,
+                        //pending top
+                        py: 8
+                    }}
+                    theme={theme}
+                >
+                    <Container maxWidth="lg">
+                        <Typography
+                            sx={{ mb: 3 }}
+                            variant="h4"
                         >
-                            <Card sx={{
-                                // maxWidth:345,
-                                boxShadow: 3,
-                            }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" textAlign='center
+                            Account
+                        </Typography>
+                        <Grid
+                            container
+                            spacing={3}
+                        >
+                            <Grid
+                                item
+                                // the number of columns it uses
+                                lg={4}
+                                md={4}
+                                xs={12}
+                            >
+                                <Card sx={{
+                                    // maxWidth:345,
+                                    boxShadow: 3,
+                                }}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div" textAlign='center
                         '>
-                                            Hi🖐 {sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).first_name}~
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" textAlign='center'>
-                                            UserId: {sessionStorage.getItem('uid')}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                            <Typography gutterBottom variant="h6" component="div" sx={{
-                                mt: 3
-                            }}>
-                                Order in progress
-                            </Typography>
-                            {orderlist.map((row) => (
-                                row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
-                            ))}
+                                                Hi🖐 {sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).first_name}~
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                UserId: {sessionStorage.getItem('uid')}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                Role: {sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).role}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                                <Typography gutterBottom variant="h6" component="div" sx={{
+                                    mt: 3
+                                }}>
+                                    Order in progress
+                                </Typography>
+                                {orderlist.map((row) => (
+                                    row.order_status != 'delivered' ? <Details key={row.order_id} row={row} /> : <></>
+                                ))}
+                            </Grid>
+                            <Grid
+                                item
+                                //the number of columns it uses
+                                lg={8}
+                                md={8}
+                                xs={12}
+                            >
+                                <UpdateProfile />
+                            </Grid>
+                            <Grid
+                                item
+                                lg={12}
+                                md={12}
+                                xs={12}
+                            >
+                                <OrderHistory />
+                            </Grid>
                         </Grid>
-                        <Grid
-                            item
-                            //the number of columns it uses
-                            lg={8}
-                            md={8}
-                            xs={12}
+                    </Container>
+                </Box>
+            </ThemeProvider>
+        )
+    }
+    else {
+        return (
+            <ThemeProvider theme={theme}>
+                <Navbar />
+                <CssBaseline />
+                <Box
+                    // component="main"
+                    sx={{
+                        flexGrow: 1,
+                        //pending top
+                        py: 8
+                    }}
+                    theme={theme}
+                >
+                    <Container maxWidth="lg">
+                        <Typography
+                            sx={{ mb: 3 }}
+                            variant="h4"
                         >
-                            <UpdateProfile />
-                        </Grid>
+                            Account
+                        </Typography>
                         <Grid
-                            item
-                            lg={12}
-                            md={12}
-                            xs={12}
+                            container
+                            spacing={3}
                         >
-                            <OrderHistory />
+                            <Grid
+                                item
+                                // the number of columns it uses
+                                lg={4}
+                                md={4}
+                                xs={12}
+                            >
+                                <Card sx={{
+                                    // maxWidth:345,
+                                    boxShadow: 3,
+                                }}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div" textAlign='center
+                        '>
+                                                Hi🖐 {sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).first_name}~
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                UserId: {sessionStorage.getItem('uid')}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" textAlign='center'>
+                                                Role: {sessionStorage.getItem('user') && JSON.parse(sessionStorage.getItem('user')).role}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                            <Grid
+                                item
+                                //the number of columns it uses
+                                lg={8}
+                                md={8}
+                                xs={12}
+                            >
+                                <UpdateProfile />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Container>
+                    </Container>
 
-            </Box>
-        </ThemeProvider>
-    )
+                </Box>
+            </ThemeProvider>
+        )
+    }
 
 
 }
